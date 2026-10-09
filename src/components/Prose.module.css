@@ -1,0 +1,8 @@
+.body { row-gap: var(--s-6); padding-top: var(--s-5); }
+.text { grid-column: 1 / -1; max-width: 40rem; border-top: 1px solid var(--ink); padding-top: var(--s-6); }
+.text p + p { margin-top: 1em; }
+.updated { grid-column: 1 / -1; color: var(--ink-3); }
+@media (min-width: 64rem) {
+  .updated { grid-column: 1 / 4; padding-top: var(--s-6); }
+  .text { grid-column: 4 / 11; }
+}

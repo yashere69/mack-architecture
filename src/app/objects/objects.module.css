@@ -1,0 +1,12 @@
+.item { row-gap: var(--s-7); align-items: end; }
+.media { grid-column: 1 / -1; display: block; }
+.text { grid-column: 1 / -1; display: grid; justify-items: start; gap: var(--s-5); }
+.name { letter-spacing: 0.04em; }
+.meta { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-6); }
+.meta > div { display: contents; }
+.meta dd { color: var(--ink-2); }
+.sketch { width: min(100%, 18rem); display: grid; gap: var(--s-3); }
+@media (min-width: 64rem) {
+  .media { grid-column: 1 / 9; }
+  .text { grid-column: 10 / 13; }
+}

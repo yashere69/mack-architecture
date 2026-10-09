@@ -60,7 +60,8 @@
   "url": "https://hseiltzr3u804ti3.public.blob.vercel-storage.com/media/c3dffad7-2fa8-4a19-abdc-81ea0bf70aed/45310d06-c758-46f4-b736-68377bdc3726.jpg",
   "w": 1398,
   "h": 806,
-  "raw": "udaipur-resort__06.jpg"
+  "raw": "udaipur-resort__06.jpg",
+  "drawing": true
  },
  {
   "key": "figuring-out/01",
@@ -256,7 +257,8 @@
   "url": "https://hseiltzr3u804ti3.public.blob.vercel-storage.com/media/fa50e4f1-3008-4b24-92c0-e13ac20d6024/rendered%20plan.png",
   "w": 2922,
   "h": 3671,
-  "raw": "the-earthen-room__04.png"
+  "raw": "the-earthen-room__04.png",
+  "drawing": true
  },
  {
   "key": "gandhinagar-house/01",
@@ -536,13 +538,15 @@
   "url": "https://hseiltzr3u804ti3.public.blob.vercel-storage.com/media/d41b890e-b9a8-4338-a84e-9d0398f3d01b/f393e816-6879-473a-b697-425c89a0cf24%20(1).jpg",
   "w": 591,
   "h": 307,
-  "raw": "ora__03.jpg"
+  "raw": "ora__03.jpg",
+  "drawing": true
  },
  {
   "key": "ora/04",
   "url": "https://hseiltzr3u804ti3.public.blob.vercel-storage.com/media/971adb05-4801-49fa-a2c8-3fde12f5ca50/dd97564e-3c42-472a-9cb1-a6f69d126f9e.jpg",
   "w": 927,
   "h": 469,
-  "raw": "ora__04.jpg"
+  "raw": "ora__04.jpg",
+  "drawing": true
  }
 ]

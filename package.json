@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "media": "node scripts/build-media.mjs"
+    "media": "node scripts/build-media.mjs && node scripts/build-og.mjs"
   },
   "engines": {
     "node": ">=20.9"

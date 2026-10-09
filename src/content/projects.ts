@@ -27,6 +27,8 @@ export type Project = {
   slug: string;
   title: string;
   scope: 'Architecture' | 'Interiors';
+  /** Medium of the imagery — visually evident; shown so renders are never mistaken for built work. */
+  imagery: 'Photography' | 'Visualisation';
   location?: string;
   /** Short factual line used for meta description & index (no claims). */
   summary: string;
@@ -46,6 +48,7 @@ function img(key: MediaKey, alt: string, extra: Partial<Pick<Img, 'kind' | 'capt
 const raw: Omit<Project, 'cover'>[] = [
   {
     slug: 'udaipur-resort',
+    imagery: 'Visualisation',
     legacySlug: 'udaipurresort',
     title: 'Udaipur Resort',
     scope: 'Architecture',
@@ -66,6 +69,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'red-fort-project',
+    imagery: 'Photography',
     legacySlug: 'red-fort-project',
     title: 'Red Fort Project',
     scope: 'Interiors',
@@ -102,6 +106,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'rc-house',
+    imagery: 'Visualisation',
     legacySlug: 'rc-house',
     title: 'RC House',
     scope: 'Architecture',
@@ -121,6 +126,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'the-31st',
+    imagery: 'Visualisation',
     legacySlug: 'the31st',
     title: 'The 31st',
     scope: 'Interiors',
@@ -161,6 +167,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'agra-fort-project',
+    imagery: 'Photography',
     legacySlug: 'agra-fort-project',
     title: 'Agra Fort Project',
     scope: 'Interiors',
@@ -196,6 +203,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'gandhinagar-house',
+    imagery: 'Visualisation',
     legacySlug: 'gandhnagar-house',
     title: 'Gandhinagar House',
     scope: 'Interiors',
@@ -212,6 +220,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'the-earthen-room',
+    imagery: 'Photography',
     legacySlug: 'the-earthen-room',
     title: 'The Earthen Room',
     scope: 'Interiors',
@@ -230,6 +239,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'figuring-out',
+    imagery: 'Visualisation',
     legacySlug: 'figuring-out',
     title: 'Figuring Out',
     scope: 'Interiors',
@@ -247,6 +257,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'house-2',
+    imagery: 'Visualisation',
     legacySlug: 'house-2',
     title: 'House 2',
     scope: 'Interiors',
@@ -265,6 +276,7 @@ const raw: Omit<Project, 'cover'>[] = [
   },
   {
     slug: 'kids-room',
+    imagery: 'Visualisation',
     legacySlug: 'kids-room',
     title: 'Kids Room',
     scope: 'Interiors',

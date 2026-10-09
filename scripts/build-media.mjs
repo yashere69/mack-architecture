@@ -40,7 +40,15 @@ for (const s of sources) {
 
   const base = sharp(raw).rotate().flatten({ background: PAPER });
   const meta = await base.metadata();
-  const pipeline = meta.width > MAX_W ? base.resize({ width: MAX_W }) : base;
+  const sized = meta.width > MAX_W ? base.resize({ width: MAX_W }) : base;
+  // House grade: renders and photographs read as one body of work — slightly lower
+  // saturation, a matte lift in the shadows, warmer whites. Drawings stay untouched.
+  const pipeline = s.drawing
+    ? sized
+    : sized
+        .modulate({ saturation: 0.88 })
+        .linear([0.93, 0.93, 0.93], [10, 9, 7])
+        .recomb([[1, 0.018, 0], [0, 1, 0], [0, 0, 0.965]]);
   const info = await pipeline.clone().webp({ quality: 90, effort: 5, smartSubsample: true }).toFile(out);
 
   const tiny = await pipeline.clone().resize(20, null, { fit: 'inside' }).webp({ quality: 45 }).toBuffer();

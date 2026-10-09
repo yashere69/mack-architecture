@@ -1,0 +1,27 @@
+.pill {
+  position: fixed;
+  left: var(--margin);
+  bottom: var(--margin);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  opacity: 0;
+  translate: 0 0.75rem;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-out), translate 0.5s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+.pill[data-show] { opacity: 1; translate: 0 0; pointer-events: auto; }
+.pill:hover { border-color: var(--ink); }
+.glyph {
+  width: 0.7rem;
+  height: 0.7rem;
+  background:
+    linear-gradient(currentColor, currentColor) 0 0 / 100% 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}

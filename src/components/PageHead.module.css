@@ -1,0 +1,14 @@
+.head {
+  padding-top: calc(var(--header-h) + clamp(2rem, 1rem + 5vw, 6rem));
+  padding-bottom: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  row-gap: var(--s-6);
+  align-items: end;
+}
+.kicker { grid-column: 1 / -1; }
+.title { grid-column: 1 / -1; display: grid; }
+.tone { color: var(--ink-3); }
+.aside { grid-column: 1 / -1; color: var(--ink-2); }
+@media (min-width: 64rem) {
+  .title { grid-column: 1 / 10; }
+  .aside { grid-column: 10 / 13; padding-bottom: 0.6rem; }
+}

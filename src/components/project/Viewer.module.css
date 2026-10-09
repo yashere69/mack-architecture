@@ -1,0 +1,54 @@
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: var(--night);
+  color: var(--on-night);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .viewer { animation: open 0.5s var(--ease-out) both; }
+}
+@keyframes open { from { opacity: 0; } }
+
+.bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: var(--s-4) var(--margin);
+  min-height: var(--header-h);
+}
+.of { color: var(--on-night-2); }
+.title { text-align: center; color: var(--on-night-2); }
+.close { justify-self: end; min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: flex-end; }
+
+.stage { position: relative; margin: 0; padding: 0 var(--margin) var(--s-7); display: grid; grid-template-rows: 1fr auto; min-height: 0; }
+.frame { position: relative; min-height: 0; }
+.frame[data-drawing] { background: var(--paper); }
+@media (prefers-reduced-motion: no-preference) {
+  .frame { animation: step 0.6s var(--ease-out) both; }
+  .frame[data-dir='-1'] { --from: -2.5rem; }
+}
+@keyframes step { from { opacity: 0; translate: var(--from, 2.5rem) 0; } }
+.cap { text-align: center; padding-top: var(--s-3); color: var(--on-night-2); }
+
+.nav {
+  position: absolute;
+  top: var(--header-h);
+  bottom: 0;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--margin);
+  font-size: 1.25rem;
+  color: var(--on-night);
+  opacity: 0.0;
+  transition: opacity 0.25s var(--ease-out);
+}
+.nav:hover, .nav:focus-visible { opacity: 1; }
+.prev { left: 0; justify-content: flex-start; cursor: w-resize; }
+.next { right: 0; justify-content: flex-end; cursor: e-resize; }
+@media (hover: none) { .nav { opacity: 0.7; width: 22%; top: auto; height: 4rem; } }
+
+.preload { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
