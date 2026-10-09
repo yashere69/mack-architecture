@@ -8,10 +8,7 @@ import { projects } from '@/content/projects';
 import './globals.css';
 
 const serif = localFont({
-  src: [
-    { path: '../fonts/newsreader-roman.woff2', style: 'normal', weight: '260 520' },
-    { path: '../fonts/newsreader-italic.woff2', style: 'italic', weight: '300 440' },
-  ],
+  src: [{ path: '../fonts/newsreader-roman.woff2', style: 'normal', weight: '260 520' }],
   variable: '--font-serif',
   display: 'swap',
   fallback: ['Georgia', 'serif'],
@@ -86,6 +83,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* The italic is used on few pages (a quote, the current menu item): it joins the same
+            family but is not preloaded, so the browser fetches it only where italic text renders. */}
+        <style>{`@font-face{font-family:${serif.style.fontFamily.split(',')[0]};src:url(/fonts/newsreader-italic.woff2) format('woff2');font-style:italic;font-weight:300 440;font-display:swap}`}</style>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
       </head>
       <body>

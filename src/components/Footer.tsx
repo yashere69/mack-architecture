@@ -37,15 +37,14 @@ export function Footer() {
         </div>
         <div className={s.col}>
           <p className={`label ${s.h}`}>Contact</p>
-          <p className="small">
+          <p className={`small ${s.stack}`}>
             <a className="link" href={`mailto:${site.email}`}>{site.email}</a>
-            <br />
             <a className="link" href={site.phoneHref}>{site.phone}</a>
           </p>
         </div>
         <nav className={s.col} aria-label="Footer">
           <p className={`label ${s.h}`}>Index</p>
-          <ul className="small">
+          <ul className={`small ${s.stack}`}>
             {nav.map((n) => (
               <li key={n.href}>
                 <Link className="link" href={n.href}>{n.label}</Link>

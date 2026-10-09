@@ -92,9 +92,8 @@ export function Header() {
       <div id="site-menu" ref={panel} className={s.panel} data-open={open || undefined} role="dialog" aria-modal="true" aria-label="Menu" hidden={!open}>
         <div className={s.panelFoot}>
           <p className="label label--muted">{site.visits}</p>
-          <p className="small">
+          <p className={`small ${s.panelContact}`}>
             <a className="link link--static" href={`mailto:${site.email}`}>{site.email}</a>
-            <br />
             <a className="link link--static" href={site.phoneHref}>{site.phone}</a>
           </p>
         </div>

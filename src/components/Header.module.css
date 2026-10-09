@@ -30,7 +30,7 @@
   line-height: 1;
   padding-top: 1px;
 }
-.amp { font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 1.15em; font-weight: 400; }
+.amp { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 1.2em; font-weight: 380; }
 
 .nav { display: none; }
 .nav ul { display: flex; gap: clamp(1.5rem, 3vw, 3rem); }
@@ -121,3 +121,5 @@
   translate: 0 -0.35em;
 }
 .panelFoot { display: grid; gap: var(--s-3); }
+.panelContact { display: grid; justify-items: start; gap: 0.5rem; }
+.panelContact a { padding-block: 0.25rem; }

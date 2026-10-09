@@ -22,8 +22,9 @@ export function ProjectGallery({ chapters, images, title }: Props) {
     <>
       {chapters.map((c, ci) => {
         if (c.title) chapterNo++;
+        const Tag = c.title ? 'section' : 'div';
         return (
-          <section key={ci} className={s.chapter} aria-label={c.title ?? `${title} — images`}>
+          <Tag key={ci} className={s.chapter} aria-label={c.title ? `${c.title} — ${title}` : undefined}>
             {c.title ? (
               <header className={`grid ${s.chapterHead}`}>
                 <p className={`label num label--muted ${s.chapterNo}`}>
@@ -63,7 +64,7 @@ export function ProjectGallery({ chapters, images, title }: Props) {
                 ))}
               </div>
             ))}
-          </section>
+          </Tag>
         );
       })}
       {open !== null ? <Viewer images={images} start={open} title={title} onClose={() => setOpen(null)} /> : null}

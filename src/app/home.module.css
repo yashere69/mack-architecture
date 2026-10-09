@@ -95,6 +95,7 @@
 /* ---------- Objects ---------- */
 .objects {
   --ground: var(--paper-2);
+  --ink-3: #5e5951; /* 5.3:1 on paper-2 */
   margin-top: var(--section);
   padding-block: clamp(4rem, 2rem + 7vw, 9rem);
   background: var(--paper-2);

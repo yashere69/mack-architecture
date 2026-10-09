@@ -46,7 +46,7 @@ export const catalogue: Entry[] = [
 export const scopes: Scope[] = ['Architecture', 'Interiors', 'Objects'];
 export const countBy = (scope: Scope) => catalogue.filter((e) => e.scope === scope).length;
 
-function shortPlace(loc: string) {
+export function shortPlace(loc: string) {
   // "Shrimad Rajchandra Ashram, Dharampur" → "Dharampur"; "Rajasthan, India" → "Rajasthan"
   if (loc.endsWith(', India')) return loc.replace(', India', '');
   const parts = loc.split(', ');

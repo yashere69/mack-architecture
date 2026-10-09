@@ -8,7 +8,7 @@ import { MorphLink, MORPH } from '@/components/MorphLink';
 import { Rise } from '@/components/Rise';
 import { ProjectGallery } from '@/components/project/ProjectGallery';
 import { IndexPill } from '@/components/project/IndexPill';
-import { catalogue } from '@/content/catalogue';
+import { catalogue, shortPlace } from '@/content/catalogue';
 import { getProject, projectImages, projects } from '@/content/projects';
 import { site } from '@/content/site';
 import { compose } from '@/lib/sequence';
@@ -25,7 +25,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const p = getProject((await params).slug);
   if (!p) return {};
-  const title = p.location ? `${p.title}, ${p.location}` : p.title;
+  const title = p.location ? `${p.title}, ${shortPlace(p.location)}` : p.title;
   return {
     title,
     description: `${p.summary} ${p.scope} by ${site.name}.`,

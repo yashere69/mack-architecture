@@ -31,6 +31,8 @@
   row-gap: var(--s-7);
 }
 .col { grid-column: span 2; display: grid; align-content: start; gap: var(--s-3); }
+.col a { display: inline-block; padding-block: 0.2rem; min-height: 24px; }
+.stack { display: grid; justify-items: start; gap: 0.2rem; }
 .h { color: var(--on-night-2); }
 .after { justify-self: start; margin-top: var(--s-2); }
 .col address { font-style: normal; }
