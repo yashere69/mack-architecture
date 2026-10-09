@@ -18,14 +18,16 @@
 }
 .feature:first-of-type { margin-top: clamp(3rem, 2rem + 4vw, 6rem); }
 .main { grid-column: 1 / -1; display: block; }
-.second { grid-column: 4 / -1; }
+.second { grid-column: 2 / -1; }
 .text { grid-column: 1 / -1; display: grid; justify-items: start; }
 .title { margin: var(--s-4) 0 var(--s-3); }
 .title a { display: inline-block; }
-.meta { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); color: var(--ink-3); }
+.meta { display: flex; flex-wrap: wrap; gap: 0 0.6em; color: var(--ink-3); }
+.meta > span + span::before { content: '·'; margin-right: 0.6em; }
 .view { margin-top: var(--s-5); }
 .dot { display: inline-block; width: 1.25rem; height: 1px; background: currentColor; opacity: 0.35; vertical-align: middle; margin: 0 0.7rem; translate: 0 -0.15em; }
 .cap { margin-top: var(--s-3); }
+.feature[data-v='a'] .second :global(.frame) { outline: 1px solid var(--rule); outline-offset: -1px; }
 
 /* Mobile order: image, text, then the second image offset to one side */
 .feature .main { order: 1; }

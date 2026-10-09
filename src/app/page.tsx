@@ -75,7 +75,7 @@ export default function Home() {
         <div className={`grid ${s.workHead}`}>
           <h2 id="work-h" className={`label label--muted ${s.kicker}`}>Selected work</h2>
           <p className={`small ${s.workNote}`}>
-            Five of {catalogue.length} works. Photographs and visualisations are labelled as such.
+            Five of {catalogue.length} works
           </p>
         </div>
 

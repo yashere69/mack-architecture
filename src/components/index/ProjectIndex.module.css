@@ -80,8 +80,7 @@
   transition: translate 0.45s var(--ease-out);
 }
 .descriptor { color: var(--ink-3); }
-.colPlace, .colScope { display: none; }
-.count { margin-left: 0.6em; color: var(--ink-3); }
+.colPlace, .colScope, .colCount { display: none; }
 
 .preview { display: none; }
 .previewFrame { position: relative; }
@@ -91,12 +90,12 @@
   .list { grid-column: 1 / 9; }
   .head {
     display: grid;
-    grid-template-columns: 3.25rem minmax(0, 1fr) minmax(0, 0.62fr) 9.5rem;
+    grid-template-columns: 3.25rem minmax(0, 1fr) minmax(0, 0.62fr) 8.5rem 3.5rem;
     column-gap: var(--s-4);
     padding-bottom: var(--s-3);
   }
   .row {
-    grid-template-columns: 3.25rem minmax(0, 1fr) minmax(0, 0.62fr) 9.5rem;
+    grid-template-columns: 3.25rem minmax(0, 1fr) minmax(0, 0.62fr) 8.5rem 3.5rem;
     padding: 1.05rem 0;
     align-items: baseline;
   }
@@ -105,6 +104,7 @@
   .title .descriptor { display: none; }
   .colPlace { display: block; color: var(--ink-2); }
   .colScope { display: block; color: var(--ink-2); }
+  .colCount { display: block; color: var(--ink-3); text-align: right; }
   .list:hover .row:not(:hover), .list:focus-within .row:not(:focus-visible):not(:hover) { opacity: 0.38; }
   .list:hover .row:hover .titleText { translate: 0.5rem 0; }
 

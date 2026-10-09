@@ -97,6 +97,7 @@ export function ProjectIndex({ entries, mode = 'page', headingId }: Props) {
               <span className="label label--muted">Work</span>
               <span className={`label label--muted ${s.colPlace}`}>Place</span>
               <span className={`label label--muted ${s.colScope}`}>Discipline</span>
+              <span className={`label label--muted ${s.colCount}`}>Images</span>
             </li>
             {list.map((e, k) => (
               <li key={e.slug} className={s.item} style={{ '--k': k } as CSSProperties}>
@@ -118,11 +119,9 @@ export function ProjectIndex({ entries, mode = 'page', headingId }: Props) {
                     <span className={`small ${s.descriptor}`}>{e.descriptor}</span>
                   </span>
                   <span className={`small ${s.colPlace}`}>{e.place ?? '—'}</span>
-                  <span className={`label ${s.colScope}`}>
-                    {e.scope}
-                    <span className={s.count}>
-                      {pad(e.count)} <span className="sr-only">images</span>
-                    </span>
+                  <span className={`label ${s.colScope}`}>{e.scope}</span>
+                  <span className={`label num ${s.colCount}`}>
+                    {pad(e.count)} <span className="sr-only">images</span>
                   </span>
                 </MorphLink>
               </li>
