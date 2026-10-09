@@ -23,7 +23,7 @@ export const objects: ObjectItem[] = [
   {
     slug: 'ora',
     name: 'ORA',
-    type: 'Console Table',
+    type: 'Console table',
     materials: ['Wood'],
     summary: 'ORA, a wooden console table by MACK & Co Architects — fluted timber, raised top on short posts.',
     images: [

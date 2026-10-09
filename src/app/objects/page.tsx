@@ -21,7 +21,7 @@ export default function ObjectsPage() {
       <PageHead kicker={`Objects — ${String(objects.length).padStart(2, '0')}`} title="Objects" tone="Furniture by the studio" />
       {objects.map((o) => (
         <article key={o.slug} className={`grid ${s.item}`} aria-labelledby={`o-${o.slug}`}>
-          <MorphLink href={`/objects/${o.slug}`} className={s.media} tabIndex={-1} aria-hidden="true">
+          <MorphLink href={`/objects/${o.slug}`} className={s.media} tabIndex={-1} aria-hidden="true" hero={o.images[0]}>
             <Picture img={o.images[0]} morph eager sizes="(min-width: 64rem) 60vw, 100vw" />
           </MorphLink>
           <div className={s.text}>

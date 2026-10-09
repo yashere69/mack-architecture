@@ -44,6 +44,7 @@ export function Picture({
       className={['frame', drift ? 'drift' : '', className].filter(Boolean).join(' ')}
       data-reveal={reveal ? 'aperture' : undefined}
       data-morph={morph ? '' : undefined}
+      data-vt-hero={vtName ? '' : undefined}
       style={
         {
           aspectRatio: `${r}`,

@@ -23,7 +23,7 @@ export default function ProjectsPage() {
   return (
     <Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <PageHead kicker={`Index — ${catalogue.length} works`} title="Projects" tone="Architecture, interiors, objects">
+      <PageHead kicker={`Index — ${catalogue.length} works`} title="Projects" tone="Architecture, interiors, objects" size="d2">
         <p className="small">
           {countBy('Architecture')} architecture · {countBy('Interiors')} interiors · {countBy('Objects')} object.
           Photographs and visualisations are labelled on each project.

@@ -13,7 +13,7 @@ export type Discipline = {
   /** Where the word leads: the filtered index. */
   href: string;
   /** The single image that stands for this discipline. */
-  work: { title: string; place?: string; href: string; img: Img; focus?: string };
+  work: { title: string; place?: string; href: string; img: Img; focus?: string; heroImg?: Img };
 };
 
 // The studio's own tagline is the first viewport: three words that are also the
@@ -64,7 +64,7 @@ export function HomeHero({ disciplines }: { disciplines: Discipline[] }) {
       </h1>
 
       <figure className={s.stage}>
-        <MorphLink href={cur.href} className={s.aperture} aria-label={`${cur.title}${cur.place ? `, ${cur.place}` : ''}`}>
+        <MorphLink href={cur.href} className={s.aperture} hero={cur.heroImg ?? cur.img} aria-label={`${cur.title}${cur.place ? `, ${cur.place}` : ''}`}>
           {disciplines.map((d, k) =>
             seen.has(k) ? (
               <div

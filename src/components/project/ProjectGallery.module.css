@@ -12,7 +12,12 @@
 .open:hover :global(.frame) img { filter: brightness(1.03); }
 .cap { display: flex; gap: var(--s-4); margin-top: var(--s-3); color: var(--ink-3); }
 
-/* Mobile: keep offsets — pairs sit side by side, singles alternate their inset */
+/* Mobile: keep offsets — wide rows go full-bleed, singles alternate a 3/4 inset,
+   portrait pairs sit side by side. */
+.row[data-kind='wide'] .slot { margin-inline: calc(var(--margin) * -1); }
+.row[data-kind='wide'] .cap { padding-inline: var(--margin); }
+.row[data-kind='single'] .slot { grid-column: 1 / 4; }
+.row[data-kind='single']:nth-of-type(even) .slot { grid-column: 2 / 5; }
 .row[data-kind='pair'] .slot { grid-column: span 2; }
 .row[data-kind='pair'] .slot:not([data-portrait]) { grid-column: 1 / -1; }
 .row[data-kind='pair'] .slot[data-offset] { margin-top: var(--s-8); }
@@ -22,6 +27,8 @@
 .row[data-kind='drawing'] .slot { grid-column: 1 / -1; }
 
 @media (min-width: 48rem) {
+  .row[data-kind='wide'] .slot { margin-inline: 0; }
+  .row[data-kind='wide'] .cap { padding-inline: 0; }
   .row[data-kind='pair'] .slot { grid-column: span 4; }
   .row[data-kind='pair'] .slot:not([data-portrait]) { grid-column: 1 / 6; }
   .row[data-kind='pair'] .slot:not([data-portrait]) + .slot[data-portrait] { grid-column: 6 / -1; margin-top: var(--s-9); }

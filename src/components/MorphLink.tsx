@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import type { ComponentProps, MouseEvent } from 'react';
+import type { ComponentProps, FocusEvent, MouseEvent } from 'react';
+import type { Img } from '@/content/projects';
+import { preloadHero } from '@/lib/preload';
 
 export const MORPH = 'project-cover';
 
@@ -11,17 +13,25 @@ export const MORPH = 'project-cover';
 // destination hero carries the same name statically.
 export function MorphLink({
   onClick,
+  onMouseEnter,
+  onFocus,
   morph,
+  hero,
   ...props
 }: ComponentProps<typeof Link> & {
   /** CSS selector of the element to morph, when it lives outside the link. */
   morph?: string;
+  /** The destination's hero image — preloaded on intent. */
+  hero?: Img;
 }) {
+  const warm = () => hero && preloadHero(hero);
   const handle = (e: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(e);
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-    document.querySelectorAll<HTMLElement>('[data-morph-active]').forEach((el) => {
-      el.style.viewTransitionName = '';
+    // Release every other holder of the name (including this page's own hero) —
+    // two elements with one name abort the whole transition.
+    document.querySelectorAll<HTMLElement>('[data-morph-active], [data-vt-hero]').forEach((el) => {
+      el.style.viewTransitionName = 'none';
       el.removeAttribute('data-morph-active');
     });
     const target =
@@ -33,5 +43,18 @@ export function MorphLink({
       target.setAttribute('data-morph-active', '');
     }
   };
-  return <Link {...props} onClick={handle} />;
+  return (
+    <Link
+      {...props}
+      onClick={handle}
+      onMouseEnter={(e: MouseEvent<HTMLAnchorElement>) => {
+        warm();
+        onMouseEnter?.(e);
+      }}
+      onFocus={(e: FocusEvent<HTMLAnchorElement>) => {
+        warm();
+        onFocus?.(e);
+      }}
+    />
+  );
 }

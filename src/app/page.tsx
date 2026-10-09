@@ -81,7 +81,7 @@ export default function Home() {
 
         {features.map(({ project: pr, main, second, variant }) => (
           <article key={pr.slug} className={`grid ${s.feature}`} data-v={variant} data-feature={pr.slug} aria-labelledby={`f-${pr.slug}`}>
-            <MorphLink href={`/projects/${pr.slug}`} className={s.main} tabIndex={-1} aria-hidden="true">
+            <MorphLink href={`/projects/${pr.slug}`} className={s.main} tabIndex={-1} aria-hidden="true" hero={pr.cover}>
               <Picture img={main} morph drift sizes="(min-width: 64rem) 72vw, 100vw" />
             </MorphLink>
             <div className={s.second}>
@@ -95,7 +95,7 @@ export default function Home() {
                 <span className="label--muted">{pr.scope}</span>
               </p>
               <h3 id={`f-${pr.slug}`} className={`d2 ${s.title}`}>
-                <MorphLink href={`/projects/${pr.slug}`} morph={`[data-feature="${pr.slug}"] [data-morph]`}>
+                <MorphLink href={`/projects/${pr.slug}`} morph={`[data-feature="${pr.slug}"] [data-morph]`} hero={pr.cover}>
                   <Rise text={pr.title} />
                 </MorphLink>
               </h3>
@@ -103,7 +103,7 @@ export default function Home() {
                 {pr.location ? <span>{pr.location}</span> : null}
                 <span>{pr.imagery}</span>
               </p>
-              <MorphLink href={`/projects/${pr.slug}`} className={`label link link--static ${s.view}`} morph={`[data-feature="${pr.slug}"] [data-morph]`}>
+              <MorphLink href={`/projects/${pr.slug}`} className={`label link link--static ${s.view}`} morph={`[data-feature="${pr.slug}"] [data-morph]`} hero={pr.cover}>
                 View project<span className="sr-only">: {pr.title}</span>
               </MorphLink>
             </div>

@@ -256,3 +256,22 @@ em, .italic { font-style: italic; }
   }
   html { scroll-behavior: auto; }
 }
+
+/* Shared cover morph: the sharp source flies to its new place; the destination
+   (possibly still decoding) fades in only at the end of the flight. */
+::view-transition-group(project-cover) {
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.7, 0, 0.2, 1);
+  z-index: 50;
+}
+::view-transition-image-pair(project-cover) { isolation: auto; }
+::view-transition-old(project-cover),
+::view-transition-new(project-cover) {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+::view-transition-old(project-cover) { animation: none; opacity: 1; }
+::view-transition-new(project-cover) { animation: 0.35s ease-out 0.55s both vt-fade-in; }
+@keyframes vt-fade-in { from { opacity: 0; } }

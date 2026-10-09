@@ -12,6 +12,7 @@ import { catalogue } from '@/content/catalogue';
 import { getProject, projectImages, projects } from '@/content/projects';
 import { site } from '@/content/site';
 import { compose } from '@/lib/sequence';
+import { HERO_SIZES } from '@/lib/preload';
 import s from './project.module.css';
 
 type Params = { params: Promise<{ slug: string }> };
@@ -107,7 +108,7 @@ export default async function ProjectPage({ params }: Params) {
 
       <div className={`grid ${s.heroRow}`}>
         <div className={s.hero} style={{ width: `min(100%, calc(80svh * ${ratio.toFixed(3)}))` } as CSSProperties}>
-          <Picture img={p.cover} eager reveal={false} vtName={MORPH} sizes="(min-width: 64rem) 84vw, 100vw" className={s.heroFrame} />
+          <Picture img={p.cover} eager reveal={false} vtName={MORPH} sizes={HERO_SIZES} className={s.heroFrame} />
         </div>
       </div>
 
@@ -165,7 +166,7 @@ export default async function ProjectPage({ params }: Params) {
       <ProjectGallery chapters={chapters} images={all} title={p.title} />
 
       <nav className={s.next} aria-label="Next project" data-threshold>
-        <MorphLink href={`/projects/${next.slug}`} className={`grid ${s.nextLink}`}>
+        <MorphLink href={`/projects/${next.slug}`} className={`grid ${s.nextLink}`} hero={next.cover}>
           <span className={`label ${s.nextLabel}`}>
             Next <span className="num label--muted">No. {pad(nextEntry.no)}</span>
           </span>

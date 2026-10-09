@@ -105,6 +105,7 @@ export function ProjectIndex({ entries, mode = 'page', headingId }: Props) {
                   className={s.row}
                   data-active={e.slug === activeEntry?.slug || undefined}
                   morph={`[data-preview="${e.slug}"]`}
+                  hero={e.cover}
                   onMouseEnter={() => hover(e.slug)}
                   onFocus={() => hover(e.slug)}
                 >
@@ -156,7 +157,7 @@ export function ProjectIndex({ entries, mode = 'page', headingId }: Props) {
         <ul className={`grid ${s.gridView}`} key={`grid-${scope}`} aria-labelledby={headingId}>
           {list.map((e, k) => (
             <li key={e.slug} className={s.cell} style={{ '--k': k } as CSSProperties}>
-              <MorphLink href={e.href} className={s.cellLink}>
+              <MorphLink href={e.href} className={s.cellLink} hero={e.cover}>
                 <span className={s.cellMedia}>
                   <Picture
                     img={e.cover}
