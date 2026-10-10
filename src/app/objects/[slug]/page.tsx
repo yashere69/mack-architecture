@@ -5,6 +5,7 @@ import { Page } from '@/components/Page';
 import { Picture } from '@/components/Picture';
 import { MORPH } from '@/components/MorphLink';
 import { Rise } from '@/components/Rise';
+import { Arrow } from '@/components/Arrow';
 import { ProjectGallery } from '@/components/project/ProjectGallery';
 import { catalogue } from '@/content/catalogue';
 import { getObject, objects } from '@/content/objects';
@@ -54,7 +55,7 @@ export default async function ObjectPage({ params }: Params) {
   return (
     <Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <header className={`grid ${s.head}`}>
+      <header className={`grid ${s.head}`} data-m="fadeout">
         <p className={`label ${s.crumb}`}>
           <Link href="/objects" className="link">Objects</Link>
           <span className={s.rule} aria-hidden="true" />
@@ -68,7 +69,7 @@ export default async function ObjectPage({ params }: Params) {
 
       <div className={`grid ${s.heroRow}`}>
         <div className={s.hero}>
-          <Picture img={ob.images[0]} eager reveal={false} vtName={MORPH} sizes="(min-width: 64rem) 84vw, 100vw" className={s.heroFrame} />
+          <Picture img={ob.images[0]} eager reveal={false} vtName={MORPH} sizes="(min-width: 64rem) 84vw, 100vw" className={s.heroFrame} motion="cover" speed={9} />
         </div>
       </div>
 
@@ -80,10 +81,10 @@ export default async function ObjectPage({ params }: Params) {
           <div><dt className="label label--muted">Images</dt><dd className="num">{pad(ob.images.length)}</dd></div>
         </dl>
         <div className={s.text}>
-          <p className={`lede ${s.summary}`} data-reveal="fade">{ob.summary}</p>
+          <p className={`lede ${s.summary}`} data-m="lines">{ob.summary}</p>
           <a className={`label ${o.enquire}`} href={mail}>
             <span>Enquire about {ob.name}</span>
-            <span aria-hidden="true">→</span>
+            <Arrow />
           </a>
         </div>
       </section>

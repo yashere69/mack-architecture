@@ -41,6 +41,11 @@ wide (1/11 · 3/13 · 2/12) · single (5/11 · 2/8 · 7/13 · 3/9) · portrait s
 Hover 0.25–0.45s. Page: out 0.32s / in 0.7s (+0.18s delay). Cover morph 0.9s. Viewer step 0.6s.
 `prefers-reduced-motion`: no hidden states, no transitions, instant view transitions.
 
+Scroll choreography (`MotionDirector`, `data-m`): `parallax` · `cover` · `doors` · `blind` · `lower` · `expand` · `dolly` ·
+`depth` · `fade` · `lines` · `read` · `fadeout` · `next` · `track`; `data-bg` shifts the page ground. Gallery rows map one
+kind each: wide → expand, single/pair → blind, drawing → fade. Microinteractions: sliding nav rule, arrow hand-over
+(`Arrow`), monogram assembly on first load, feature card lean-in.
+
 ## Components
 Header (hide-on-scroll; thumb-zone mobile menu) · Footer (night visit band) · HomeHero · ProjectIndex (list+preview / grid) ·
 Picture (frame, placeholder colour + blur, reveal, morph) · MorphLink (click-time shared element + hero preload) ·

@@ -21,8 +21,7 @@
   min-width: min(100%, 18rem);
   justify-content: space-between;
 }
-.arrow { font-size: 1.1rem; transition: translate var(--dur-ui) var(--ease-out); }
-.cta:hover .arrow { translate: 0.4rem 0; }
+.arrow { font-size: 1.1rem; }
 
 .cols {
   margin-top: clamp(4rem, 2rem + 7vw, 8rem);

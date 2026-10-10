@@ -12,6 +12,16 @@ type Props = { chapters: Chapter[]; images: Img[]; title: string };
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
+// Each kind of hang has one entrance, so a gallery reads as a sequence of rooms
+// rather than a set of effects: wide views open out, singles and pairs rise into
+// place, drawings settle onto the sheet.
+const MOTION: Record<Row['kind'], string> = {
+  wide: 'expand parallax',
+  single: 'blind parallax',
+  pair: 'blind parallax',
+  drawing: 'fade',
+};
+
 export function ProjectGallery({ chapters, images, title }: Props) {
   const [open, setOpen] = useState<number | null>(null);
   const total = images.length;
@@ -30,15 +40,17 @@ export function ProjectGallery({ chapters, images, title }: Props) {
                 <p className={`label num label--muted ${s.chapterNo}`}>
                   {pad(chapterNo)} / {pad(named)}
                 </p>
-                <h2 className={`d3 ${s.chapterTitle}`}>{c.title}</h2>
+                <h2 className={`d3 ${s.chapterTitle}`} data-m="lines">{c.title}</h2>
               </header>
             ) : null}
             {c.rows.map((r, ri) => (
               <div key={ri} className={`grid ${s.row}`} data-kind={r.kind}>
-                {r.slots.map((sl) => (
+                {r.slots.map((sl, si) => (
                   <figure
                     key={sl.img.key}
                     className={s.slot}
+                    data-m={r.kind === 'pair' && si === 1 ? 'depth' : undefined}
+                    data-depth={r.kind === 'pair' && si === 1 ? 0.6 : undefined}
                     data-offset={sl.offset || undefined}
                     data-portrait={sl.img.h > sl.img.w || undefined}
                     style={{ '--col': sl.col } as CSSProperties}
@@ -46,7 +58,8 @@ export function ProjectGallery({ chapters, images, title }: Props) {
                     <button className={s.open} onClick={() => setOpen(sl.index)} aria-label={`View image ${sl.index + 1} of ${total}: ${sl.img.alt}`}>
                       <Picture
                         img={sl.img}
-                        drift={r.kind === 'wide'}
+                        motion={MOTION[r.kind]}
+                        speed={5}
                         sizes={
                           r.kind === 'wide'
                             ? '(min-width: 64rem) 82vw, 100vw'

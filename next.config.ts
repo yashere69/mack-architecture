@@ -15,6 +15,7 @@ const config: NextConfig = {
     loaderFile: './src/lib/image-loader.ts',
     deviceSizes: [480, 828, 1280, 1920, 2400],
     imageSizes: [96, 240],
+    qualities: [70, 82],
   },
 };
 

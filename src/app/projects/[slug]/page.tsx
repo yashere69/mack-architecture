@@ -90,7 +90,7 @@ export default async function ProjectPage({ params }: Params) {
     <Page>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
 
-      <header className={`grid ${s.head}`}>
+      <header className={`grid ${s.head}`} data-m="fadeout">
         <p className={`label ${s.crumb}`}>
           <Link href="/projects" className="link">Projects</Link>
           <span className={s.rule} aria-hidden="true" />
@@ -108,7 +108,7 @@ export default async function ProjectPage({ params }: Params) {
 
       <div className={`grid ${s.heroRow}`}>
         <div className={s.hero} style={{ width: `min(100%, calc(80svh * ${ratio.toFixed(3)}))` } as CSSProperties}>
-          <Picture img={p.cover} eager reveal={false} vtName={MORPH} sizes={HERO_SIZES} className={s.heroFrame} />
+          <Picture img={p.cover} eager reveal={false} vtName={MORPH} sizes={HERO_SIZES} className={s.heroFrame} motion="cover" speed={9} />
         </div>
       </div>
 
@@ -142,15 +142,21 @@ export default async function ProjectPage({ params }: Params) {
 
         <div className={s.text}>
           {p.description ? (
-            <div className="body" data-reveal="fade">
-              {p.description.map((para, k) => (
-                <p key={k} className={k === 0 ? `lede ${s.first}` : undefined}>
-                  {para}
-                </p>
-              ))}
+            <div className="body">
+              {p.description.map((para, k) =>
+                k === 0 ? (
+                  <p key={k} className={`lede ${s.first}`} data-m="lines">
+                    {para}
+                  </p>
+                ) : (
+                  <p key={k} data-reveal="fade">
+                    {para}
+                  </p>
+                ),
+              )}
             </div>
           ) : (
-            <p className={`lede ${s.summary}`} data-reveal="fade">
+            <p className={`lede ${s.summary}`} data-m="lines">
               {p.summary}
             </p>
           )}
@@ -165,14 +171,14 @@ export default async function ProjectPage({ params }: Params) {
 
       <ProjectGallery chapters={chapters} images={all} title={p.title} />
 
-      <nav className={s.next} aria-label="Next project" data-threshold>
+      <nav className={s.next} aria-label="Next project" data-threshold data-m="next">
         <MorphLink href={`/projects/${next.slug}`} className={`grid ${s.nextLink}`} hero={next.cover}>
           <span className={`label ${s.nextLabel}`}>
             Next <span className="num label--muted">No. {pad(nextEntry.no)}</span>
           </span>
-          <span className={`d1 ${s.nextTitle}`}>{next.title}</span>
+          <span className={`d1 ${s.nextTitle}`} data-next-title>{next.title}</span>
           <span className={`small ${s.nextDesc}`}>{nextEntry.descriptor}</span>
-          <span className={s.nextMedia}>
+          <span className={s.nextMedia} data-next-media>
             <Picture img={next.cover} morph sizes="(min-width: 64rem) 34vw, 100vw" />
           </span>
         </MorphLink>

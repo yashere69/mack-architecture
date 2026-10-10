@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { nav, site } from '@/content/site';
 import { projects } from '@/content/projects';
 import { Monogram } from './Logo';
+import { lockScroll } from '@/motion/core';
 import s from './Header.module.css';
 
 export function Header() {
@@ -14,6 +15,8 @@ export function Header() {
   const [state, setState] = useState<'top' | 'shown' | 'hidden'>('top');
   const menuBtn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+  const navList = useRef<HTMLUListElement>(null);
+  const marker = useRef<HTMLSpanElement>(null);
 
   // Hide on scroll down, return on scroll up. Never hides while the menu is open.
   useEffect(() => {
@@ -38,8 +41,7 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
-    const root = document.documentElement;
-    root.style.overflow = 'hidden';
+    lockScroll(true);
     const first = panel.current?.querySelector<HTMLElement>('a');
     first?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
@@ -56,12 +58,36 @@ export function Header() {
     };
     window.addEventListener('keydown', onKey);
     return () => {
-      root.style.overflow = '';
+      lockScroll(false);
       window.removeEventListener('keydown', onKey);
     };
   }, [open]);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
+  // Desktop nav: one rule slides between items, resting under the current section.
+  const mark = useCallback((a: HTMLElement | null) => {
+    const m = marker.current;
+    if (!m) return;
+    if (!a) {
+      m.style.opacity = '0';
+      return;
+    }
+    const r = a.getBoundingClientRect();
+    const base = m.parentElement!.getBoundingClientRect();
+    m.style.setProperty('--x', `${r.left - base.left}px`);
+    m.style.setProperty('--w', `${r.width}px`);
+    m.style.opacity = '1';
+    if (!m.dataset.ready) requestAnimationFrame(() => (m.dataset.ready = ''));
+  }, []);
+  const rest = useCallback(() => mark(navList.current?.querySelector<HTMLElement>('a[aria-current="page"]') ?? null), [mark]);
+
+  useEffect(() => {
+    rest();
+    document.fonts?.ready.then(rest);
+    window.addEventListener('resize', rest);
+    return () => window.removeEventListener('resize', rest);
+  }, [pathname, rest]);
 
   return (
     <>
@@ -74,22 +100,28 @@ export function Header() {
             </span>
           </Link>
           <nav className={s.nav} aria-label="Primary">
-            <ul>
-              {nav.map((n) => (
-                <li key={n.href}>
-                  <Link href={n.href} className="link" aria-current={isActive(n.href) ? 'page' : undefined}>
+            <ul ref={navList} onMouseLeave={rest} onBlur={rest}>
+              {nav.map((n, i) => (
+                <li key={n.href} style={{ ['--i' as string]: i }}>
+                  <Link
+                    href={n.href}
+                    aria-current={isActive(n.href) ? 'page' : undefined}
+                    onMouseEnter={(e) => mark(e.currentTarget)}
+                    onFocus={(e) => mark(e.currentTarget)}
+                  >
                     {n.label}
                     {n.href === '/projects' ? <sup className={s.count}>{projects.length}</sup> : null}
                   </Link>
                 </li>
               ))}
             </ul>
+            <span ref={marker} className={s.marker} aria-hidden="true" />
           </nav>
         </div>
       </header>
 
       {/* Mobile: the menu lives in the thumb zone and rises from the bottom. */}
-      <div id="site-menu" ref={panel} className={s.panel} data-open={open || undefined} role="dialog" aria-modal="true" aria-label="Menu" hidden={!open}>
+      <div id="site-menu" ref={panel} data-lenis-prevent className={s.panel} data-open={open || undefined} role="dialog" aria-modal="true" aria-label="Menu" hidden={!open}>
         <div className={s.panelFoot}>
           <p className="label label--muted">{site.visits}</p>
           <p className={`small ${s.panelContact}`}>

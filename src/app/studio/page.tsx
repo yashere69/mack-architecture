@@ -50,12 +50,12 @@ export default function StudioPage() {
 
       <div className={`grid ${s.wide}`}>
         <div className={s.wideImg}>
-          <Picture img={courtyard} drift sizes="(min-width: 64rem) 75vw, 100vw" />
+          <Picture img={courtyard} motion="expand parallax" speed={6} sizes="(min-width: 64rem) 75vw, 100vw" />
         </div>
       </div>
 
       <section className={`grid ${s.practice}`} aria-labelledby="practice-h">
-        <h2 id="practice-h" className={`d3 ${s.practiceTitle}`}>Practice</h2>
+        <h2 id="practice-h" className={`d3 ${s.practiceTitle}`} data-m="lines">Practice</h2>
         <dl className={s.sheet}>
           <div>
             <dt className="label label--muted">Disciplines</dt>
@@ -126,7 +126,7 @@ export default function StudioPage() {
 
       <div className={`grid ${s.offset}`}>
         <div className={s.offsetImg}>
-          <Picture img={pavilion} sizes="(min-width: 64rem) 50vw, 100vw" />
+          <Picture img={pavilion} motion="blind parallax" speed={5} sizes="(min-width: 64rem) 50vw, 100vw" />
         </div>
       </div>
     </Page>

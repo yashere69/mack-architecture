@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { nav, site } from '@/content/site';
 import { Monogram } from './Logo';
+import { Arrow } from './Arrow';
 import s from './Footer.module.css';
 
 export function Footer() {
@@ -9,14 +10,14 @@ export function Footer() {
     <footer className={s.footer}>
       <div className={`grid ${s.top}`}>
         <p className={`label ${s.kicker}`}>Visit</p>
-        <p className={`d2 ${s.line}`}>
+        <p className={`d2 ${s.line}`} data-m="lines">
           By appointment,
           <br />
           in Andheri West, Mumbai.
         </p>
         <Link href="/contact" className={s.cta}>
           <span className="label">Request an appointment</span>
-          <span aria-hidden="true" className={s.arrow}>→</span>
+          <Arrow className={s.arrow} />
         </Link>
       </div>
 

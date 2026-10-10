@@ -128,3 +128,35 @@
   }
   .aperture { aspect-ratio: auto; height: 100%; min-height: 0; }
 }
+
+/* ---------- Motion ---------- */
+.stage { position: relative; z-index: 1; }
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #0d0c0b;
+  opacity: 0;
+  pointer-events: none;
+}
+/* Entrance: a paper veil lifts off the photograph (the image is painted beneath it, so LCP is unaffected). */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) .aperture::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: 4;
+    background: var(--page-bg, var(--paper));
+    transform-origin: 50% 0;
+    animation: lift 1.35s var(--ease-out) 0.15s both;
+    pointer-events: none;
+  }
+}
+@keyframes lift { to { scale: 1 0; } }
+
+/* Cinema: the hero holds on a sticky track while its frame opens (see HomeHero.tsx). */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  :global(.js) .track { height: 260svh; overflow-x: clip; }
+  :global(.js) .track .hero { position: sticky; top: 0; height: 100svh; min-height: 0; max-height: none; overflow: clip; }
+  .aperture { will-change: transform; transform-origin: 50% 50%; }
+}

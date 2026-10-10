@@ -64,8 +64,6 @@
 }
 .submit:hover { background: #33302b; }
 .submit:disabled { opacity: 0.6; cursor: progress; }
-.submit span:last-child { transition: translate var(--dur-ui) var(--ease-out); }
-.submit:hover span:last-child { translate: 0.35rem 0; }
 .note { color: var(--ink-2); min-height: 1.5em; }
 
 .done { display: grid; gap: var(--s-4); padding-block: var(--s-6); border-top: 1px solid var(--ink); }

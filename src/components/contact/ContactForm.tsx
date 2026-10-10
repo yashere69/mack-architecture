@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useId, useState, type FormEvent } from 'react';
 import { site } from '@/content/site';
+import { Arrow } from '@/components/Arrow';
 import s from './ContactForm.module.css';
 
 type State = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'fallback'; href: string };
@@ -121,7 +122,7 @@ export function ContactForm() {
       <div className={s.actions}>
         <button type="submit" className={`label ${s.submit}`} disabled={state.kind === 'sending'}>
           <span>{state.kind === 'sending' ? 'Sending…' : 'Send inquiry'}</span>
-          <span aria-hidden="true">→</span>
+          <Arrow />
         </button>
         <p className={`small ${s.note}`} role="status" aria-live="polite">
           {state.kind === 'fallback' ? (

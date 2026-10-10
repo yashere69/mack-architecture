@@ -9,5 +9,3 @@
   padding: var(--s-4) 0;
   border-bottom: 1px solid var(--ink);
 }
-.enquire span:last-child { transition: translate var(--dur-ui) var(--ease-out); }
-.enquire:hover span:last-child { translate: 0.4rem 0; }

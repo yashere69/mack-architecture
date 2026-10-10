@@ -33,7 +33,24 @@
 .amp { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 1.2em; font-weight: 380; }
 
 .nav { display: none; }
+.nav { position: relative; }
 .nav ul { display: flex; gap: clamp(1.5rem, 3vw, 3rem); }
+.nav a { display: inline-block; padding-block: 0.35rem; transition: color 0.3s var(--ease-out); }
+.nav ul:hover a:not(:hover) { color: var(--ink-3); }
+.marker {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--w, 0);
+  height: 1px;
+  background: currentColor;
+  translate: var(--x, 0) 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.marker[data-ready] { transition: translate 0.65s var(--ease-out), width 0.65s var(--ease-out), opacity 0.3s linear; }
+/* Without script the current item keeps a plain rule. */
+:global(html:not(.js)) .nav a[aria-current='page'] { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.5em; }
 .nav a {
   font-size: var(--t-label);
   font-weight: 500;
@@ -123,3 +140,23 @@
 .panelFoot { display: grid; gap: var(--s-3); }
 .panelContact { display: grid; justify-items: start; gap: 0.5rem; }
 .panelContact a { padding-block: 0.25rem; }
+
+/* First arrival: the four solids of the monogram assemble and the wordmark
+   draws its letters together. Runs once — the header persists across pages. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js) .mark path {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: glyph 1.2s var(--ease-out) both;
+  }
+  :global(.js) .mark path:nth-child(1) { --gx: -70%; --gy: -40%; animation-delay: 0.05s; }
+  :global(.js) .mark path:nth-child(2) { --gx: 70%; --gy: -40%; animation-delay: 0.13s; }
+  :global(.js) .mark path:nth-child(3) { --gx: -70%; --gy: 40%; animation-delay: 0.21s; }
+  :global(.js) .mark path:nth-child(4) { --gx: 70%; --gy: 40%; animation-delay: 0.29s; }
+  :global(.js) .word { animation: tracking 1.5s var(--ease-out) 0.3s both; }
+  :global(.js) .nav li { animation: navIn 1s var(--ease-out) both; animation-delay: calc(0.45s + var(--i, 0) * 0.07s); }
+  :global(.js) .marker { animation: navIn 1s var(--ease-out) 0.8s both; }
+}
+@keyframes glyph { from { opacity: 0; translate: var(--gx) var(--gy); scale: 0.4; } }
+@keyframes tracking { from { opacity: 0; letter-spacing: 0.7em; } }
+@keyframes navIn { from { opacity: 0; translate: 0 -0.6rem; } }

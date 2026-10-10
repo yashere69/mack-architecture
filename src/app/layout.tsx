@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { RevealController } from '@/components/RevealController';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
+import { MotionDirector } from '@/components/motion/MotionDirector';
 import { site } from '@/content/site';
 import { projects } from '@/content/projects';
 import { indexable } from '@/lib/indexing';
@@ -98,6 +100,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <Footer />
         <RevealController />
+        <SmoothScroll />
+        <MotionDirector />
       </body>
     </html>
   );

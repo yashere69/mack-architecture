@@ -10,7 +10,6 @@ type Props = {
   /** object-position for crops, e.g. "50% 40%". */
   focus?: string;
   reveal?: boolean;
-  drift?: boolean;
   /** Above-the-fold LCP candidate. */
   eager?: boolean;
   delay?: number;
@@ -21,6 +20,10 @@ type Props = {
   morph?: boolean;
   /** Mark as a named view-transition target (destination hero). */
   vtName?: string;
+  /** Scroll choreography handled by MotionDirector (see data-m kinds). Disables the CSS reveal. */
+  motion?: string;
+  /** Parallax travel in % for data-m="parallax". */
+  speed?: number;
 };
 
 export function Picture({
@@ -29,7 +32,6 @@ export function Picture({
   ratio,
   focus,
   reveal = true,
-  drift = false,
   eager = false,
   delay,
   className,
@@ -37,12 +39,17 @@ export function Picture({
   quality = 82,
   morph = false,
   vtName,
+  motion,
+  speed,
 }: Props) {
   const r = ratio ?? img.w / img.h;
+  const revealed = reveal && !motion;
   return (
     <div
-      className={['frame', drift ? 'drift' : '', className].filter(Boolean).join(' ')}
-      data-reveal={reveal ? 'aperture' : undefined}
+      className={['frame', className].filter(Boolean).join(' ')}
+      data-reveal={revealed ? 'aperture' : undefined}
+      data-m={motion}
+      data-speed={speed}
       data-morph={morph ? '' : undefined}
       data-vt-hero={vtName ? '' : undefined}
       style={

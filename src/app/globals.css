@@ -53,12 +53,12 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--paper);
+  background: var(--page-bg, var(--paper));
 }
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--page-bg, var(--paper));
   font-family: var(--sans);
   font-size: var(--t-ui);
   line-height: 1.5;
@@ -207,22 +207,6 @@ em, .italic { font-style: italic; }
     transition-delay: var(--delay, 0s);
   }
   .js [data-reveal='fade'][data-in] { opacity: 1; translate: 0 0; }
-
-  /* Scroll-linked depth: the photograph drifts inside its frame (compositor only). */
-  @supports (animation-timeline: view()) {
-    .drift > img {
-      animation: drift linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
-    .drift > img { scale: 1.08; }
-    .js [data-reveal='aperture'].drift > img { scale: 1.16; }
-    .js [data-reveal='aperture'].drift[data-in] > img { scale: 1.08; }
-  }
-}
-@keyframes drift {
-  from { translate: 0 -3.5%; }
-  to { translate: 0 3.5%; }
 }
 
 .mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
@@ -275,3 +259,22 @@ em, .italic { font-style: italic; }
 ::view-transition-old(project-cover) { animation: none; opacity: 1; }
 ::view-transition-new(project-cover) { animation: 0.35s ease-out 0.55s both vt-fade-in; }
 @keyframes vt-fade-in { from { opacity: 0; } }
+
+/* ---------- Smooth scroll (Lenis) ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ---------- Scroll choreography helpers (MotionDirector) ---------- */
+.m-line { display: block; }
+[data-m~='doors'], [data-m~='blind'], [data-m~='lower'], [data-m~='expand'] { will-change: clip-path; }
+[data-m~='depth'] { will-change: transform; }
+
+/* Arrow hand-over (see Arrow.tsx): one arrow leaves, its twin arrives. */
+.arrow { display: inline-grid; overflow: hidden; line-height: 1; padding-inline: 0.05em; }
+.arrow > span { grid-area: 1 / 1; transition: translate 0.55s var(--ease-out); }
+.arrow > span:last-child { translate: -120% 0; }
+:is(a, button):is(:hover, :focus-visible) .arrow > span:first-child { translate: 120% 0; }
+:is(a, button):is(:hover, :focus-visible) .arrow > span:last-child { translate: 0 0; transition-delay: 0.06s; }
+@media (prefers-reduced-motion: reduce) { .arrow > span { transition: none; } }

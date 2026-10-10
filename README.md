@@ -1,6 +1,6 @@
 # MACK & Co Architects — website
 
-Next.js 16 (App Router, **static export**), React 19 View Transitions, no UI or animation libraries.
+Next.js 16 (App Router, **static export**), React 19 View Transitions, GSAP (ScrollTrigger, SplitText) + Lenis for scroll choreography — declared with `data-m` attributes, run by `src/components/motion/MotionDirector.tsx`.
 
 ```bash
 npm install

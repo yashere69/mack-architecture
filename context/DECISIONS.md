@@ -24,8 +24,13 @@ Format: **Decision** → reason → consequence in code.
 - **One curve (expo-out), reveals ~1s, hovers 0.25–0.45s, page crossfade 0.3/0.7s** → research consensus.
 - **Aperture reveal = ground-coloured cover lifting (transform only)** → clip-path on the frame broke IntersectionObserver (zero-area target) and is costlier.
 - **Shared-element cover morph via React `<ViewTransition>` + click-time naming** → continuity index/home/threshold → project hero; names assigned on click so a project can appear twice per page; hero releases its name on outbound click (duplicate names abort transitions).
-- **No GSAP, no Lenis, no custom cursor, no loader** → not needed; CSS + IO + View Transitions cover it; native scroll.
-- **Drift = CSS scroll-driven animation** (`animation-timeline: view()`), progressive enhancement.
+- **Cinematic pass (client request, coquelicots.nl as motion reference): GSAP ScrollTrigger + SplitText + Lenis** → scroll-scrubbed choreography needs one timeline engine; Lenis is driven by the GSAP ticker so both share a frame. Still no custom cursor, no loader.
+- **Choreography is declared in markup (`data-m`, `data-bg`) and run by `MotionDirector` per route** → server components stay server components; one place to tune; `gsap.matchMedia` reverts everything on navigation and on breakpoint/reduced-motion change.
+- **Three tiers: cinema (≥64rem), light (<64rem: no pinning, clip reveals play once, ~55% amplitudes), reduced (no GSAP motion, no Lenis)** → mobile stays light; nothing is hidden without JS.
+- **Pinning = CSS `position: sticky` inside a tall track, scrubbed by ScrollTrigger** (home hero 260svh, Udaipur walkthrough 100svh + 60svh/view) → no pin-spacer reflow, survives refresh mid-page.
+- **Statement + Selected work are one opaque curtain** that rises over the held hero → the reference's "next section slides over the pinned hero", without a gap.
+- **Above-the-fold heroes use `cover` (starts at rest, clamp() start)** → no jump on load.
+- **CSS reveal (`data-reveal`) kept for everything not choreographed**; a Picture with `motion` opts out of it to avoid two systems on one transform. The earlier CSS scroll-timeline "drift" was retired in favour of `data-m="parallax"`.
 
 ## UX
 - **Mobile menu bottom-right (thumb zone), rises from bottom**; button/panel live outside the header (a translated header would re-anchor `position: fixed`).

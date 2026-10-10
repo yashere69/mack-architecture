@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Img } from '@/content/projects';
+import { lockScroll } from '@/motion/core';
 import s from './Viewer.module.css';
 
 type Props = { images: Img[]; start: number; title: string; onClose: () => void };
@@ -26,9 +27,8 @@ export function Viewer({ images, start, title, onClose }: Props) {
 
   useEffect(() => {
     const prevFocus = document.activeElement as HTMLElement | null;
-    const html = document.documentElement;
     const y = window.scrollY;
-    html.style.overflow = 'hidden';
+    lockScroll(true);
     closeBtn.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -44,7 +44,7 @@ export function Viewer({ images, start, title, onClose }: Props) {
     window.addEventListener('keydown', onKey);
     return () => {
       window.removeEventListener('keydown', onKey);
-      html.style.overflow = '';
+      lockScroll(false);
       window.scrollTo(0, y);
       prevFocus?.focus({ preventScroll: true });
     };
