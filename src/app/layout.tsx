@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { RevealController } from '@/components/RevealController';
 import { site } from '@/content/site';
 import { projects } from '@/content/projects';
+import { indexable } from '@/lib/indexing';
 import './globals.css';
 
 const serif = localFont({
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   formatDetection: { telephone: false, email: false, address: false },
+  robots: indexable ? { index: true, follow: true } : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

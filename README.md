@@ -1,13 +1,22 @@
 # MACK & Co Architects — website
 
-Next.js 16 (App Router, static), React 19 View Transitions, no UI or animation libraries.
+Next.js 16 (App Router, **static export**), React 19 View Transitions, no UI or animation libraries.
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build && npm start
+npm run build      # → out/ (static site + responsive image variants)
+npm run preview    # serve out/ locally
 npm run media      # rebuild image masters, manifest and share images from media-src/sources.json
 ```
+
+## Deploying to Netlify
+- **Drag and drop:** run `npm run build`, then drop the `out/` folder (or its zip) onto https://app.netlify.com/drop.
+- **From Git:** connect the repo; `netlify.toml` sets `npm run build` / publish `out`.
+- `_redirects` (old URLs → new) and `_headers` (caching, security) are applied automatically.
+- **Contact form:** in Netlify → Site configuration → Forms, *enable form detection*, then redeploy.
+  Submissions appear under Forms (set email notifications there). Until then the form opens the
+  visitor's email app with the message prefilled.
 
 ## Where things live
 - `context/` — project memory: canonical facts (`SOURCE.md`), media notes, research, design system, decisions. Read first.
@@ -19,9 +28,8 @@ npm run media      # rebuild image masters, manifest and share images from media
 1. Add image URLs to `media-src/sources.json` (`key: "<slug>/<nn>"`, `drawing: true` for plans/sketches) and run `npm run media`.
 2. Add an entry to `src/content/projects.ts` (facts only — leave unknown fields out) and a cover to `scripts/build-og.mjs`.
 
-## Environment
+## Build-time environment
 | Variable | Purpose |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin (default `https://mack-architecture.vercel.app`). Set to the real domain at launch. |
-| `INQUIRY_WEBHOOK_URL` | Where contact-form JSON is POSTed (studio inbox / automation). Unset → the form opens a prefilled email instead. |
-| `NOINDEX=1` | Force `robots: disallow` (Vercel preview deployments are excluded automatically). |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin used for canonical/OG URLs (default `https://mack-architecture.vercel.app`). Set to the real domain before the launch build. |
+| `ALLOW_INDEXING=1` | **Set only on the real production launch.** Without it every deployment sends `noindex` and `robots.txt` disallows all, so demos/previews never appear in search. |

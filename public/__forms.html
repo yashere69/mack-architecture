@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- MACK_FORMS_DEFINITION: static copy of the contact form so Netlify Forms can detect it at deploy.
+     The real form (src/components/contact/ContactForm.tsx) posts here. Not linked anywhere. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Forms</title></head>
+<body>
+<form name="inquiry" method="POST" data-netlify="true" netlify-honeypot="company" hidden>
+  <input type="hidden" name="form-name" value="inquiry">
+  <input type="radio" name="reason" value="Connect with designers">
+  <input type="radio" name="reason" value="Apply for a career">
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <textarea name="message"></textarea>
+  <input type="url" name="website">
+  <input type="text" name="company">
+  <input type="checkbox" name="consent" value="yes">
+</form>
+</body></html>

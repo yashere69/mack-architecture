@@ -5,7 +5,7 @@ import { useId, useState, type FormEvent } from 'react';
 import { site } from '@/content/site';
 import s from './ContactForm.module.css';
 
-type State = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'fallback'; href: string } | { kind: 'error'; msg: string };
+type State = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind: 'fallback'; href: string };
 
 const REASONS = ['Connect with designers', 'Apply for a career'] as const;
 
@@ -22,39 +22,45 @@ export function ContactForm() {
       return;
     }
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    if (data.company) return; // honeypot
     setState({ kind: 'sending' });
+
+    // Hand the message to the visitor's own email app — used whenever no form inbox
+    // is available on the host, so nothing is ever silently lost.
+    const fallback = () => {
+      const body = [
+        `Reason: ${data.reason}`,
+        `Name: ${data.name}`,
+        `Email: ${data.email}`,
+        data.website ? `Website: ${data.website}` : '',
+        '',
+        data.message,
+      ]
+        .filter((l) => l !== '')
+        .join('\n');
+      const href = `mailto:${site.email}?subject=${encodeURIComponent(`${data.reason} — ${data.name}`)}&body=${encodeURIComponent(body)}`;
+      setState({ kind: 'fallback', href });
+      window.location.href = href;
+    };
+
     try {
-      const res = await fetch('/api/inquiry', {
+      // Netlify Forms: the static definition lives in /__forms.html. If the host isn't
+      // collecting forms, the request returns an error or that static file itself — never
+      // treat either as a successful submission.
+      const res = await fetch('/__forms.html', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'inquiry', ...data }).toString(),
       });
-      if (res.ok) {
+      const text = res.ok ? await res.text() : '';
+      if (res.ok && !text.includes('MACK_FORMS_DEFINITION')) {
         setState({ kind: 'sent' });
         form.reset();
         return;
       }
-      if (res.status === 503) {
-        // No inbox configured for this deployment — hand over to the visitor's email app.
-        const body = [
-          `Reason: ${data.reason}`,
-          `Name: ${data.name}`,
-          `Email: ${data.email}`,
-          data.website ? `Website: ${data.website}` : '',
-          '',
-          data.message,
-        ]
-          .filter((l) => l !== '')
-          .join('\n');
-        const href = `mailto:${site.email}?subject=${encodeURIComponent(`${data.reason} — ${data.name}`)}&body=${encodeURIComponent(body)}`;
-        setState({ kind: 'fallback', href });
-        window.location.href = href;
-        return;
-      }
-      const j = (await res.json().catch(() => ({}))) as { error?: string };
-      setState({ kind: 'error', msg: j.error ?? 'Something went wrong. Please email the studio directly.' });
+      fallback();
     } catch {
-      setState({ kind: 'error', msg: 'The message could not be sent. Please check your connection or email the studio directly.' });
+      fallback();
     }
   }
 
@@ -68,7 +74,7 @@ export function ContactForm() {
   }
 
   return (
-    <form className={s.form} onSubmit={submit} noValidate>
+    <form className={s.form} name="inquiry" onSubmit={submit} noValidate>
       <fieldset className={s.reasons}>
         <legend className="label label--muted">Reason</legend>
         {REASONS.map((r) => (
@@ -123,8 +129,6 @@ export function ContactForm() {
               Your email app should open with the message ready to send.{' '}
               <a className="link link--static" href={state.href}>Open it again</a>
             </>
-          ) : state.kind === 'error' ? (
-            state.msg
           ) : null}
         </p>
       </div>

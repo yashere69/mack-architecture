@@ -1,46 +1,20 @@
 import type { NextConfig } from 'next';
-import { projects } from './src/content/projects';
 
+// Fully static export: `out/` can be dropped onto Netlify (or any static host) as-is.
+// - Responsive image variants are generated after the build (scripts/build-variants.mjs)
+//   and addressed by src/lib/image-loader.ts.
+// - Legacy-URL redirects and cache/security headers live in public/_redirects and
+//   public/_headers (Netlify format).
+// - The contact form uses Netlify Forms (public/__forms.html), with an email fallback.
 const config: NextConfig = {
+  output: 'export',
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
-    formats: ['image/avif', 'image/webp'],
-    qualities: [70, 82],
-    deviceSizes: [480, 640, 828, 1080, 1280, 1600, 1920, 2400],
-    imageSizes: [96, 160, 240, 320, 400],
-    minimumCacheTTL: 60 * 60 * 24 * 365,
-  },
-  async redirects() {
-    // Keep links from the previous site (Instagram bio, shared URLs) alive.
-    return [
-      { source: '/about', destination: '/studio', permanent: true },
-      { source: '/products', destination: '/objects', permanent: true },
-      { source: '/products/:slug', destination: '/objects/:slug', permanent: true },
-      ...projects
-        .filter((p) => p.legacySlug !== p.slug)
-        .map((p) => ({ source: `/projects/${p.legacySlug}`, destination: `/projects/${p.slug}`, permanent: true })),
-    ];
-  },
-  async headers() {
-    return [
-      {
-        source: '/fonts/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-      },
-      {
-        source: '/media/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-      },
-      {
-        source: '/:path*',
-        headers: [
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-        ],
-      },
-    ];
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.ts',
+    deviceSizes: [480, 828, 1280, 1920, 2400],
+    imageSizes: [96, 240],
   },
 };
 

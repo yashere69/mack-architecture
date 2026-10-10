@@ -30,11 +30,11 @@ Format: **Decision** → reason → consequence in code.
 ## UX
 - **Mobile menu bottom-right (thumb zone), rises from bottom**; button/panel live outside the header (a translated header would re-anchor `position: fixed`).
 - **Fixed "Index" control on project pages appears only inside the gallery**, hides at the next-project threshold.
-- **Contact form posts to `/api/inquiry` → `INQUIRY_WEBHOOK_URL`**; without it, 503 → prefilled mailto → no silent loss, no fake success.
+- **Contact form → Netlify Forms** (`public/__forms.html` definition); success only when Netlify accepts it, otherwise prefilled mailto → no silent loss, no fake success.
 
 ## Technical
-- Next 16.4 App Router, all pages static (SSG) except `/api/inquiry`; React 19.3 ViewTransition.
-- next/image from q90 WebP masters (`public/media`), AVIF/WebP variants, qualities [70, 82].
+- **Static export (`output: 'export'`) for Netlify drag-and-drop** (user's host choice) → no server: `scripts/build-variants.mjs` pre-generates image widths 96–1920 (2400 = master) used by `src/lib/image-loader.ts`; redirects/headers in `public/_redirects` + `_headers`.
+- Next 16.4 App Router, React 19.3 ViewTransition.
 - Fonts self-hosted & subset; italic not preloaded (same family via an extra @font-face) → 140KB fonts on most pages.
-- Robots: production indexable; Vercel preview/`NOINDEX=1` → disallow. Old site was `noindex` everywhere.
+- Indexing is opt-in (`ALLOW_INDEXING=1`, never on Vercel previews) → a demo must not be indexed with client details before approval → `src/lib/indexing.ts` drives meta robots + robots.txt. Old site was `noindex` everywhere.
 - Legacy URLs 301 → new (`/about`, `/products/*`, `udaipurresort`, `the31st`, `gandhnagar-house`).

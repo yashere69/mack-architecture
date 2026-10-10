@@ -3,6 +3,8 @@ import { objects } from '@/content/objects';
 import { projectImages, projects } from '@/content/projects';
 import { site } from '@/content/site';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const u = (p: string) => `${site.url}${p}`;
   const pages = ['/', '/projects', '/objects', '/studio', '/contact'].map((p) => ({

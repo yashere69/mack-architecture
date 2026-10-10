@@ -1,0 +1,7 @@
+# Used only when Netlify builds from Git. Drag-and-drop deploys use the prebuilt out/ folder.
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"

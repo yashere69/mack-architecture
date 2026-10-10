@@ -1,0 +1,7 @@
+# Links from the studio's previous site (Instagram bio, shared URLs) → new pages
+/about                        /studio                       301
+/products                     /objects                      301
+/products/*                   /objects/:splat               301
+/projects/udaipurresort       /projects/udaipur-resort      301
+/projects/the31st             /projects/the-31st            301
+/projects/gandhnagar-house    /projects/gandhinagar-house   301
