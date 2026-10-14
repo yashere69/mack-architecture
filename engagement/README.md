@@ -2,6 +2,8 @@
 
 Planning documents for the digital engagement: search, Google Business Profile, analytics, email, storage, backup, maintenance and reporting. Prepared October 2026. None of this is part of the website build (`out/` never includes this folder).
 
+**Start here:** [`private/00-start-here.html`](private/00-start-here.html) shows the whole engagement on one structured page (private: it includes the money notes).
+
 | # | Deliverable | File | Audience |
 |---|---|---|---|
 | 1 | Research & findings (facts vs recommendations vs assumptions, with sources) | [`01-research-findings.md`](01-research-findings.md) | Internal |

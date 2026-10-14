@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>MACK Engagement Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one column of "drawing sheets" (S-01…S-12), each with a sheet code, read top to bottom. */
+:root {
+  --bg: #f4f6f4;
+  --surface: #ffffff;
+  --ink: #16201c;
+  --muted: #56625c;
+  --line: #d5dcd8;
+  --accent: #1f6b58;
+  --accent-soft: #e3efe9;
+  --warn: #a4520a;
+  --warn-soft: #fbeedf;
+  --private: #8a2d4b;
+  --private-soft: #f6e6ec;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r: 6px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1412; --surface: #161d1a; --ink: #e5ece8; --muted: #9eaba5; --line: #2a3430;
+    --accent: #5fc2a3; --accent-soft: #17302a; --warn: #f0a55a; --warn-soft: #33240f;
+    --private: #e891ae; --private-soft: #3a1b26; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1412; --surface: #161d1a; --ink: #e5ece8; --muted: #9eaba5; --line: #2a3430;
+  --accent: #5fc2a3; --accent-soft: #17302a; --warn: #f0a55a; --warn-soft: #33240f;
+  --private: #e891ae; --private-soft: #3a1b26; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font: 15.5px/1.55 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.wrap { max-width: 1000px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 22px; font-weight: 600; }
+h3 { font-size: 16px; font-weight: 600; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.mono, .code { font-family: var(--font-mono); }
+.label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.lead { font-size: 17px; max-width: 68ch; color: var(--muted); }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+
+/* header */
+header.top { display: grid; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
+.titleblock { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.titleblock div { display: grid; gap: 2px; }
+.titleblock b { font-weight: 500; }
+
+/* one-line summary */
+.oneline { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 22px; display: grid; gap: 8px; }
+.oneline p { font-size: 18px; max-width: 70ch; }
+
+/* five-step strip */
+.strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--surface); }
+.strip a { color: inherit; text-decoration: none; padding: 14px 16px; display: grid; gap: 4px; border-right: 1px solid var(--line); position: relative; }
+.strip a:last-child { border-right: 0; }
+.strip a:hover, .strip a:focus-visible { background: var(--accent-soft); outline: none; }
+.strip .n { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.strip .t { font-weight: 600; }
+.strip .d { font-size: 13.5px; color: var(--muted); }
+.strip a.priv .n { color: var(--private); }
+@media (max-width: 760px) { .strip { grid-template-columns: 1fr; } .strip a { border-right: 0; border-bottom: 1px solid var(--line); } .strip a:last-child { border-bottom: 0; } }
+
+/* sheets */
+section.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px 24px; display: grid; gap: 16px; scroll-margin-top: 16px; }
+.sheet-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.sheet-code { font-family: var(--font-mono); font-size: 12px; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 6px; white-space: nowrap; }
+.sheet-head p { grid-column: 2; color: var(--muted); font-size: 14.5px; }
+section.private { border-color: var(--private); }
+section.private .sheet-code { color: var(--private); border-color: var(--private); }
+.private-flag { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--private); background: var(--private-soft); padding: 2px 8px; border-radius: 99px; }
+
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14.5px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 11.5px; padding: 1px 8px; border-radius: 99px; white-space: nowrap; }
+.pill.once { background: var(--accent-soft); color: var(--accent); }
+.pill.monthly { background: var(--warn-soft); color: var(--warn); }
+.pill.both { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
+
+/* card grids */
+.grid { display: grid; gap: 14px; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 860px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g3 { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .g2, .g4 { grid-template-columns: 1fr; } }
+.card { border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card.block { border-color: var(--warn); background: var(--warn-soft); }
+.card.block .label { color: var(--warn); }
+.ask { font-size: 14.5px; border-left: 2px solid var(--warn); padding-left: 10px; }
+.card ul { font-size: 14.5px; }
+
+/* search: three kinds */
+.meter { display: flex; gap: 4px; align-items: center; }
+.meter i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--accent); }
+.meter i.on { background: var(--accent); }
+.meterrow { display: grid; grid-template-columns: 64px auto; gap: 4px 8px; font-size: 13px; color: var(--muted); align-items: center; }
+.q { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+
+/* layers */
+.layers { display: grid; gap: 6px; }
+.layer { display: grid; grid-template-columns: 34px minmax(0, 180px) 1fr; gap: 10px; align-items: center; padding: 9px 12px; border: 1px solid var(--line); border-radius: 4px; font-size: 14.5px; }
+.layer b { font-weight: 600; }
+.layer .mono { color: var(--muted); font-size: 12px; }
+.layer.base { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.layer.base .mono { color: var(--bg); opacity: 0.7; }
+@media (max-width: 560px) { .layer { grid-template-columns: 30px 1fr; } .layer > span:last-child { grid-column: 2; color: var(--muted); } .layer.base > span:last-child { color: var(--bg); } }
+
+/* priority columns */
+.prio h3 { font-size: 14px; display: flex; gap: 8px; align-items: center; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+/* timeline */
+.timeline { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+.tl { display: grid; grid-template-columns: 170px repeat(14, minmax(34px, 1fr)); min-width: 720px; font-size: 13px; }
+.tl > div { border-bottom: 1px solid var(--line); padding: 8px 0; }
+.tl .wk { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; background: var(--bg); }
+.tl .name { padding-left: 12px; font-weight: 600; background: var(--surface); }
+.tl .name span { font-family: var(--font-mono); color: var(--accent); margin-right: 6px; font-weight: 500; }
+.bar { height: 14px; align-self: center; border-radius: 3px; background: var(--accent); margin: 0 2px; }
+.bar.open { background: transparent; border: 1.5px dashed var(--accent); }
+.tl .gap { border-bottom: 1px solid var(--line); }
+
+/* deck map */
+.deck { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.deck div { display: grid; grid-template-columns: 92px minmax(0, 200px) 1fr; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.deck div:last-child { border-bottom: 0; }
+.deck .mono { color: var(--accent); font-size: 12.5px; }
+@media (max-width: 620px) { .deck div { grid-template-columns: 1fr; gap: 2px; } }
+
+/* script */
+.script { display: grid; gap: 10px; }
+.step { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+.step .num { font-family: var(--font-mono); color: var(--private); font-size: 13px; padding-top: 2px; }
+.step blockquote { margin: 4px 0 0; padding: 8px 12px; background: var(--private-soft); border-radius: 4px; font-size: 14.5px; }
+.formula { font-family: var(--font-mono); font-size: 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+
+/* toc */
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px; }
+nav.toc a { font-family: var(--font-mono); font-size: 12px; color: var(--ink); text-decoration: none; border: 1px solid var(--line); background: var(--surface); padding: 4px 8px; border-radius: 4px; }
+nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+nav.toc a.priv { color: var(--private); }
+
+.donts li::marker { content: "✕  "; color: var(--warn); }
+footer { color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+a { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="label">Internal working map · not for the client</span>
+  <h1>MACK Engagement Map</h1>
+  <p class="lead">Everything from the plan, in one structure. Read it top to bottom: what is happening, what to decide first, what you will build, how it runs, what you present, and how you get paid.</p>
+  <div class="titleblock">
+    <div><span class="label">Client</span><b>MACK &amp; Co Architects, Mumbai</b></div>
+    <div><span class="label">Contact</span><b>Ayushi and team</b></div>
+    <div><span class="label">Date</span><b>October 2026</b></div>
+    <div><span class="label">Files</span><b class="mono" style="font-size:13px">engagement/</b></div>
+  </div>
+</header>
+
+<div class="oneline">
+  <span class="label">The whole engagement in one sentence</span>
+  <p>You set up MACK's digital foundation (website live on Google, a Google Maps profile, studio email, cloud storage with backup, analytics) in <b>6 milestones over about 3 months</b>. After that you run a <b>small monthly routine</b> that ends in a one-page report.</p>
+</div>
+
+<nav class="strip" aria-label="The five parts">
+  <a href="#s01"><span class="n">1</span><span class="t">Today</span><span class="d">What's missing now</span></a>
+  <a href="#s02"><span class="n">2</span><span class="t">Decide first</span><span class="d">3 blockers to settle</span></a>
+  <a href="#s05"><span class="n">3</span><span class="t">Build</span><span class="d">6 milestones, ~3 months</span></a>
+  <a href="#s06"><span class="n">4</span><span class="t">Run monthly</span><span class="d">Checks + one report</span></a>
+  <a href="#s10" class="priv"><span class="n">5</span><span class="t">Get paid</span><span class="d">Private: fee structure</span></a>
+</nav>
+
+<nav class="toc" aria-label="All sheets">
+  <a href="#s01">S-01 Today</a><a href="#s02">S-02 Decide first</a><a href="#s03">S-03 What you set up</a><a href="#s04">S-04 SEO</a><a href="#s05">S-05 Milestones</a><a href="#s06">S-06 Monthly routine</a><a href="#s07">S-07 Measurement</a><a href="#s08">S-08 The deck</a><a href="#s09">S-09 Meeting day</a><a href="#s10" class="priv">S-10 Money</a><a href="#s11">S-11 Your files</a><a href="#s12">S-12 Never do</a>
+</nav>
+
+<!-- S-01 -->
+<section class="sheet" id="s01">
+  <div class="sheet-head"><span class="sheet-code">S-01</span><h2>Where MACK is today</h2><p>Checked on the live site this week. Five gaps and one strength.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Area</th><th>Today</th><th>What it means</th><th>Fixed in</th></tr></thead>
+    <tbody>
+      <tr><td>Search</td><td>The live site tells Google not to list it ("noindex")</td><td>MACK can't appear in Google at all yet</td><td>M2</td></tr>
+      <tr><td>Maps</td><td>The site's map link opens a listing called <b>"KARAN DESAI, Architecture + Design"</b></td><td>Name and Google listing must be aligned before any profile work</td><td>Week 0 → M3</td></tr>
+      <tr><td>Identity</td><td>Email is a Gmail address; no studio domain</td><td>No studio-owned identity</td><td>M1</td></tr>
+      <tr><td>Portfolio</td><td>6 of 10 projects have no location; only 2 have a description</td><td>Projects can't be found for what they are</td><td>M4</td></tr>
+      <tr><td>Measurement</td><td>No analytics, no enquiry tracking</td><td>No evidence of what brings clients</td><td>M2 + M6</td></tr>
+      <tr><td>Strength</td><td>The new website is built with most technical SEO already in it</td><td>It needs to be switched on, connected and filled, not rebuilt</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- S-02 -->
+<section class="sheet" id="s02">
+  <div class="sheet-head"><span class="sheet-code">S-02</span><h2>Decide first: the three blockers</h2><p>Nothing else can start properly until these are settled. Ask; don't assume.</p></div>
+  <div class="grid g3">
+    <div class="card block">
+      <span class="label">Blocker 1</span><h3>Studio identity &amp; Maps listing</h3>
+      <p class="ask">"What is the exact studio name on signage? How should the existing Google listing at the studio address represent MACK?"</p>
+      <p class="muted" style="font-size:14px">Google allows one profile per business per location.</p>
+    </div>
+    <div class="card block">
+      <span class="label">Blocker 2</span><h3>Domain</h3>
+      <p class="ask">"Do you own a domain? Which one should we use?"</p>
+      <p class="muted" style="font-size:14px">Email, Search Console and the website all hang off it. Register it in MACK's name.</p>
+    </div>
+    <div class="card block">
+      <span class="label">Blocker 3</span><h3>Account owner</h3>
+      <p class="ask">"Who at the studio should own the accounts? I'll be added with access."</p>
+      <p class="muted" style="font-size:14px">Nothing gets registered in your name.</p>
+    </div>
+  </div>
+  <div class="card">
+    <span class="label">Also confirm (not blockers, but needed soon)</span>
+    <ul>
+      <li><b>Services</b> MACK wants to be found for (architecture, interiors, furniture…)</li>
+      <li><b>New studios:</b> where, when, staffed, with signage?</li>
+      <li><b>Project facts:</b> place, type, year, status, brief, photographer (about 10 min per project via a form)</li>
+      <li><b>Team &amp; files:</b> who needs email, where files live now, which design software</li>
+      <li><b>Quietly, later:</b> the principal's Council of Architecture registration before using "Architect" as the Google category</li>
+    </ul>
+  </div>
+</section>
+
+<!-- S-03 -->
+<section class="sheet" id="s03">
+  <div class="sheet-head"><span class="sheet-code">S-03</span><h2>What you set up: 8 components</h2><p>Plain-words version of the scope. Third-party costs are paid by MACK directly.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Component</th><th>In plain words</th><th>Tool</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>Website launch</td><td>Put the new site live on the studio's domain, visible to Google</td><td>Netlify (paid plan, so it can't pause)</td><td><span class="pill both">once + upkeep</span></td></tr>
+      <tr><td>SEO</td><td>Make pages, projects and images understandable and findable</td><td>The site itself + Google's tools</td><td><span class="pill both">once + monthly</span></td></tr>
+      <tr><td>Google Business Profile</td><td>The studio's card on Google Search and Maps</td><td>Google Business Profile</td><td><span class="pill both">once + monthly</span></td></tr>
+      <tr><td>Search Console + Analytics</td><td>See how Google shows the site and what visitors do</td><td>Search Console, GA4</td><td><span class="pill both">once + monthly</span></td></tr>
+      <tr><td>Studio email</td><td>name@studio-domain instead of Gmail (small task, keep it small)</td><td>Google Workspace</td><td><span class="pill once">once</span></td></tr>
+      <tr><td>Cloud storage (2–3 TB)</td><td>Shared project folders with access by role</td><td>Google Workspace Business Standard (2 TB per licence)</td><td><span class="pill once">once</span></td></tr>
+      <tr><td>Backup</td><td>A separate copy outside the cloud. Sync is not backup.</td><td>Small storage box (NAS) in the studio + off-site copy</td><td><span class="pill both">once + quarterly test</span></td></tr>
+      <tr><td>Report &amp; maintenance</td><td>Monthly checks and a one-page report</td><td>Looker Studio dashboard + template</td><td><span class="pill monthly">monthly</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:14px">Out of scope: paid ads, social media posting, photography, legal advice.</p>
+</section>
+
+<!-- S-04 -->
+<section class="sheet" id="s04">
+  <div class="sheet-head"><span class="sheet-code">S-04</span><h2>SEO in two pictures</h2><p>Who searches, and how visibility is built.</p></div>
+
+  <span class="label">Picture 1: three kinds of search</span>
+  <div class="grid g3">
+    <div class="card">
+      <h3>1 · Confirm</h3>
+      <span class="q">"MACK &amp; Co Architects"</span>
+      <p style="font-size:14.5px">Someone was referred and searches the name. Make sure the site and a correct Maps profile show up.</p>
+      <div class="meterrow"><span>Speed</span><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i></span><span>Control</span><span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+    </div>
+    <div class="card">
+      <h3>2 · Shortlist</h3>
+      <span class="q">"architect in Andheri West"</span>
+      <p style="font-size:14.5px">Local searches, mostly decided in Google Maps. Competitive; builds over months.</p>
+      <div class="meterrow"><span>Speed</span><span class="meter"><i class="on"></i><i class="on"></i><i></i></span><span>Control</span><span class="meter"><i class="on"></i><i class="on"></i><i></i></span></div>
+    </div>
+    <div class="card">
+      <h3>3 · Discover</h3>
+      <span class="q">"sandstone resort Rajasthan"</span>
+      <p style="font-size:14.5px">People find a project page or image. Needs real project information. Grows slowly.</p>
+      <div class="meterrow"><span>Speed</span><span class="meter"><i class="on"></i><i></i><i></i></span><span>Control</span><span class="meter"><i class="on"></i><i class="on"></i><i></i></span></div>
+    </div>
+  </div>
+
+  <span class="label">Picture 2: five layers, built from the bottom</span>
+  <div class="layers">
+    <div class="layer"><span class="mono">05</span><b>Authority</b><span>Publications, Archello/Architizer, reviews</span></div>
+    <div class="layer"><span class="mono">04</span><b>Local presence</b><span>Business Profile, same name/address/phone everywhere</span></div>
+    <div class="layer"><span class="mono">03</span><b>Relevance</b><span>Service and project pages that match real searches</span></div>
+    <div class="layer"><span class="mono">02</span><b>Structure</b><span>Titles, headings, structured data (mostly built)</span></div>
+    <div class="layer base"><span class="mono">01</span><b>Technical</b><span>Indexable, crawlable, fast on mobile (mostly built)</span></div>
+  </div>
+
+  <span class="label">What to do, and what not to</span>
+  <div class="grid g4 prio">
+    <div class="card"><h3><span class="dot" style="background:var(--accent)"></span>Essential</h3><ul><li>Domain + launch with indexing on</li><li>Search Console + sitemap</li><li>One verified Maps profile</li><li>Same name/address/phone everywhere</li><li>Real project facts and stories</li><li>Analytics with enquiry tracking</li><li>Faster home page on mobile</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--warn)"></span>Useful</h3><ul><li>Service pages</li><li>Image credits</li><li>Links between related projects</li><li>Archello / Architizer</li><li>Bing Places</li><li>Dashboard</li><li>Review requests</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--muted)"></span>Optional</h3><ul><li>Journal / blog</li><li>Apple Business listing</li><li>Paid SEO tool for one month</li><li>Profile posts (real news only)</li></ul></div>
+    <div class="card"><h3><span class="dot" style="background:var(--private)"></span>Don't</h3><ul><li>City pages without a studio</li><li>Buying links, directory blasts</li><li>Keywords in the profile name</li><li>Fake or rewarded reviews</li><li>AI-written bulk blogs</li><li>FAQ schema, llms.txt</li></ul></div>
+  </div>
+</section>
+
+<!-- S-05 -->
+<section class="sheet" id="s05">
+  <div class="sheet-head"><span class="sheet-code">S-05</span><h2>The 6 milestones</h2><p>Each one ends with something you can show. Delays usually come from waiting for access or information.</p></div>
+
+  <div class="timeline" role="img" aria-label="Timeline: Week 0 align; M1 weeks 1–2; M2 weeks 2–4; M3 weeks 3–6; M4 weeks 4–10; M5 from week 9 ongoing; M6 from week 6 ongoing">
+    <div class="tl">
+      <div class="wk" style="text-align:left;padding-left:12px">Week</div>
+      <div class="wk">0</div><div class="wk">1</div><div class="wk">2</div><div class="wk">3</div><div class="wk">4</div><div class="wk">5</div><div class="wk">6</div><div class="wk">7</div><div class="wk">8</div><div class="wk">9</div><div class="wk">10</div><div class="wk">11</div><div class="wk">12</div><div class="wk">→</div>
+
+      <div class="name"><span>W0</span>Align &amp; access</div>
+      <div class="gap" style="grid-column: 2 / 3; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 3 / 16"></div>
+
+      <div class="name"><span>M1</span>Foundation</div>
+      <div class="gap" style="grid-column: 2 / 3"></div><div class="gap" style="grid-column: 3 / 5; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 5 / 16"></div>
+
+      <div class="name"><span>M2</span>Launch &amp; search</div>
+      <div class="gap" style="grid-column: 2 / 4"></div><div class="gap" style="grid-column: 4 / 7; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 7 / 16"></div>
+
+      <div class="name"><span>M3</span>Local presence</div>
+      <div class="gap" style="grid-column: 2 / 5"></div><div class="gap" style="grid-column: 5 / 9; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 9 / 16"></div>
+
+      <div class="name"><span>M4</span>Portfolio</div>
+      <div class="gap" style="grid-column: 2 / 6"></div><div class="gap" style="grid-column: 6 / 13; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 13 / 16"></div>
+
+      <div class="name"><span>M5</span>Authority</div>
+      <div class="gap" style="grid-column: 2 / 11"></div><div class="gap" style="grid-column: 11 / 16; display:grid"><div class="bar open"></div></div>
+
+      <div class="name"><span>M6</span>Measurement</div>
+      <div class="gap" style="grid-column: 2 / 8"></div><div class="gap" style="grid-column: 8 / 16; display:grid"><div class="bar open"></div></div>
+    </div>
+  </div>
+  <p class="muted" style="font-size:13.5px">Solid bar = set-up work. Dashed bar = ongoing.</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Milestone</th><th>You deliver</th><th>You need from MACK</th><th>Done when</th></tr></thead>
+    <tbody>
+      <tr><td>M1 Foundation<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 1–2</span></td><td>Domain, studio email, shared drives, analytics, Search Console, access map</td><td>Domain decision, mailbox list, where files are</td><td>Test email passes SPF/DKIM/DMARC; every account owned by MACK</td></tr>
+      <tr><td>M2 Launch &amp; search<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 2–4</span></td><td>Site live and indexable, fixes, enquiry tracking, sitemap, keyword map</td><td>Launch approval, contact details, privacy wording</td><td>Pages submitted; a test enquiry shows in analytics; no critical errors</td></tr>
+      <tr><td>M3 Local presence<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 3–6</span></td><td>Verified Maps profile, consistent details, review kit, new-studio playbook</td><td>Listing decision, someone to verify, studio photos</td><td>Profile verified and complete; profile visits measured</td></tr>
+      <tr><td>M4 Portfolio<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 4–10</span></td><td>Project pages to one standard, service pages, image names and credits</td><td>~10 min per project (form), photo credits, permissions</td><td>Every supplied project meets the standard</td></tr>
+      <tr><td>M5 Authority<br><span class="muted mono" style="font-weight:400;font-size:12px">from month 3</span></td><td>Archello/Architizer profiles, publication shortlist, one submission kit</td><td>Approvals, client permissions, ideally pro photography</td><td>Profiles live; first submission sent (publication is the editor's call)</td></tr>
+      <tr><td>M6 Measurement<br><span class="muted mono" style="font-weight:400;font-size:12px">monthly from week 6</span></td><td>Dashboard, monthly report, health checks, quarterly review</td><td>20 minutes a month; enquiry log kept up</td><td>Reports on schedule, decisions recorded</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- S-06 -->
+<section class="sheet" id="s06">
+  <div class="sheet-head"><span class="sheet-code">S-06</span><h2>After launch: the monthly routine</h2><p>About 6–10 hours a month.</p></div>
+  <div class="grid g2">
+    <div class="card"><span class="label">Every month</span><ul><li>Search Console: queries, indexing, errors</li><li>Maps profile: reply to reviews, check edits, add real photos</li><li>Publish new projects (if any)</li><li>Test the contact form; check uptime, hosting usage, backup</li><li>Send the one-page report with next actions</li></ul></div>
+    <div class="card"><span class="label">Every quarter</span><ul><li>Review meeting with the studio (45 min)</li><li>Refresh the keyword map</li><li>Access and permissions audit</li><li>Test-restore a file from backup</li><li>Update website software</li></ul></div>
+  </div>
+</section>
+
+<!-- S-07 -->
+<section class="sheet" id="s07">
+  <div class="sheet-head"><span class="sheet-code">S-07</span><h2>Measurement: five stages</h2><p>Every report answers: What changed? Why does it matter? What happens next?</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Stage</th><th>What you measure</th><th>Where it comes from</th></tr></thead>
+    <tbody>
+      <tr><td>Visibility</td><td>How often MACK appears in Google: name searches and new searches, kept separate</td><td>Search Console</td></tr>
+      <tr><td>Discovery</td><td>Which projects and images people find; what they search on Maps</td><td>Search Console, Business Profile</td></tr>
+      <tr><td>Engagement</td><td>Which project pages visitors explore</td><td>Analytics (GA4)</td></tr>
+      <tr><td>Action</td><td>Enquiries, call taps, email taps, direction requests</td><td>Analytics, Business Profile</td></tr>
+      <tr><td>Outcome</td><td>Qualified enquiries, by source</td><td>Studio's enquiry log (a shared sheet)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:14px">Left out on purpose: total page views, follower counts, "authority" scores, long ranking lists. Direction requests show intent to visit; they don't count actual visits.</p>
+</section>
+
+<!-- S-08 -->
+<section class="sheet" id="s08">
+  <div class="sheet-head"><span class="sheet-code">S-08</span><h2>The client deck: 20 slides in 8 parts</h2><p>About 30–35 minutes. No pricing anywhere. Speaker notes on every slide.</p></div>
+  <div class="deck">
+    <div><span class="mono">1</span><b>Opening</b><span>Cover: "Digital Foundation"</span></div>
+    <div><span class="mono">2</span><b>Starting point</b><span>Where MACK stands today (S-01 of this map)</span></div>
+    <div><span class="mono">3–4</span><b>The system</b><span>Every channel leads to the website; everything hangs off the domain</span></div>
+    <div><span class="mono">5–10</span><b>Search</b><span>Layers, 3 kinds of search, what gets implemented, work → impact, Maps card, projects as entry points</span></div>
+    <div><span class="mono">11</span><b>Infrastructure</b><span>Email, storage, and why sync isn't backup</span></div>
+    <div><span class="mono">12–13</span><b>Measurement</b><span>What's measured, and the one-page report (shown empty, no invented numbers)</span></div>
+    <div><span class="mono">14–16</span><b>Roadmap</b><span>Timeline + two slides of milestone detail</span></div>
+    <div><span class="mono">17–20</span><b>Engagement &amp; close</b><span>What MACK receives, how it runs monthly, what's promised vs not, next step</span></div>
+  </div>
+</section>
+
+<!-- S-09 -->
+<section class="sheet" id="s09">
+  <div class="sheet-head"><span class="sheet-code">S-09</span><h2>Meeting day</h2><p>Three phases. Money comes last, and only after scope is agreed.</p></div>
+  <div class="grid g3">
+    <div class="card"><span class="label">Before</span><ul><li>Check the cover name ("Yash Sharma") and studio name</li><li>Rehearse once with the speaker notes</li><li>Keep the PDF ready as backup</li><li>Decide your fee and your walk-away number</li></ul></div>
+    <div class="card"><span class="label">During</span><ul><li>Slide 2: ask about the Maps listing, don't explain it</li><li>Slow down on slides 19–20 (promises, next step)</li><li>Confirm scope: "Anything to add or remove?"</li><li>Then the money talk (S-10)</li></ul></div>
+    <div class="card"><span class="label">After (within 24 h)</span><ul><li>Send a 1–2 page written summary: scope, milestones, fee, payment schedule, account ownership, notice period</li><li>Book the 90-minute kickoff</li></ul></div>
+  </div>
+</section>
+
+<!-- S-10 -->
+<section class="sheet private" id="s10">
+  <div class="sheet-head"><span class="sheet-code">S-10</span><h2>Money <span class="private-flag">Private</span></h2><p>Never in the deck. Full version: <code>private/09</code> and <code>private/10</code>.</p></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="label">Recommended structure (hybrid)</span>
+      <ol>
+        <li><b>Setup fee</b> for M1–M4, paid in 3 parts: 40% at kickoff · 30% at website launch · 30% when the profile and project pages are done</li>
+        <li><b>Monthly fee</b> after launch: 3-month minimum, then 30 days' notice</li>
+        <li><b>Third-party costs</b> (domain, Workspace, hosting, NAS) paid by MACK directly, no markup</li>
+        <li><b>Extras</b> (e.g. a new studio location) priced per item</li>
+      </ol>
+    </div>
+    <div class="card">
+      <span class="label">Why not the others</span>
+      <ul>
+        <li><b>Stipend:</b> sounds like an intern, no clear scope</li>
+        <li><b>Monthly only:</b> the heavy setup months get underpaid</li>
+        <li><b>Milestones only:</b> monthly work never ends</li>
+        <li><b>Plan B:</b> if she wants one number, a flat monthly fee for 12 months with setup spread across it</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="label">Work out your numbers (your rate; no invented market rates)</span>
+    <div class="formula">Setup  ≈ 50 hours × your hourly rate + 10–15% buffer<br>Monthly ≈ 8 hours × your hourly rate</div>
+    <p class="muted" style="font-size:14px">Sanity-check by asking 2–3 Mumbai freelancers or small agencies what they'd quote for similar work. If the price comes down, reduce the scope, not your rate.</p>
+  </div>
+
+  <div class="card script">
+    <span class="label">The conversation in 5 steps (Hinglish)</span>
+    <div class="step"><span class="num">1</span><div><b>Confirm scope</b><blockquote>"Direction sahi lag rahi hai? Kuch add ya remove karna ho toh bata dijiye."</blockquote></div></div>
+    <div class="step"><span class="num">2</span><div><b>Two parts of the work</b><blockquote>"Is kaam ke do hisse hain: setup, jo pehle do-teen mahine ka hai, aur ongoing monthly kaam."</blockquote></div></div>
+    <div class="step"><span class="num">3</span><div><b>Structure</b><blockquote>"Setup ke liye ek fixed amount, teen hisson mein, har payment tab jab aapko kuch concrete dikhe. Launch ke baad ek monthly amount."</blockquote></div></div>
+    <div class="step"><span class="num">4</span><div><b>Third-party costs</b><blockquote>"Domain aur Workspace ka kharcha seedha studio ke account se jaayega. Sab MACK ke naam pe rahega."</blockquote></div></div>
+    <div class="step"><span class="num">5</span><div><b>Number, then stop talking</b><blockquote>"Setup ke liye mera proposal ₹____ hai, aur launch ke baad ₹____ monthly."</blockquote></div></div>
+  </div>
+
+  <div class="card">
+    <span class="label">Don't say</span>
+    <ul class="donts">
+      <li>"Mera package ₹X ka hai"</li>
+      <li>"Jo aapko theek lage, de dena"</li>
+      <li>"Meri team…" (if it's just you)</li>
+      <li>"#1 pe la denge" or "leads guaranteed"</li>
+      <li>"…thoda kam bhi ho sakta hai" right after your number</li>
+    </ul>
+  </div>
+</section>
+
+<!-- S-11 -->
+<section class="sheet" id="s11">
+  <div class="sheet-head"><span class="sheet-code">S-11</span><h2>Your files: which one to open when</h2><p>All in <code>engagement/</code> on the branch <code>claude/mack-architecture-plan-xoitto</code>.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>When you need to…</th><th>Open</th></tr></thead>
+    <tbody>
+      <tr><td>Present to Ayushi</td><td><code>06-client-deck/MACK-Digital-Foundation.pptx</code> (PDF as backup)</td></tr>
+      <tr><td>Actually do a task, step by step</td><td><code>07-execution-guide.md</code></td></tr>
+      <tr><td>Check who does what</td><td><code>02-scope-matrix.md</code></td></tr>
+      <tr><td>Plan or explain the timeline</td><td><code>04-milestone-roadmap.md</code></td></tr>
+      <tr><td>Understand the SEO thinking</td><td><code>03-seo-strategy.md</code></td></tr>
+      <tr><td>Check a fact or its source</td><td><code>01-research-findings.md</code></td></tr>
+      <tr><td>Write the monthly report</td><td><code>08-reporting-framework.md</code></td></tr>
+      <tr><td>See how everything connects</td><td><code>05-digital-ecosystem.md</code></td></tr>
+      <tr><td>Prepare the money talk</td><td><code>private/09</code> and <code>private/10</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- S-12 -->
+<section class="sheet" id="s12">
+  <div class="sheet-head"><span class="sheet-code">S-12</span><h2>Never do</h2><p>These break trust or Google's rules.</p></div>
+  <ul class="donts">
+    <li>Promise rankings, traffic, leads or footfall</li>
+    <li>Own MACK's accounts yourself</li>
+    <li>Create a second Maps profile at an address that already has one</li>
+    <li>Put opening hours on an appointment-only studio's profile</li>
+    <li>Buy links, or write or reward reviews</li>
+    <li>Present renders as built work</li>
+    <li>Treat Google Drive as the backup</li>
+    <li>Share this repo before deleting <code>engagement/private/</code></li>
+  </ul>
+</section>
+
+<footer>
+  <span>Built from the engagement files in this repository, October 2026.</span>
+  <span>This page contains private notes (S-10). Keep it to yourself.</span>
+</footer>
+
+</div>
+</body>
+</html>
