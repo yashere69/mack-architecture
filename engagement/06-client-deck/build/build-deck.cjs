@@ -1,4 +1,5 @@
-// Builds the client deck: engagement/06-client-deck/MACK-Digital-Foundation.pptx
+// Builds the 9-page client report: engagement/06-client-deck/MACK-Digital-Foundation.pptx
+// (The earlier 20-slide version is built by build-deck-full.cjs into archive/.)
 //
 // Usage (from any scratch folder that has the two dependencies installed):
 //   npm i pptxgenjs@3.12.0 sharp@0.34.5
@@ -65,7 +66,6 @@ const L = 0.6; // left margin
 const R = W - 0.6; // right edge
 const CW = R - L; // content width
 const SERIF = '+mj-lt'; // theme heading font
-const TOTAL = 19;
 
 // ---------------------------------------------------------------- assets
 async function jpg(key, width = 1800) {
@@ -173,716 +173,309 @@ pres.defineSlideMaster({
 });
 pres.defineSlideMaster({ title: 'MACK_COVER', background: { color: NIGHT }, objects: [] });
 
-// ================================================================ slides
+// ================================================================ slides (9-page report)
 async function build() {
   const img = {
     agra: await jpg('agra-fort-project/14'),
     redfort: await jpg('red-fort-project/11'),
     udaipur: await jpg('udaipur-resort/01'),
+    stair: await jpg('agra-fort-project/11'),
+    rc: await jpg('rc-house/01'),
   };
   const monoLight = await monogram('EFECE6');
-  const monoInk = await monogram('1A1916');
+  const arrowDown = (s, x, y1, y2, color = INK3) => ln(s, x, y1, x, y2, { arrow: true, color, lw: 0.75 });
+  const list = (s, items, o) => T(s, items.map((t, j) => ({ text: t, options: { breakLine: j < items.length - 1 } })), o);
 
-  // ------------------------------------------------------------ 01 cover
+  // ------------------------------------------------------------ 1 cover
   pres.addSection({ title: 'Opening' });
   {
     const s = pres.addSlide({ masterName: 'MACK_COVER', sectionTitle: 'Opening' });
     s.addImage({ path: img.agra.path, x: 6.35, y: 0, w: W - 6.35, h: 7.5, sizing: { type: 'cover', w: W - 6.35, h: 7.5 }, altText: 'Agra Fort Project living room under a circular skylight (photography)' });
     s.addImage({ path: monoLight, x: 0.7, y: 0.7, w: 0.52, h: 0.52 * 663 / 685, altText: 'MACK monogram' });
     T(s, 'MACK & CO ARCHITECTS', { x: 1.45, y: 0.82, w: 4, h: 0.3, size: 10, color: PAPER, spacing: 2.4 });
-    T(s, 'Digital\nFoundation', { x: 0.7, y: 2.0, w: 5.4, h: 1.6, size: 50, color: PAPER, serif: true, lsm: 0.98 });
-    T(s, 'A working plan for search visibility, local presence, measurement and studio infrastructure', { x: 0.7, y: 3.85, w: 5.0, h: 0.9, size: 16, color: ONNIGHT2, lsm: 1.2 });
+    T(s, 'Digital\nFoundation', { x: 0.7, y: 2.1, w: 5.4, h: 1.6, size: 52, color: PAPER, serif: true, lsm: 0.98 });
+    T(s, 'The connected digital layer around MACK’s architecture', { x: 0.7, y: 3.95, w: 4.9, h: 0.8, size: 16, color: ONNIGHT2, lsm: 1.2 });
     hair(s, 0.7, 5.95, 5.0, INK3);
     T(s, 'Prepared for Ayushi and the MACK & Co team', { x: 0.7, y: 6.08, w: 5.2, h: 0.28, size: 11, color: PAPER });
     T(s, 'October 2026  ·  Yash Sharma', { x: 0.7, y: 6.4, w: 5.2, h: 0.28, size: 11, color: ONNIGHT2 });
     T(s, 'Cover: Agra Fort Project, Dharampur — photography', { x: 0.7, y: 6.95, w: 5.2, h: 0.22, size: 8.5, color: ONNIGHT2 });
-    s.addNotes(
-      'A working plan for what happens if we proceed. ' +
-        'Structure: where MACK stands today, how clients find a studio, what needs to be in place, how it will be implemented in milestones, how progress is measured, and the next step. ' +
-        'The plan is based on Google\'s official documentation and on checks of MACK\'s current site carried out in October 2026.'
-    );
+    s.addNotes('A short, visual plan for the digital layer around the studio: how people discover MACK, what is being built, how it is implemented and measured, and the next steps.');
   }
 
-  // ------------------------------------------------------------ 02 starting point
-  pres.addSection({ title: 'Context' });
+  // ------------------------------------------------------------ 2 the digital destination
+  pres.addSection({ title: 'System' });
   {
-    const s = content('Context', '01 — Starting point', 'Where MACK stands today',
-      'Facts, checked in October 2026. Search: the live site carries a "noindex" instruction, so Google is told not to list it. Maps: the map link on the site opens a Google listing named "Karan Desai, Architecture + Design" at the studio\'s address — the studio decides how its Google listing should represent MACK. ' +
-        'Identity: contact email is a Gmail address. Portfolio: 6 of 10 projects state no location, only 2 have a written description. Measurement: nothing is tracked. ' +
-        'The positive: the new site already has the technical groundwork — the work now is switching it on, connecting it and filling it with real project information.');
-    lede(s, 'A new website is ready. Search, maps, identity and measurement around it are not yet in place.');
+    const s = content('System', '01 — The digital destination', 'One destination for every way MACK is found',
+      'Read left to right. However someone first hears of MACK — a search, Maps, Instagram, a publication or a recommendation — they arrive at the studio\'s own website. ' +
+        'There they explore projects and the studio, then act: an enquiry, a call, directions or an email. Every step is measured, and the measurements feed a monthly round of improvement.');
     const cols = [
-      { x: L, w: 1.9, t: 'Area' },
-      { x: 2.7, w: 4.5, t: 'Today' },
-      { x: 7.5, w: 5.23, t: 'What it means' },
+      { h: 'Discovery', items: ['Google Search', 'Google Maps', 'Instagram', 'Publications', 'Referrals'] },
+      { h: 'Destination', items: ['Website', 'Portfolio', 'Studio identity'], dark: true },
+      { h: 'Discovery & trust', items: ['Projects', 'Services', 'Architecture', 'Studio'] },
+      { h: 'Action', items: ['Enquiry', 'Call', 'Directions', 'Email'] },
+      { h: 'Measurement', items: ['Analytics', 'Search Console', 'Business Profile'] },
     ];
-    const y0 = 2.35;
-    cols.forEach((c) => label(s, c.t, { x: c.x, y: y0, w: c.w, h: 0.25 }));
-    const rows = [
-      ['Search', 'The live site asks Google not to list it', 'MACK cannot appear in Google results yet'],
-      ['Maps', 'The map link opens a listing under another name', 'Name and Google listing need to be aligned'],
-      ['Identity', 'A Gmail address; no studio domain in use', 'No consistent, studio-owned identity'],
-      ['Portfolio', '10 projects; most lack place, year and story', 'Projects can’t be found for what they are'],
-      ['Measurement', 'No analytics or enquiry tracking', 'No evidence of what brings clients'],
-    ];
-    const rh = 0.56;
-    rows.forEach((r, i) => {
-      const y = y0 + 0.36 + i * rh;
-      hair(s, L, y, CW, i === 0 ? INK : RULE);
-      T(s, r[0], { x: cols[0].x, y: y + 0.12, w: cols[0].w, h: rh - 0.14, size: 15, serif: true });
-      T(s, r[1], { x: cols[1].x, y: y + 0.14, w: cols[1].w, h: rh - 0.14, size: 13.5, color: INK2 });
-      T(s, r[2], { x: cols[2].x, y: y + 0.14, w: cols[2].w, h: rh - 0.14, size: 13.5 });
-    });
-    hair(s, L, y0 + 0.36 + rows.length * rh, CW, RULE);
-    box(s, L, 5.75, CW, 0.95, { fill: STONE, line: false });
-    T(s, 'Already in place', { x: L + 0.25, y: 5.9, w: 2.4, h: 0.3, size: 15, serif: true });
-    T(s, 'The new site: structured pages, project markup, an image sitemap, redirects from old links and indexing that can be switched on at launch. The foundation is built — it needs to be connected, filled and measured.',
-      { x: 2.95, y: 5.9, w: 9.5, h: 0.7, size: 13, color: INK2 });
-  }
-
-  // ------------------------------------------------------------ 03 digital destination
-  pres.addSection({ title: 'The system' });
-  {
-    const s = content('The system', '02 — The digital destination', 'Every channel leads to one place',
-      'Most new clients of a studio arrive through a recommendation, Instagram or a publication — and then search the studio\'s name before getting in touch. ' +
-        'So the website is the destination every channel leads to, and its first job is to confirm the recommendation. ' +
-        'Left to right: discovery channels, the website, what visitors explore, the actions they take, and the consultation. The bottom row shows where each piece of the plan works.');
-    lede(s, 'Most clients arrive through a recommendation, then search the studio’s name. What they find should confirm it.', 1.58, CW);
-    const cx = { d: L, dw: 1.95, wx: 3.25, ww: 2.15, ex: 6.15, ew: 1.95, ax: 8.75, aw: 1.75, mx: 11.05, mw: 1.68 };
-    const hy = 2.32;
-    label(s, 'Discover', { x: cx.d, y: hy, w: cx.dw, h: 0.25 });
-    label(s, 'Destination', { x: cx.wx, y: hy, w: cx.ww, h: 0.25 });
-    label(s, 'Explore', { x: cx.ex, y: hy, w: cx.ew, h: 0.25 });
-    label(s, 'Act', { x: cx.ax, y: hy, w: cx.aw, h: 0.25 });
-    label(s, 'Meet', { x: cx.mx, y: hy, w: cx.mw, h: 0.25 });
-    const mid = 4.02;
-    const disc = ['Google Search', 'Google Maps', 'Instagram', 'Referral', 'Publications'];
-    const nh = 0.42, ng = 0.14;
-    const dy0 = mid - (disc.length * nh + (disc.length - 1) * ng) / 2;
-    disc.forEach((t, i) => {
-      const y = dy0 + i * (nh + ng);
-      node(s, cx.d, y, cx.dw, nh, t, { size: 12.5 });
-      ln(s, cx.d + cx.dw, y + nh / 2, cx.wx, mid, { color: INK3, lw: 0.6 });
-    });
-    box(s, cx.wx, mid - 0.62, cx.ww, 1.24, { fill: NIGHT, line: false });
-    T(s, 'MACK website', { x: cx.wx + 0.18, y: mid - 0.42, w: cx.ww - 0.3, h: 0.45, size: 19, color: PAPER, serif: true });
-    T(s, 'the studio’s own address', { x: cx.wx + 0.18, y: mid + 0.08, w: cx.ww - 0.3, h: 0.3, size: 11, color: ONNIGHT2 });
-    const exp = ['Projects', 'Services', 'Studio', 'Credibility'];
-    const eg = 0.26;
-    const ey0 = mid - (exp.length * nh + (exp.length - 1) * eg) / 2;
-    exp.forEach((t, i) => {
-      const y = ey0 + i * (nh + eg);
-      node(s, cx.ex, y, cx.ew, nh, t, { size: 12.5 });
-      ln(s, cx.wx + cx.ww, mid, cx.ex, y + nh / 2, { color: INK3, lw: 0.6 });
-    });
-    ln(s, cx.ex + cx.ew + 0.08, mid, cx.ax - 0.08, mid, { arrow: true, lw: 0.75 });
-    const act = ['Enquiry', 'Call', 'Directions', 'Email'];
-    act.forEach((t, i) => {
-      const y = ey0 + i * (nh + eg);
-      node(s, cx.ax, y, cx.aw, nh, t, { size: 12.5, dash: 'dash' });
-      ln(s, cx.ax + cx.aw, y + nh / 2, cx.mx, mid, { color: INK3, lw: 0.6 });
-    });
-    box(s, cx.mx, mid - 0.62, cx.mw, 1.24, { fill: STONE, line: false });
-    T(s, 'Consultation or studio visit', { x: cx.mx + 0.14, y: mid - 0.5, w: cx.mw - 0.24, h: 1.0, size: 14, serif: true, valign: 'middle' });
-
-    hair(s, L, 5.72, CW, INK);
-    const pw = [
-      [cx.d, cx.dw + 0.4, 'SEO · Google Business Profile · publications'],
-      [cx.wx, cx.ww, 'Website experience'],
-      [cx.ex, cx.ew, 'Portfolio architecture'],
-      [cx.ax, cx.aw, 'Enquiry & call tracking'],
-      [cx.mx, cx.mw, 'Studio enquiry log'],
-    ];
-    pw.forEach(([x, w, t]) => T(s, t, { x, y: 5.84, w, h: 0.5, size: 12, color: INK2 }));
-    T(s, 'Analytics and monthly improvement run across every stage.', { x: L, y: 6.45, w: CW, h: 0.3, size: 12, color: INK3, italic: true });
-  }
-
-  // ------------------------------------------------------------ 04 connected system
-  {
-    const s = content('The system', '03 — What the infrastructure includes', 'One connected system, owned by the studio',
-      'The domain is the root: the website, email, Search Console verification and the workspace all depend on it. That is why it is registered in MACK\'s name and decided first. ' +
-        'Principle: MACK owns every account; I am given access to do the work. If I am unavailable, the studio loses nothing. ' +
-        'Search Console, Analytics and the Business Profile feed one monthly report. Backup sits apart from the cloud workspace on purpose.');
-    lede(s, 'The studio’s domain is the root. Website, email, workspace and Google’s tools all connect to it.');
-    const dy = 4.25;
-    box(s, L, dy - 0.85, 2.55, 1.7, { fill: NIGHT, line: false });
-    T(s, 'Studio domain', { x: L + 0.2, y: dy - 0.6, w: 2.2, h: 0.45, size: 20, color: PAPER, serif: true });
-    T(s, 'registered in MACK’s name', { x: L + 0.2, y: dy - 0.08, w: 2.2, h: 0.3, size: 11, color: ONNIGHT2 });
-    T(s, 'decided first', { x: L + 0.2, y: dy + 0.22, w: 2.2, h: 0.3, size: 11, color: ONNIGHT2 });
-    const rows = [
-      ['Website', 'the digital destination, on the studio’s own address'],
-      ['Email', 'name@ the studio’s domain'],
-      ['Cloud workspace', 'shared project storage for 2–3 TB'],
-      ['Search Console', 'how Google sees and shows the site'],
-      ['Analytics', 'what visitors do; where enquiries come from'],
-      ['Business Profile', 'the studio’s card on Google and Maps'],
-    ];
-    const nx = 3.85, nw = 2.45, rh = 0.5, rg = 0.17;
-    const ry0 = dy - (rows.length * rh + (rows.length - 1) * rg) / 2;
-    const yc = [];
-    rows.forEach(([n, d], i) => {
-      const y = ry0 + i * (rh + rg);
-      yc.push(y + rh / 2);
-      node(s, nx, y, nw, rh, n, { size: 14, serif: true });
-      ln(s, L + 2.55, dy, nx, y + rh / 2, { color: INK3, lw: 0.6 });
-      T(s, d, { x: nx + nw + 0.3, y, w: 3.3, h: rh, size: 12.5, color: INK2, valign: 'middle' });
-    });
-    // backup, apart from the workspace
-    const bx = 10.55;
-    ln(s, 9.95, yc[2], bx, yc[2], { dash: 'dash', color: INK3, lw: 0.75 });
-    node(s, bx, yc[2] - 0.32, R - bx, 0.64, 'Independent backup, one copy off-site', { size: 11.5, dash: 'dash' });
-    // report bracket
-    const by = [yc[3], yc[5]];
-    ln(s, 10.25, by[0], 10.25, by[1], { color: INK, lw: 0.75 });
-    ln(s, 9.95, by[0], 10.25, by[0], { color: INK, lw: 0.75 });
-    ln(s, 9.95, yc[4], 10.25, yc[4], { color: INK, lw: 0.75 });
-    ln(s, 9.95, by[1], 10.25, by[1], { color: INK, lw: 0.75 });
-    ln(s, 10.25, yc[4], bx, yc[4], { arrow: true, lw: 0.75 });
-    box(s, bx, yc[4] - 0.32, R - bx, 0.64, { fill: STONE, line: false });
-    T(s, 'One monthly report', { x: bx + 0.12, y: yc[4] - 0.32, w: R - bx - 0.2, h: 0.64, size: 13, serif: true, valign: 'middle' });
-    T(s, [
-      { text: 'Principle  ', options: { bold: true, color: INK } },
-      { text: 'MACK owns every account. I am given access to do the work.', options: { color: INK2 } },
-    ], { x: L, y: 6.45, w: CW, h: 0.3, size: 12.5 });
-  }
-
-  // ------------------------------------------------------------ 05 search visibility (section)
-  pres.addSection({ title: 'Search' });
-  {
-    const s = content('Search', '04 — Search visibility', 'Built from the ground up',
-      'Search visibility as a building section. 01 technical: Google can find, read and index every page quickly. 02 structure: each page clearly says what it is (titles, headings, structured data). ' +
-        '03 relevance: pages that match how people actually search — services and projects. 04 local: the Business Profile and consistent details for Maps. 05 authority: publications, platforms and reviews. Measurement runs alongside all of them. ' +
-        'Today: layers 01–02 are largely built into the new site; 03–05 depend on the studio\'s project information, a verified profile and published work.');
-    lede(s, 'How a studio becomes visible in Google, layer by layer.');
-    const layers = [
-      ['05', 'Authority', 'publications, platforms, reviews'],
-      ['04', 'Local presence', 'Business Profile, Maps, consistent details'],
-      ['03', 'Relevance', 'services and projects that match real searches'],
-      ['02', 'Structure & meaning', 'page architecture, titles, structured data'],
-      ['01', 'Technical foundation', 'crawlable, indexable, fast on mobile'],
-    ];
-    const bh = 0.72, bg = 0.07, base = 6.6;
-    const widths = [5.0, 5.8, 6.6, 7.35, 8.1];
-    layers.forEach(([n, t, d], i) => {
-      const y = base - (layers.length - i) * (bh + bg) + bg;
-      const w = widths[i];
-      const dark = i === layers.length - 1;
-      box(s, L, y, w, bh, { fill: dark ? NIGHT : i % 2 ? STONE : PAPER, line: dark ? false : INK, lw: 0.75 });
-      T(s, n, { x: L + 0.18, y, w: 0.5, h: bh, size: 12, color: dark ? ONNIGHT2 : INK3, valign: 'middle' });
-      T(s, t, { x: L + 0.62, y, w: 2.5, h: bh, size: 15, serif: true, color: dark ? PAPER : INK, valign: 'middle' });
-      T(s, d, { x: L + 2.85, y, w: w - 3.0, h: bh, size: 12, color: dark ? ONNIGHT2 : INK2, valign: 'middle' });
-    });
-    const top = base - layers.length * (bh + bg) + bg;
-    box(s, 8.95, top, 0.5, base - top, { line: INK, lw: 0.75 });
-    T(s, '06  MEASURED AT EVERY LEVEL', { x: 8.95 - (base - top) / 2 + 0.25, y: top + (base - top) / 2 - 0.15, w: base - top, h: 0.3, size: 9.5, color: INK, spacing: 1.6, align: 'center', rotate: 270 });
-    T(s, 'Each layer depends on the one below.', { x: 9.85, y: top + 0.05, w: 2.88, h: 0.9, size: 18, serif: true, lsm: 1.1 });
-    T(s, 'Shortcuts at the top — bought links, keyword tricks — don’t hold without the layers underneath, and they break Google’s rules.', { x: 9.85, y: top + 1.1, w: 2.88, h: 1.3, size: 12.5, color: INK2, lsm: 1.2 });
-    hair(s, 9.85, top + 2.55, 2.88, INK);
-    label(s, 'Where MACK is today', { x: 9.85, y: top + 2.68, w: 2.88, h: 0.25 });
-    T(s, '01–02 largely built into the new site. 03–05 need project information, a verified profile and published work.', { x: 9.85, y: top + 2.98, w: 2.88, h: 0.9, size: 12.5, color: INK2, lsm: 1.2 });
-  }
-
-  // ------------------------------------------------------------ 06 three kinds of search
-  {
-    const s = content('Search', '05 — How people search for a studio', 'Three kinds of search, three timescales',
-      'Confirm: someone already heard of MACK and searches the name — this is the fastest and most controllable win, and it supports the referrals MACK already gets. Note: "MACK" alone is ambiguous (there is a Mark Mack architecture practice in the US), so the full name is used consistently. ' +
-        'Shortlist: local commercial searches like "architect in Andheri West" — decided largely in Google Maps by relevance, distance and prominence; competitive, built over months. ' +
-        'Discover: project, typology, place and image searches — long-tail and compounding, but only possible once projects carry real information. Example queries are illustrations to be validated, not targets already won.');
-    const cols = [
-      { n: 'Confirm', k: 'Searches for the studio’s name', q: '“MACK & Co Architects”\n“mack architects mumbai”', win: 'Website first, a correct Business Profile beside it, consistent details everywhere', sp: 3, ct: 3 },
-      { n: 'Shortlist', k: 'Local searches for a studio', q: '“architect in Andheri West”\n“interior designer Mumbai”', win: 'A complete, verified profile, reviews, service and studio pages that match the search', sp: 2, ct: 2 },
-      { n: 'Discover', k: 'Searches for work, places, ideas', q: '“sandstone resort Rajasthan”\n“second home interiors Dharampur”', win: 'Project pages with real facts, a written story and well-described images', sp: 1, ct: 2 },
-    ];
-    const cw = 3.75, gap = 0.44;
+    const cw = 2.05, gap = (CW - 5 * cw) / 4, by = 2.35, bh = 2.85, mid = by + bh / 2;
     cols.forEach((c, i) => {
       const x = L + i * (cw + gap);
-      const y = 1.85;
-      T(s, String(i + 1).padStart(2, '0'), { x, y, w: 0.6, h: 0.3, size: 11, color: INK3 });
-      T(s, c.n, { x, y: y + 0.3, w: cw, h: 0.6, size: 28, serif: true });
-      label(s, c.k, { x, y: y + 0.98, w: cw, h: 0.25 });
-      hair(s, x, y + 1.35, cw, INK);
-      T(s, c.q, { x, y: y + 1.5, w: cw, h: 0.75, size: 14, serif: true, italic: true, color: INK2, lsm: 1.25 });
-      label(s, 'What wins', { x, y: y + 2.42, w: cw, h: 0.25 });
-      T(s, c.win, { x, y: y + 2.7, w: cw, h: 0.85, size: 13, color: INK2, lsm: 1.18 });
-      hair(s, x, y + 3.68, cw, RULE);
-      [['Speed', c.sp], ['Control', c.ct]].forEach(([t, v], j) => {
-        const yy = y + 3.82 + j * 0.36;
-        T(s, t, { x, y: yy, w: 1.1, h: 0.26, size: 11.5, color: INK3 });
-        for (let d = 0; d < 3; d++) dot(s, x + 1.15 + d * 0.27, yy + 0.04, 0.17, d < v);
-      });
+      label(s, c.h, { x, y: 1.95, w: cw, h: 0.25 });
+      if (c.dark) {
+        box(s, x, by, cw, bh, { fill: NIGHT, line: false });
+        T(s, 'MACK', { x: x + 0.22, y: by + 0.25, w: cw - 0.4, h: 0.6, size: 30, serif: true, color: PAPER });
+        c.items.forEach((t, j) => T(s, t, { x: x + 0.22, y: by + 1.2 + j * 0.45, w: cw - 0.4, h: 0.35, size: 14, color: ONNIGHT2 }));
+      } else {
+        box(s, x, by, cw, bh, { line: INK, lw: 0.75, fill: i === 4 ? STONE : undefined });
+        const step = bh / c.items.length;
+        c.items.forEach((t, j) => {
+          if (j > 0) hair(s, x + 0.15, by + j * step, cw - 0.3, RULE);
+          T(s, t, { x: x + 0.2, y: by + j * step, w: cw - 0.3, h: step, size: 14, serif: true, valign: 'middle' });
+        });
+      }
+      if (i < cols.length - 1) ln(s, x + cw + 0.07, mid, x + cw + gap - 0.07, mid, { arrow: true, lw: 0.9 });
     });
-    T(s, 'Early progress shows first in “Confirm”. “Shortlist” and “Discover” compound over months. Example searches are illustrations, to be validated.',
-      { x: L, y: 6.55, w: CW, h: 0.3, size: 11.5, color: INK3, italic: true });
+    // improvement loop: measurement → back to discovery
+    const x0 = L + cw / 2, x4 = L + 4 * (cw + gap) + cw / 2, ly = 5.75;
+    ln(s, x4, by + bh, x4, ly, { color: SAND, lw: 1 });
+    ln(s, x4, ly, x0, ly, { color: SAND, lw: 1 });
+    ln(s, x0, ly, x0, by + bh + 0.04, { color: SAND, lw: 1, arrow: true });
+    box(s, W / 2 - 1.55, ly - 0.22, 3.1, 0.44, { fill: PAPER, line: false });
+    T(s, 'Continuous improvement', { x: W / 2 - 1.55, y: ly - 0.22, w: 3.1, h: 0.44, size: 16, serif: true, italic: true, color: SAND, align: 'center', valign: 'middle' });
   }
 
-  // ------------------------------------------------------------ 07 implementation
+  // ------------------------------------------------------------ 3 discovery system
   {
-    const s = content('Search', '06 — SEO implementation', 'What will actually be implemented',
-      'SEO as a concrete list of work. Technical items are mostly about switching on and verifying what the new site already supports. Pages: titles, headings, service pages and internal links. ' +
-        'Portfolio: the biggest gap — real facts and a short written story per project; renders labelled as visualisation and photographers credited, which is also what editors and Google ask for. Local and authority: profile, consistency, reviews within Google\'s rules, free platform profiles, and publication kits.');
+    const s = content('System', '02 — The discovery system', 'SEO is one part of a connected system',
+      'Digital marketing — content, Instagram, publications — creates and widens awareness. SEO makes MACK findable at the moment people actively search, in Google Search and Maps. ' +
+        'The website turns that attention into understanding and trust. The Google Business Profile connects local discovery with calls, directions and visits. Analytics shows what actually produces enquiries, which shapes the next round of work.');
+    s.addImage({ path: img.udaipur.path, x: L, y: 1.75, w: 3.75, h: 4.95, sizing: { type: 'cover', w: 3.75, h: 4.95 }, altText: 'Udaipur Resort sandstone façade at dusk (visualisation)' });
+    T(s, 'Udaipur Resort, Rajasthan — visualisation', { x: L, y: 6.75, w: 3.75, h: 0.2, size: 8.5, color: INK3 });
+    const nodes = ['Content · Social · Publications', 'Awareness', 'Search + Maps', 'MACK website', 'Projects + credibility', 'Enquiry · Call · Visit', 'Analytics'];
+    const sx = 5.0, sw = 3.3, nh = 0.44, ng = 0.28, y0 = 1.75;
+    const yc = [];
+    nodes.forEach((t, i) => {
+      const y = y0 + i * (nh + ng);
+      yc.push(y + nh / 2);
+      const dark = i === 3;
+      box(s, sx, y, sw, nh, { fill: dark ? NIGHT : i === 6 ? STONE : undefined, line: dark || i === 6 ? false : INK, lw: 0.75 });
+      T(s, t, { x: sx, y, w: sw, h: nh, size: dark ? 15 : 13, serif: dark, color: dark ? PAPER : INK, align: 'center', valign: 'middle' });
+      if (i < nodes.length - 1) arrowDown(s, sx + sw / 2, y + nh + 0.04, y + nh + ng - 0.04, INK);
+    });
+    // loop back to the top
+    const lx = sx - 0.32;
+    ln(s, sx, yc[6], lx, yc[6], { color: SAND, lw: 1 });
+    ln(s, lx, yc[6], lx, yc[0], { color: SAND, lw: 1 });
+    ln(s, lx, yc[0], sx - 0.04, yc[0], { color: SAND, lw: 1, arrow: true });
+    // roles
+    const roles = [
+      [0, 'Digital marketing', 'creates and expands discovery'],
+      [2, 'SEO', 'found when people actively search'],
+      [3, 'Website', 'turns attention into trust'],
+      [5, 'Google Business Profile', 'calls, directions and visits'],
+      [6, 'Analytics', 'shows what produces enquiries'],
+    ];
+    const rx = 8.85;
+    roles.forEach(([i, n, d]) => {
+      ln(s, sx + sw + 0.06, yc[i], rx - 0.12, yc[i], { color: RULE, lw: 0.75 });
+      T(s, n, { x: rx, y: yc[i] - 0.3, w: R - rx, h: 0.32, size: 15, serif: true, color: i === 2 ? SAND : INK });
+      T(s, d, { x: rx, y: yc[i] + 0.02, w: R - rx, h: 0.3, size: 12, color: INK2 });
+    });
+  }
+
+  // ------------------------------------------------------------ 4 what we are building
+  pres.addSection({ title: 'Foundation' });
+  {
+    const s = content('Foundation', '03 — What we are building', 'A complete digital foundation, owned by MACK',
+      'The studio domain is the root: email, website, workspace and Google\'s tools all connect to it, so it is registered in MACK\'s name first. ' +
+        'Every account belongs to the studio; access is granted to implement and documented in an access map. First items to confirm: the studio\'s real-world name, the domain, and how the existing Google listing at the studio address should represent MACK.');
+    const dx = L, dy = 1.95, dw = 3.0, dh = 4.25;
+    box(s, dx, dy, dw, dh, { fill: NIGHT, line: false });
+    label(s, 'The root', { x: dx + 0.25, y: dy + 0.3, w: 2.5, h: 0.25, color: ONNIGHT2 });
+    T(s, 'Studio domain', { x: dx + 0.25, y: dy + 0.62, w: 2.6, h: 0.5, size: 24, serif: true, color: PAPER });
+    T(s, 'Registered to MACK', { x: dx + 0.25, y: dy + 1.2, w: 2.6, h: 0.3, size: 13, color: ONNIGHT2 });
+    hair(s, dx + 0.25, dy + 2.9, dw - 0.5, INK3);
+    list(s, ['Every account studio-owned', 'Access granted to implement', 'Documented in an access map'], { x: dx + 0.25, y: dy + 3.05, w: dw - 0.45, h: 1.0, size: 12, color: ONNIGHT2, psa: 4 });
     const groups = [
-      ['Technical', ['Indexing switched on at launch', 'Search Console verified, sitemap submitted', 'One domain; old links redirected', 'Structured data for studio, site and projects', 'Faster mobile loading on the home page']],
-      ['Pages', ['Titles and descriptions mapped to real searches', 'Clean headings and page structure', 'Service pages: Architecture, Interiors', 'Links between related projects and services', 'Enquiries, calls and emails tracked']],
-      ['Portfolio', ['Facts per project: place, type, status, year', 'A short written story for each project', 'Descriptive image names and alt text', 'Photographers credited, renders labelled', 'A publishing routine for new work']],
-      ['Local & authority', ['Business Profile verified and complete', 'Same name, address, phone everywhere', 'Review requests within Google’s rules', 'Archello and Architizer profiles', 'Submission kits for publications']],
+      ['Identity', [['Professional email', 'name@ the studio domain'], ['Website', 'launched and indexed']]],
+      ['Workspace', [['Cloud workspace', '2–3 TB, shared by project'], ['Independent backup', 'versioned, one copy off-site']]],
+      ['Visibility', [['Search Console', 'how Google sees the site'], ['Analytics', 'visits, enquiries, calls'], ['Business Profile', 'Google Search and Maps']]],
     ];
-    const cw = 2.84, gap = 0.257;
+    const gx0 = 4.1, gw = 2.72, gg = (R - gx0 - 3 * gw) / 2, busY = dy + 0.12;
+    ln(s, dx + dw, busY, gx0 + 2 * (gw + gg) + gw / 2, busY, { color: INK, lw: 0.75 });
     groups.forEach(([g, items], i) => {
-      const x = L + i * (cw + gap);
-      const y = 1.78;
-      T(s, String(i + 1).padStart(2, '0'), { x, y, w: 0.5, h: 0.28, size: 11, color: INK3 });
-      T(s, g, { x, y: y + 0.28, w: cw, h: 0.45, size: 19, serif: true });
-      items.forEach((it, j) => {
-        const yy = y + 0.92 + j * 0.86;
-        hair(s, x, yy, cw, j === 0 ? INK : RULE);
-        T(s, it, { x, y: yy + 0.12, w: cw, h: 0.68, size: 13.5, color: INK2, lsm: 1.15 });
+      const x = gx0 + i * (gw + gg);
+      ln(s, x + gw / 2, busY, x + gw / 2, busY + 0.25, { color: INK, lw: 0.75 });
+      label(s, g, { x, y: busY + 0.36, w: gw, h: 0.25, align: 'center' });
+      items.forEach(([n, d], j) => {
+        const y = busY + 0.8 + j * 1.12;
+        box(s, x, y, gw, 0.95, { line: INK, lw: 0.75, fill: n === 'Independent backup' ? STONE : undefined });
+        T(s, n, { x: x + 0.18, y: y + 0.14, w: gw - 0.3, h: 0.36, size: 16, serif: true });
+        T(s, d, { x: x + 0.18, y: y + 0.52, w: gw - 0.3, h: 0.3, size: 12, color: INK2 });
       });
     });
   }
 
-  // ------------------------------------------------------------ 07b impact model
+  // ------------------------------------------------------------ 5 search + portfolio
+  pres.addSection({ title: 'Search' });
   {
-    const s = content('Search', '07 — From work to impact', 'Work, what it produces, why it matters',
-      'Each activity in the plan, read left to right: the work, what it immediately produces, and the business effect it makes possible. ' +
-        'The right-hand column describes what becomes possible and measurable — not a guaranteed number. Technical SEO makes MACK eligible to appear at all; the Business Profile makes calls and directions possible from Google; project pages let the portfolio be found for what it is; analytics and the enquiry log turn opinions into evidence.');
-    const rows = [
-      ['Technical SEO', 'Google can crawl and index every page', 'MACK becomes eligible to appear in search'],
-      ['Business Profile', 'A verified, complete card on Google and Maps', 'Calls and directions from Google, measured'],
-      ['Project pages', 'Each project findable on its own', 'Reaches people looking for similar work'],
-      ['Image SEO & credits', 'Images understood by Google Images', 'Visual discovery, credited to the studio'],
-      ['Analytics & enquiry log', 'Sources of enquiries become visible', 'Decisions based on evidence, not assumptions'],
-      ['Domain & studio email', 'One identity the studio owns', 'Trust from the first contact'],
-      ['Independent backup', 'A recoverable copy of every project', 'The studio’s archive is protected'],
+    const s = content('Search', '04 — Search and portfolio', 'From technical foundation to discovery',
+      'Visibility is built from the ground up. A technical foundation (indexing, structured data, mobile speed); service pages for architecture, interiors and objects; project pages with place, type, year, a written story and credited images; ' +
+        'local presence through the Google Business Profile, reviews and a profile for each new studio; and authority through architecture platforms and publications. The result is discovery by name, by service and by project. ' +
+        'A publishing system makes every new project follow the same standard.');
+    const layers = [
+      ['Discovery', 'found by name, service and project', 'top'],
+      ['Authority', 'publications · Archello · Architizer'],
+      ['Local presence', 'Business Profile · reviews · new studios'],
+      ['Projects', 'facts · story · image SEO & credits'],
+      ['Services', 'Architecture · Interiors · Objects'],
+      ['Technical foundation', 'indexing · structured data · speed', 'base'],
     ];
-    const c1 = L, c1w = 2.95, c2 = 3.95, c2w = 3.9, c3 = 8.65, c3w = R - 8.65;
-    const y0 = 1.72;
-    label(s, 'Work', { x: c1, y: y0, w: c1w, h: 0.25 });
-    label(s, 'Immediate output', { x: c2, y: y0, w: c2w, h: 0.25 });
-    label(s, 'Business impact', { x: c3, y: y0, w: c3w, h: 0.25 });
-    const rh = 0.66;
-    rows.forEach(([a, b, c], i) => {
-      const y = y0 + 0.34 + i * rh;
-      hair(s, L, y, CW, i === 0 ? INK : RULE);
-      T(s, a, { x: c1, y: y + 0.16, w: c1w, h: 0.4, size: 15, serif: true });
-      ln(s, c2 - 0.55, y + rh / 2, c2 - 0.15, y + rh / 2, { arrow: true, color: INK3, lw: 0.75 });
-      T(s, b, { x: c2, y: y + 0.18, w: c2w, h: 0.4, size: 13, color: INK2 });
-      ln(s, c3 - 0.55, y + rh / 2, c3 - 0.15, y + rh / 2, { arrow: true, color: INK3, lw: 0.75 });
-      T(s, c, { x: c3, y: y + 0.18, w: c3w, h: 0.4, size: 13, color: INK });
+    const bh = 0.66, bg = 0.08, base = 6.68;
+    const widths = [4.7, 5.25, 5.8, 6.35, 6.9, 7.45];
+    layers.forEach(([n, d, kind], i) => {
+      const y = base - (layers.length - i) * (bh + bg) + bg;
+      const w = widths[i];
+      const dark = kind === 'base';
+      const top = kind === 'top';
+      box(s, L, y, w, bh, { fill: dark ? NIGHT : top ? undefined : i % 2 ? STONE : PAPER, line: dark ? false : top ? SAND : INK, lw: top ? 1.25 : 0.75 });
+      T(s, n, { x: L + 0.2, y, w: 2.4, h: bh, size: 15, serif: true, color: dark ? PAPER : top ? SAND : INK, valign: 'middle' });
+      T(s, d, { x: L + 2.55, y, w: w - 2.7, h: bh, size: 12, color: dark ? ONNIGHT2 : INK2, valign: 'middle' });
     });
-    hair(s, L, y0 + 0.34 + rows.length * rh, CW, RULE);
+    // project page
+    const px = 8.55, pw = R - px;
+    s.addImage({ path: img.redfort.path, x: px, y: 1.75, w: pw, h: 2.75, sizing: { type: 'cover', w: pw, h: 2.75 }, altText: 'Red Fort Project living room with a valley view (photography)' });
+    T(s, 'Red Fort Project, Dharampur — photography', { x: px, y: 4.56, w: pw, h: 0.2, size: 8.5, color: INK3 });
+    label(s, 'Every project page', { x: px, y: 4.95, w: pw, h: 0.22 });
+    [['Place · type · year'], ['The story of the brief'], ['Credited images'], ['Related work → enquiry']].forEach(([t], i) => {
+      const y = 5.25 + i * 0.32;
+      hair(s, px, y, pw, i === 0 ? INK : RULE);
+      T(s, t, { x: px, y: y + 0.05, w: pw, h: 0.26, size: 12.5, color: INK2 });
+    });
+    T(s, 'One publishing system for every new project', { x: px, y: 6.55, w: pw, h: 0.26, size: 12, italic: true, color: SAND });
   }
 
-  // ------------------------------------------------------------ 08 local presence
+  // ------------------------------------------------------------ 6 visibility to business
   {
-    const s = content('Search', '08 — Google & local presence', 'The studio’s card on Google',
-      'The Business Profile is what appears beside the website when someone searches the studio\'s name, and in Maps. First task: settle the existing listing at the studio\'s address — Google allows one profile per business per location; duplicates can lead to suspension. ' +
-        'Hours: Google\'s own guidelines say businesses that operate only by appointment should not list opening hours — the profile shows how to book instead. ' +
-        'New studios: a profile can be set up with an opening date up to a year ahead and appears 90 days before opening — only for a real, staffed location with signage. ' +
-        'Local ranking: Google says it is based on relevance, distance and prominence, and that there is no way to pay for better local ranking.');
-    // schematic card
-    label(s, 'Schematic', { x: L, y: 1.72, w: 4.6, h: 0.25 });
-    const cx = L, cy = 2.05, cw = 4.75, ch = 4.55;
-    box(s, cx, cy, cw, ch, { fill: SHEET, line: RULE });
-    s.addImage({ path: img.redfort.path, x: cx + 0.2, y: cy + 0.2, w: 2.75, h: 1.35, sizing: { type: 'cover', w: 2.75, h: 1.35 }, altText: 'Red Fort Project interior (photography)' });
-    box(s, cx + 3.05, cy + 0.2, 1.5, 0.64, { fill: STONE, line: false });
-    box(s, cx + 3.05, cy + 0.91, 1.5, 0.64, { fill: STONE, line: false });
-    T(s, 'studio', { x: cx + 3.05, y: cy + 0.2, w: 1.5, h: 0.64, size: 10, color: INK3, align: 'center', valign: 'middle' });
-    T(s, 'team at work', { x: cx + 3.05, y: cy + 0.91, w: 1.5, h: 0.64, size: 10, color: INK3, align: 'center', valign: 'middle' });
-    T(s, 'MACK & Co Architects', { x: cx + 0.2, y: cy + 1.75, w: cw - 0.4, h: 0.42, size: 19, serif: true });
-    T(s, 'Studio category  ·  Andheri West, Mumbai', { x: cx + 0.2, y: cy + 2.2, w: cw - 0.4, h: 0.28, size: 11.5, color: INK2 });
-    T(s, 'Visits by appointment', { x: cx + 0.2, y: cy + 2.5, w: cw - 0.4, h: 0.28, size: 11.5, color: INK2 });
-    ['Website', 'Directions', 'Call'].forEach((b, i) => {
-      box(s, cx + 0.2 + i * 1.47, cy + 2.98, 1.32, 0.4, { round: 0.2, line: INK });
-      T(s, b, { x: cx + 0.2 + i * 1.47, y: cy + 2.98, w: 1.32, h: 0.4, size: 11.5, align: 'center', valign: 'middle' });
-    });
-    hair(s, cx + 0.2, cy + 3.62, cw - 0.4, RULE);
-    T(s, 'Reviews from clients  ·  Services  ·  Photos', { x: cx + 0.2, y: cy + 3.75, w: cw - 0.4, h: 0.28, size: 11, color: INK3 });
-    T(s, 'Each button is measured: calls, direction requests, website visits.', { x: cx + 0.2, y: cy + 4.05, w: cw - 0.4, h: 0.3, size: 10, color: INK3, italic: true });
-    // right list
-    const items = [
-      'One verified profile for each real studio — resolving the existing listing at the studio’s address first',
-      'The same name, address and phone on the profile, the website and Instagram',
-      'The website link tagged, so visits from Google Maps are measured on the site',
-      'Reviews requested from every client — never incentivised or filtered',
-      'New studios set up ahead: an opening date makes the profile visible 90 days before opening',
+    const s = content('Search', '05 — From visibility to business', 'From visibility to enquiries, measured monthly',
+      'The same journey, measured. Searches and Maps views come from Search Console and the Business Profile; visits, project exploration, enquiries, call taps and direction requests from Analytics and the studio\'s enquiry log. ' +
+        'Each month a one-page report and a live dashboard, owned by the studio, answer three questions: what changed, why it matters, and what happens next.');
+    const flow = [
+      ['Search · Maps · Content', 'Search Console', 'searches and views'],
+      ['Website', 'Analytics', 'visits by source'],
+      ['Project exploration', 'Analytics', 'most-viewed projects'],
+      ['Enquiry · Call · Directions', 'Analytics + log', 'enquiries and contact'],
+      ['Measurement', 'Dashboard', 'what produces enquiries'],
     ];
-    const rx = 6.05, rw = R - rx;
-    items.forEach((t, i) => {
-      const y = 2.05 + i * 0.8;
-      hair(s, rx, y, rw, i === 0 ? INK : RULE);
-      T(s, String(i + 1).padStart(2, '0'), { x: rx, y: y + 0.14, w: 0.5, h: 0.3, size: 13, color: SAND, serif: true });
-      T(s, t, { x: rx + 0.6, y: y + 0.13, w: rw - 0.6, h: 0.62, size: 13.5, color: INK2, lsm: 1.15 });
-    });
-    hair(s, rx, 6.05, rw, RULE);
-    T(s, 'Google ranks local results on relevance, distance and prominence, and states there is no way to pay for a better local ranking. Distance can’t change; completeness and reputation can.',
-      { x: rx, y: 6.15, w: rw, h: 0.6, size: 11, color: INK3, italic: true, lsm: 1.15 });
-  }
-
-  // ------------------------------------------------------------ 09 portfolio as search asset
-  {
-    const s = content('Search', '09 — Portfolio as a search asset', 'Every project becomes a way in',
-      'Today most visitors can only find MACK by name. Each project page, written properly, becomes its own entry point: someone searching for a resort in Rajasthan, a second home in Dharampur, or a particular detail can land on MACK\'s work, explore related projects and get in touch. ' +
-        'What the studio provides: about ten minutes per project through a short form — place, type, status, year, the brief, what MACK did, credits, and whether the client allows publication. Renders are always labelled as visualisation.');
-    const flow = ['Project', 'Project page', 'Search & Images', 'Related work', 'Enquiry'];
-    const fw = 2.02, fg = 0.5, fy = 1.78;
-    flow.forEach((t, i) => {
+    const fw = 2.1, fg = (CW - 5 * fw) / 4, fy = 1.85, fh = 0.8;
+    flow.forEach(([n, src, m], i) => {
       const x = L + i * (fw + fg);
-      node(s, x, fy, fw, 0.5, t, { size: 13, fill: i === 1 ? NIGHT : undefined, color: i === 1 ? PAPER : INK, line: i === 1 ? NIGHT : INK, align: 'center' });
-      if (i < flow.length - 1) ln(s, x + fw + 0.07, fy + 0.25, x + fw + fg - 0.07, fy + 0.25, { arrow: true });
+      const dark = i === 4;
+      box(s, x, fy, fw, fh, { fill: dark ? NIGHT : i === 1 ? STONE : undefined, line: dark || i === 1 ? false : INK, lw: 0.75 });
+      T(s, n, { x: x + 0.12, y: fy, w: fw - 0.24, h: fh, size: 14, serif: true, color: dark ? PAPER : INK, align: 'center', valign: 'middle' });
+      if (i < flow.length - 1) ln(s, x + fw + 0.06, fy + fh / 2, x + fw + fg - 0.06, fy + fh / 2, { arrow: true, lw: 0.9 });
+      label(s, src, { x, y: fy + fh + 0.2, w: fw, h: 0.25, align: 'center' });
+      T(s, m, { x, y: fy + fh + 0.47, w: fw, h: 0.3, size: 12, color: INK2, align: 'center' });
     });
-    const iy = 2.62, ih = 3.75;
-    s.addImage({ path: img.redfort.path, x: L, y: iy, w: 5.6, h: ih, sizing: { type: 'cover', w: 5.6, h: ih }, altText: 'Red Fort Project, Dharampur: living room with a valley view (photography)' });
-    T(s, 'Red Fort Project, Dharampur — photography', { x: L, y: iy + ih + 0.08, w: 5.6, h: 0.25, size: 10, color: INK3 });
-    const rx = 6.75, rw = R - rx;
-    label(s, 'What each project page carries', { x: rx, y: iy, w: rw, h: 0.25 });
-    const rows = [
-      ['Title & place', 'Red Fort Project, Dharampur'],
-      ['Facts', 'Type · scope · status · year · collaborators'],
-      ['Story', '150–400 words: the brief, the site, what MACK did'],
-      ['Images', 'Descriptive names, alt text, photographer credited'],
-      ['Links', 'Related projects, the service, “discuss a similar project”'],
-      ['Data', 'Structured data, so search engines read it as a project'],
-    ];
-    rows.forEach(([k, v], i) => {
-      const y = iy + 0.35 + i * 0.5;
-      hair(s, rx, y, rw, i === 0 ? INK : RULE);
-      T(s, k, { x: rx, y: y + 0.12, w: 1.55, h: 0.3, size: 13, serif: true });
-      T(s, v, { x: rx + 1.6, y: y + 0.13, w: rw - 1.6, h: 0.32, size: 12.5, color: INK2 });
+    const iy = 3.95, ih = 2.75;
+    s.addImage({ path: img.rc.path, x: L, y: iy, w: 4.6, h: ih, sizing: { type: 'cover', w: 4.6, h: ih }, altText: 'RC House street elevation in brick and concrete (visualisation)' });
+    T(s, 'RC House — visualisation', { x: L, y: iy + ih + 0.05, w: 4.6, h: 0.2, size: 8.5, color: INK3 });
+    const rx = 5.75, rw = R - rx;
+    label(s, 'The monthly report', { x: rx, y: iy, w: rw, h: 0.25 });
+    hair(s, rx, iy + 0.36, rw, INK);
+    ['What changed?', 'Why it matters.', 'What happens next.'].forEach((t, i) => {
+      T(s, t, { x: rx, y: iy + 0.55 + i * 0.58, w: rw, h: 0.5, size: 24, serif: true, color: i === 2 ? SAND : INK });
     });
-    hair(s, rx, iy + 0.35 + rows.length * 0.5, rw, RULE);
-    box(s, rx, 6.12, rw, 0.6, { fill: STONE, line: false });
-    T(s, 'From the studio: about 10 minutes per project, through a short form.', { x: rx + 0.2, y: 6.12, w: rw - 0.3, h: 0.6, size: 13, valign: 'middle' });
+    hair(s, rx, iy + 2.38, rw, RULE);
+    T(s, 'One page  ·  live dashboard  ·  owned by the studio', { x: rx, y: iy + 2.48, w: rw, h: 0.28, size: 12, color: INK3 });
   }
 
-  // ------------------------------------------------------------ 10 professional infrastructure
-  pres.addSection({ title: 'Infrastructure' });
-  {
-    const s = content('Infrastructure', '10 — Professional infrastructure', 'Email, storage and a real backup',
-      'Email: moving from a Gmail address to the studio\'s domain, authenticated so mail is trusted. ' +
-        'Storage: 2–3 TB of project files in shared drives with one folder system per project and access by role; clients and consultants only see what has been issued to them. If Revit worksharing is used, central models need a different setup (Autodesk advises against cloud-sync folders). ' +
-        'Backup: the cloud keeps old versions only for a limited time (Google Drive: 30 days or 100 versions; deleted items recoverable by an admin for 25 days). A separate, versioned copy — with one copy off-site — is what protects the studio\'s archive. Restores are tested every quarter.');
-    const cols = [
-      ['Email', 'Gmail address → name@ studio domain', ['Authenticated (SPF, DKIM, DMARC) so mail is trusted', 'Shared addresses: studio@, careers@', 'Old address forwarded — nothing lost']],
-      ['Cloud workspace', 'Shared drives for 2–3 TB of project files', ['One folder system for every project', 'Access by role; clients see only what is issued', 'Large CAD and render files available on studio machines']],
-      ['Backup', 'An independent copy outside the cloud account', ['Versioned: last week’s or last month’s file can be recovered', 'One copy kept off-site', 'Restores tested every quarter']],
-    ];
-    const cw = 3.75, gap = 0.44;
-    cols.forEach(([n, sub, items], i) => {
-      const x = L + i * (cw + gap);
-      const y = 1.8;
-      T(s, String(i + 1).padStart(2, '0'), { x, y, w: 0.5, h: 0.28, size: 11, color: INK3 });
-      T(s, n, { x, y: y + 0.28, w: cw, h: 0.5, size: 22, serif: true });
-      T(s, sub, { x, y: y + 0.85, w: cw, h: 0.62, size: 14, color: INK, lsm: 1.15 });
-      items.forEach((it, j) => {
-        const yy = y + 1.6 + j * 0.78;
-        hair(s, x, yy, cw, j === 0 ? INK : RULE);
-        T(s, it, { x, y: yy + 0.12, w: cw, h: 0.6, size: 13, color: INK2, lsm: 1.15 });
-      });
-    });
-    box(s, L, 5.95, CW, 0.75, { fill: NIGHT, line: false });
-    T(s, 'Sync is not backup.', { x: L + 0.25, y: 5.95, w: 2.8, h: 0.75, size: 17, serif: true, color: PAPER, valign: 'middle' });
-    T(s, 'A deleted or overwritten file syncs everywhere within seconds, and cloud version history is time-limited. The backup is a separate copy.',
-      { x: 3.6, y: 5.95, w: 8.9, h: 0.75, size: 13, color: ONNIGHT2, valign: 'middle' });
-  }
-
-  // ------------------------------------------------------------ 11 measurement
-  pres.addSection({ title: 'Measurement' });
-  {
-    const s = content('Measurement', '11 — Measurement', 'What we measure, and what we leave out',
-      'Five stages, each with its source. Visibility and discovery come from Google Search Console and the Business Profile; engagement and actions from Google Analytics; the outcome — qualified enquiries — only from the studio\'s own enquiry log, because online tools can\'t see a referral conversation or a studio visit. ' +
-        'Branded and new (non-branded) searches are always reported separately: one reflects reputation, the other shows the search work reaching new people. ' +
-        'Direction requests are an intent-to-visit signal, not a count of studio visits — reported as such.');
-    const rows = [
-      ['Visibility', 'How often MACK appears in Google: name searches and new searches, kept separate', 'Search Console'],
-      ['Discovery', 'Which projects and images people find; what they search on Maps', 'Search Console · Profile'],
-      ['Engagement', 'Which project pages visitors explore', 'Analytics'],
-      ['Action', 'Enquiries, call taps, email taps, direction requests', 'Analytics · Profile'],
-      ['Outcome', 'Qualified enquiries, by where they came from', 'Studio enquiry log'],
-    ];
-    const y0 = 1.85, rh = 0.84;
-    label(s, 'Stage', { x: L, y: y0, w: 1.8, h: 0.25 });
-    label(s, 'Measure', { x: 2.55, y: y0, w: 4, h: 0.25 });
-    label(s, 'Source', { x: 6.95, y: y0, w: 1.8, h: 0.25 });
-    rows.forEach(([a, b, c], i) => {
-      const y = y0 + 0.35 + i * rh;
-      hair(s, L, y, 8.25, i === 0 ? INK : RULE);
-      T(s, a, { x: L, y: y + 0.16, w: 1.9, h: 0.4, size: 17, serif: true, color: i === 4 ? SAND : INK });
-      T(s, b, { x: 2.55, y: y + 0.16, w: 4.2, h: 0.62, size: 13, color: INK2, lsm: 1.15 });
-      T(s, c.toUpperCase(), { x: 6.95, y: y + 0.2, w: 1.9, h: 0.5, size: 9.5, color: INK3, spacing: 1.2, lsm: 1.2 });
-    });
-    hair(s, L, y0 + 0.35 + rows.length * rh, 8.25, RULE);
-    const rx = 9.6, rw = R - rx;
-    label(s, 'Left out on purpose', { x: rx, y: y0, w: rw, h: 0.25 });
-    ['Total page views', 'Follower counts', 'Third-party “authority” scores', 'Rankings for long keyword lists'].forEach((t, i) => {
-      const y = y0 + 0.35 + i * 0.44;
-      hair(s, rx, y, rw, i === 0 ? INK : RULE);
-      T(s, t, { x: rx, y: y + 0.1, w: rw, h: 0.3, size: 13, color: INK2 });
-    });
-    label(s, 'Every report answers', { x: rx, y: 4.35, w: rw, h: 0.25 });
-    ['What changed?', 'Why does it matter?', 'What happens next?'].forEach((t, i) => {
-      T(s, t, { x: rx, y: 4.7 + i * 0.5, w: rw, h: 0.42, size: 18, serif: true });
-    });
-  }
-
-  // ------------------------------------------------------------ 12 sample report
-  {
-    const s = content('Measurement', '12 — The monthly report', 'One page, every month',
-      'This is the structure of the monthly report, shown without numbers on purpose: values fill from launch, starting from a recorded baseline in month zero. No figures are projected. ' +
-        'Three lines at the top answer what changed, why it matters and what happens next. Then a short scorecard, the most-discovered projects, health checks, the work completed and the next actions with owners. ' +
-        'A live dashboard sits alongside it, owned by the studio. Reading it takes about twenty minutes a month.');
-    const px = L, py = 1.72, pw = 8.35, ph = 5.08;
-    box(s, px, py, pw, ph, { fill: SHEET, line: RULE });
-    const ix = px + 0.3, iw = pw - 0.6;
-    label(s, 'MACK & Co Architects  ·  Digital report', { x: ix, y: py + 0.22, w: 5, h: 0.22 });
-    T(s, 'Month 1', { x: ix + iw - 2, y: py + 0.18, w: 2, h: 0.3, size: 13, serif: true, align: 'right' });
-    hair(s, ix, py + 0.55, iw, INK);
-    [['What changed', ''], ['Why it matters', ''], ['Next', '']].forEach(([k], i) => {
-      const y = py + 0.68 + i * 0.32;
-      T(s, k, { x: ix, y, w: 1.6, h: 0.28, size: 11.5, bold: true });
-      hair(s, ix + 1.65, y + 0.2, iw - 1.65, RULE);
-    });
-    const tiles = ['New-search impressions', 'New-search clicks', 'Name-search clicks', 'Profile: calls · directions', 'Enquiries', 'Qualified enquiries'];
-    const tw = (iw - 0.4) / 3, th = 0.86, ty0 = py + 1.72;
-    tiles.forEach((t, i) => {
-      const x = ix + (i % 3) * (tw + 0.2);
-      const y = ty0 + Math.floor(i / 3) * (th + 0.15);
-      box(s, x, y, tw, th, { line: RULE });
-      T(s, t, { x: x + 0.12, y: y + 0.1, w: tw - 0.24, h: 0.25, size: 10, color: INK3 });
-      T(s, '—', { x: x + 0.12, y: y + 0.32, w: 1.2, h: 0.42, size: 22, serif: true });
-      T(s, 'vs last month', { x: x + 1.3, y: y + 0.5, w: tw - 1.42, h: 0.25, size: 9.5, color: INK3, align: 'right' });
-    });
-    const by = ty0 + 2 * (th + 0.15) + 0.05;
-    const half = (iw - 0.3) / 2;
-    label(s, 'Most-discovered projects', { x: ix, y: by, w: half, h: 0.22 });
-    ['1  —', '2  —', '3  —'].forEach((t, i) => T(s, t, { x: ix, y: by + 0.28 + i * 0.25, w: half, h: 0.24, size: 11, color: INK2 }));
-    label(s, 'Health', { x: ix + half + 0.3, y: by, w: half, h: 0.22 });
-    ['Indexing  ·  Form test', 'Speed  ·  Uptime', 'Backup  ·  Last restore test'].forEach((t, i) => T(s, t, { x: ix + half + 0.3, y: by + 0.28 + i * 0.25, w: half, h: 0.24, size: 11, color: INK2 }));
-    const rx = 9.45, rw = R - rx;
-    const pts = [
-      ['Starts from a baseline', 'Month 0 is recorded before launch, so every change is compared with a real starting point.'],
-      ['Name and new searches apart', 'Reputation and search reach are reported separately.'],
-      ['A live dashboard alongside', 'Owned by the studio; the report explains it.'],
-      ['Twenty minutes to read', 'Decisions are written down and followed up next month.'],
-    ];
-    pts.forEach(([h, d], i) => {
-      const y = 1.72 + i * 1.08;
-      hair(s, rx, y, rw, i === 0 ? INK : RULE);
-      T(s, h, { x: rx, y: y + 0.12, w: rw, h: 0.32, size: 14, serif: true });
-      T(s, d, { x: rx, y: y + 0.46, w: rw, h: 0.58, size: 11.5, color: INK2, lsm: 1.15 });
-    });
-    T(s, 'Values appear as “—”: they fill from launch. No figures are projected.', { x: rx, y: 6.15, w: rw, h: 0.55, size: 10.5, color: INK3, italic: true, lsm: 1.15 });
-  }
-
-  // ------------------------------------------------------------ 13 roadmap
+  // ------------------------------------------------------------ 7 roadmap
   pres.addSection({ title: 'Roadmap' });
   {
-    const s = content('Roadmap', '13 — Milestone roadmap', 'Six milestones, each with a visible result',
-      'Week 0 is alignment and access. M1 digital foundation in the first two weeks; M2 launch and search foundation by week four; M3 local presence from week three — Google\'s verification time varies; ' +
-        'M4 portfolio from week four, paced by how quickly project information arrives; M5 authority from around month three and ongoing; M6 measurement — dashboard by week six, then a report every month. ' +
-        'Timings depend on decisions and inputs arriving on time — the usual cause of delay is waiting for access or information.');
-    const lx = L, lw = 2.75, gx = 3.55, gw = R - gx;
-    const cols = 14; // weeks 0..12 + ongoing
-    const u = gw / cols;
-    const hy = 1.82;
-    for (let wk = 0; wk <= 12; wk++) T(s, wk === 0 ? 'W0' : String(wk), { x: gx + wk * u, y: hy, w: u, h: 0.24, size: 9.5, color: INK3, align: 'center' });
-    T(s, 'Ongoing', { x: gx + 13 * u, y: hy, w: u, h: 0.24, size: 9.5, color: INK3, align: 'center' });
-    hair(s, L, hy + 0.32, CW, INK);
-    for (let wk = 0; wk <= 13; wk++) ln(s, gx + wk * u, hy + 0.32, gx + wk * u, 6.2, { color: RULE, lw: 0.5, dash: 'sysDot' });
+    const s = content('Roadmap', '06 — Implementation roadmap', 'Six milestones, about three months, then monthly',
+      'Foundation in the first two weeks; the site launched and connected to Google by week four; local presence from week three, depending on Google\'s verification; portfolio pages from week four, paced by project information from the studio; ' +
+        'authority and digital growth from month three; measurement from week six, with a report every month after that.');
+    const lx = L, lw = 3.0, gx = 3.75, cols = 13, u = (R - gx) / cols, hy = 1.85;
+    [['Month 1', 0, 4], ['Month 2', 4, 8], ['Month 3', 8, 12], ['Ongoing', 12, 13]].forEach(([t, a, b]) => {
+      T(s, t, { x: gx + a * u, y: hy, w: (b - a) * u, h: 0.26, size: 10.5, color: INK3, align: 'center' });
+      ln(s, gx + a * u, hy + 0.36, gx + a * u, 6.3, { color: RULE, lw: 0.5 });
+    });
+    ln(s, R, hy + 0.36, R, 6.3, { color: RULE, lw: 0.5 });
+    hair(s, L, hy + 0.36, CW, INK);
     const ms = [
-      ['M1', 'Digital Foundation', 1, 3, null, 'Domain · studio email · workspace · analytics · Search Console', 'after'],
-      ['M2', 'Launch & Search', 2, 5, null, 'Live, indexable site · tracked enquiries · sitemap submitted', 'after'],
-      ['M3', 'Local Presence', 3, 6, 7, 'Verified Business Profile · consistent details · review kit', 'after'],
-      ['M4', 'Portfolio', 4, 11, null, 'Project pages · service pages', 'after'],
-      ['M5', 'Authority', 9, 13, 14, 'Profiles · submission kits · outreach log', 'before'],
-      ['M6', 'Measurement', 6, 6.3, 14, 'Dashboard · monthly report · health checks', 'before'],
+      ['Foundation', 1, 2, null, 'Domain · email · workspace · backup', 'after'],
+      ['Launch', 2, 4, null, 'Site live and connected to Google', 'after'],
+      ['Local presence', 3, 6, null, 'Verified Google Maps presence', 'after'],
+      ['Portfolio', 4, 10, null, 'Projects and services discoverable', 'after'],
+      ['Authority & digital growth', 9, 12, 13, 'Platforms · publications · reviews', 'before'],
+      ['Measure & improve', 6, 6, 13, 'Dashboard · monthly report', 'before'],
     ];
-    const ry0 = hy + 0.48, rh = 0.62;
-    ms.forEach(([id, name, a, b, ext, del, side], i) => {
+    const ry0 = hy + 0.55, rh = 0.62;
+    ms.forEach(([name, a, b, ext, out, side], i) => {
       const y = ry0 + i * rh;
-      T(s, id, { x: lx, y: y + 0.08, w: 0.5, h: 0.32, size: 12, color: SAND, serif: true });
-      T(s, name, { x: lx + 0.5, y: y + 0.06, w: lw - 0.5, h: 0.36, size: 15, serif: true });
-      const bx = gx + a * u, bw = (b - a) * u;
-      box(s, bx, y + 0.12, bw, 0.26, { fill: NIGHT, line: false });
-      if (ext) box(s, gx + b * u, y + 0.12, (ext - b) * u, 0.26, { line: INK, lw: 0.75, dash: id === 'M3' ? 'dash' : 'solid' });
-      if (id === 'M6') [8, 12].forEach((wk) => dot(s, gx + wk * u - 0.08, y + 0.17, 0.16, true));
+      T(s, String(i + 1).padStart(2, '0'), { x: lx, y: y + 0.08, w: 0.45, h: 0.32, size: 12, color: SAND, serif: true });
+      T(s, name, { x: lx + 0.45, y: y + 0.06, w: lw - 0.45, h: 0.36, size: 15, serif: true });
+      const bx = gx + (a - 1) * u, bend = gx + b * u;
+      box(s, bx, y + 0.14, bend - bx, 0.24, { fill: NIGHT, line: false });
+      if (ext) box(s, bend, y + 0.14, gx + ext * u - bend, 0.24, { line: INK, lw: 0.75 });
       const end = gx + (ext || b) * u;
-      if (side === 'after') T(s, del, { x: end + 0.12, y: y + 0.06, w: R - end - 0.12, h: 0.4, size: 11, color: INK2, valign: 'middle' });
-      else T(s, del, { x: gx, y: y + 0.06, w: bx - gx - 0.12, h: 0.4, size: 11, color: INK2, align: 'right', valign: 'middle' });
+      if (side === 'after') T(s, out, { x: end + 0.14, y: y + 0.06, w: R - end - 0.14, h: 0.4, size: 11.5, color: INK2, valign: 'middle' });
+      else T(s, out, { x: gx, y: y + 0.06, w: bx - gx - 0.14, h: 0.4, size: 11.5, color: INK2, align: 'right', valign: 'middle' });
     });
-    hair(s, L, 6.2, CW, RULE);
+    hair(s, L, 6.3, CW, RULE);
     T(s, [
-      { text: 'Week 0: align & access.  ', options: { bold: true, color: INK } },
-      { text: 'Dashed: Google verification time varies. Outlined: ongoing. Dots: monthly reports. Timings assume decisions and inputs arrive on time.', options: { color: INK3 } },
-    ], { x: L, y: 6.3, w: CW, h: 0.45, size: 11 });
+      { text: 'Solid', options: { bold: true, color: INK } },
+      { text: ' — implementation    ', options: { color: INK3 } },
+      { text: 'Outlined', options: { bold: true, color: INK } },
+      { text: ' — ongoing, every month    ·    Begins after alignment and access', options: { color: INK3 } },
+    ], { x: L, y: 6.42, w: CW, h: 0.3, size: 11 });
   }
 
-  // ------------------------------------------------------------ 14–15 milestone details
-  const detail = (no, kicker, title, ms, notes) => {
-    const s = content('Roadmap', kicker, title, notes);
-    const lx = L, lw = 1.65, cx0 = 2.45, cw = 3.3, gap = 0.2;
-    const rowsY = { head: 1.72, del: 2.62, from: 4.22, done: 5.4, end: 6.78 };
-    [['Deliverables', rowsY.del], ['From MACK', rowsY.from], ['Complete when', rowsY.done]].forEach(([t, y], k) => {
-      hair(s, lx, y, CW, k === 0 ? INK : RULE);
-      label(s, t, { x: lx, y: y + 0.14, w: lw, h: 0.25 });
-    });
-    ms.forEach((m, i) => {
-      const x = cx0 + i * (cw + gap);
-      T(s, m.id, { x, y: rowsY.head, w: 0.6, h: 0.3, size: 12, color: SAND, serif: true });
-      T(s, m.when, { x: x + 0.6, y: rowsY.head + 0.02, w: cw - 0.6, h: 0.28, size: 10, color: INK3, align: 'right' });
-      T(s, m.name, { x, y: rowsY.head + 0.32, w: cw, h: 0.5, size: 17, serif: true });
-      const list = (arr, y, h) => T(s, arr.map((t, j) => ({ text: t, options: { breakLine: j < arr.length - 1 } })), { x, y: y + 0.14, w: cw, h, size: 13, color: INK2, lsm: 1.12, psa: 4 });
-      list(m.del, rowsY.del, 1.45);
-      list(m.from, rowsY.from, 1.05);
-      list(m.done, rowsY.done, 1.2);
-    });
-    return s;
-  };
-  detail(1, '14 — Milestones in detail', 'Foundation, launch and local presence', [
-    { id: 'M1', when: 'Weeks 1–2', name: 'Digital Foundation', del: ['Domain in the studio’s name', 'Studio email, authenticated', 'Shared drives and permissions', 'Analytics and Search Console'], from: ['Domain decision', 'Who needs a mailbox', 'Where files live today'], done: ['Test email passes authentication', 'Every account has a MACK owner'] },
-    { id: 'M2', when: 'Weeks 2–4', name: 'Launch & Search Foundation', del: ['Site live on the domain, indexable', 'Technical fixes', 'Enquiry and contact tracking', 'Search-intent map'], from: ['Launch approval', 'Contact details confirmed', 'Privacy wording approved'], done: ['Pages submitted and crawlable', 'A test enquiry is recorded', 'No critical Search Console errors'] },
-    { id: 'M3', when: 'Weeks 3–6', name: 'Local Presence', del: ['Verified Business Profile', 'Consistent name, address, phone', 'Review request kit', 'New-studio playbook'], from: ['Decision on the existing listing', 'Someone at the studio to verify', 'Photos of the studio'], done: ['Profile verified and complete', 'Visits from the profile measured'] },
-  ], 'For each milestone: what is delivered, what is needed from the studio, and how we know it is complete. The "complete when" row is deliberately checkable — a test, a status, a report — not a feeling. ' +
-    'M3 depends on one decision only the studio can make: how the existing Google listing at the studio\'s address should represent MACK.');
-  detail(2, '15 — Milestones in detail', 'Portfolio, authority and measurement', [
-    { id: 'M4', when: 'Weeks 4–10', name: 'Portfolio Discoverability', del: ['Project pages to one standard', 'Service pages', 'Image names and credits', 'Publishing routine for new work'], from: ['About 10 minutes per project', 'Photo credits and permissions'], done: ['Every supplied project meets the standard', 'Structured data validates'] },
-    { id: 'M5', when: 'From month 3', name: 'Authority & Growth', del: ['Archello and Architizer profiles', 'Publication shortlist', 'Submission kit for a built project', 'Outreach log'], from: ['Approval of submissions', 'Client permissions', 'Ideally, professional photography'], done: ['Profiles live', 'First submission sent — publication is the editors’ decision'] },
-    { id: 'M6', when: 'Monthly from week 6', name: 'Measurement & Improvement', del: ['Live dashboard', 'Monthly one-page report', 'Health checks', 'Quarterly review'], from: ['Twenty minutes a month', 'Enquiry log kept current'], done: ['Dashboard live', 'Reports on schedule, decisions recorded'] },
-  ], 'M4 is paced by the studio\'s project information — it cannot be completed from my side alone. M5: professional photography of completed projects is the single most valuable authority investment, and the studio\'s decision; publication is never guaranteed. ' +
-    'M6 turns everything into a monthly rhythm.');
-
-  // ------------------------------------------------------------ 16 what MACK receives
-  pres.addSection({ title: 'Engagement' });
+  // ------------------------------------------------------------ 8 what MACK receives
+  pres.addSection({ title: 'Close' });
   {
-    const s = content('Engagement', '16 — What MACK receives', 'Concrete deliverables',
-      'Four groups. Everything listed is a thing the studio can open, check or use — not a vague service. All accounts remain the studio\'s property.');
+    const s = content('Close', '07 — What MACK receives', 'Everything in place, owned by the studio',
+      'Four groups, each something the studio can open, check or use. All accounts and assets remain MACK\'s property.');
+    s.addImage({ path: img.stair.path, x: L, y: 1.75, w: 3.55, h: 4.95, sizing: { type: 'cover', w: 3.55, h: 4.95 }, altText: 'Sculptural spiral staircase, Agra Fort Project (photography)' });
+    T(s, 'Agra Fort Project — photography', { x: L, y: 6.75, w: 3.55, h: 0.2, size: 8.5, color: INK3 });
     const groups = [
-      ['Owned identity', ['Domain registered to the studio', 'Studio email for each person', 'Shared drives with permissions', 'Independent, tested backup', 'Access map: MACK owns every account']],
-      ['A searchable website', ['The new site live on the domain', 'Technical fixes and structured data', 'Project pages to one standard', 'Service pages', 'Project form and publishing routine']],
-      ['Local presence', ['Verified Business Profile', 'Consistent details on Google, Bing, Instagram', 'Review request kit', 'Playbook for each new studio']],
-      ['Measurement & care', ['Analytics with enquiry tracking', 'Search Console', 'Live dashboard', 'Monthly report, quarterly review', 'Monthly maintenance and health checks']],
+      ['Identity & workspace', ['Studio-owned domain', 'Professional email', '2–3 TB cloud workspace', 'Independent, tested backup', 'Access map — MACK owns every account']],
+      ['Website & search', ['Site launched and indexed', 'Technical SEO and structured data', 'Service and project pages', 'Image SEO and credits', 'Project publishing system']],
+      ['Local presence & authority', ['Verified Google Business Profile', 'Consistent studio details', 'Review process', 'Architecture platforms and publications', 'Google presence for each new studio']],
+      ['Measurement & care', ['Search Console and Analytics', 'Enquiry and call tracking', 'Live dashboard', 'Monthly report', 'Monthly maintenance and improvement']],
     ];
-    const cw = 2.84, gap = 0.257;
+    const gx0 = 4.6, gw = (R - gx0 - 0.45) / 2;
     groups.forEach(([g, items], i) => {
-      const x = L + i * (cw + gap);
-      const y = 1.78;
-      box(s, x, y, cw, 0.62, { fill: i === 1 ? NIGHT : STONE, line: false });
-      T(s, g, { x: x + 0.18, y, w: cw - 0.3, h: 0.62, size: 17, serif: true, color: i === 1 ? PAPER : INK, valign: 'middle' });
-      items.forEach((it, j) => {
-        const yy = y + 0.85 + j * 0.8;
-        box(s, x, yy + 0.2, 0.09, 0.09, { fill: INK, line: false });
-        T(s, it, { x: x + 0.24, y: yy + 0.1, w: cw - 0.24, h: 0.66, size: 13.5, color: INK2, lsm: 1.15 });
-        hair(s, x, yy + 0.8, cw, RULE);
-      });
+      const x = gx0 + (i % 2) * (gw + 0.45);
+      const y = 1.75 + Math.floor(i / 2) * 2.55;
+      T(s, g, { x, y, w: gw, h: 0.4, size: 17, serif: true, color: i === 0 ? SAND : INK });
+      hair(s, x, y + 0.46, gw, INK);
+      list(s, items, { x, y: y + 0.6, w: gw, h: 1.75, size: 13, color: INK2, psa: 5, lsm: 1.1 });
     });
   }
 
-  // ------------------------------------------------------------ 17 operating model
+  // ------------------------------------------------------------ 9 next steps
   {
-    const s = content('Engagement', '17 — Operating model', 'Implement once, then improve every month',
-      'Implementation and launch happen once. After that the work runs as a monthly cycle: measure, improve, report — and repeat. ' +
-        'Every month: Search Console and indexing review, Business Profile upkeep and review replies, new projects published, site, form and backup checks, and the one-page report with next actions. ' +
-        'Every quarter: a review meeting, refresh of the search-intent map, an access audit and a test restore of the backup. The studio\'s part is small but essential: project information, approvals and twenty minutes a month.');
-    // linear part
-    const y = 3.55;
-    node(s, L, y, 1.75, 0.6, 'Implement', { size: 15, serif: true, align: 'center' });
-    ln(s, L + 1.82, y + 0.3, L + 2.18, y + 0.3, { arrow: true });
-    node(s, L + 2.25, y, 1.6, 0.6, 'Launch', { size: 15, serif: true, align: 'center', fill: NIGHT, color: PAPER, line: NIGHT });
-    ln(s, L + 3.92, y + 0.3, 4.95, y + 0.3, { arrow: true });
-    label(s, 'Once', { x: L, y: y - 0.45, w: 3.8, h: 0.25 });
-    // loop
-    const ccx = 6.55, ccy = 3.85, r = 1.45;
-    s.addShape(pres.shapes.OVAL, { x: ccx - r, y: ccy - r, w: 2 * r, h: 2 * r, fill: { type: 'none' }, line: { color: INK3, width: 0.75, dashType: 'dash' } });
-    const loop = [['Measure', -90], ['Improve', 30], ['Report', 150]];
-    loop.forEach(([t, deg]) => {
-      const rad = (deg * Math.PI) / 180;
-      const nx = ccx + r * Math.cos(rad), ny = ccy + r * Math.sin(rad);
-      node(s, nx - 0.75, ny - 0.27, 1.5, 0.54, t, { size: 14, serif: true, align: 'center', fill: PAPER });
-    });
-    T(s, 'Repeat', { x: ccx - 0.8, y: ccy - 0.2, w: 1.6, h: 0.4, size: 12, color: INK3, align: 'center', italic: true });
-    label(s, 'Then, monthly', { x: ccx - r, y: ccy - r - 0.62, w: 3, h: 0.25 });
-    [-30, 90, 210].forEach((deg) => {
-      const rad = (deg * Math.PI) / 180;
-      const px = ccx + r * Math.cos(rad), py = ccy + r * Math.sin(rad);
-      const tx = -Math.sin(rad), ty = Math.cos(rad);
-      ln(s, px - tx * 0.16, py - ty * 0.16, px + tx * 0.16, py + ty * 0.16, { arrow: true, color: INK, lw: 1 });
-    });
-    // right lists
-    const rx = 8.85, rw = R - rx;
-    label(s, 'Every month', { x: rx, y: 1.78, w: rw, h: 0.25 });
-    ['Search Console and indexing review', 'Business Profile upkeep, review replies', 'New projects published', 'Site, form and backup checks', 'One-page report and next actions'].forEach((t, i) => {
-      const yy = 2.1 + i * 0.4;
-      hair(s, rx, yy, rw, i === 0 ? INK : RULE);
-      T(s, t, { x: rx, y: yy + 0.08, w: rw, h: 0.3, size: 12.5, color: INK2 });
-    });
-    label(s, 'Every quarter', { x: rx, y: 4.3, w: rw, h: 0.25 });
-    ['Review meeting', 'Search-intent map refreshed', 'Access audit', 'Backup restore test'].forEach((t, i) => {
-      const yy = 4.62 + i * 0.4;
-      hair(s, rx, yy, rw, i === 0 ? INK : RULE);
-      T(s, t, { x: rx, y: yy + 0.08, w: rw, h: 0.3, size: 12.5, color: INK2 });
-    });
-    box(s, L, 6.0, 7.3, 0.7, { fill: STONE, line: false });
-    T(s, 'The studio’s part: project information, approvals, twenty minutes a month.', { x: L + 0.22, y: 6.0, w: 7.0, h: 0.7, size: 13, valign: 'middle' });
-  }
-
-  // ------------------------------------------------------------ 18 expectations
-  {
-    const s = content('Engagement', '18 — Realistic expectations', 'What can be committed, and what can’t',
-      'Committed: the work in every milestone, done to Google\'s guidelines, on the agreed timeline given inputs, with transparent monthly measurement — and the studio owns everything. ' +
-        'Not promised: positions such as "number one on Google", traffic or lead numbers, a particular Maps position (distance from the searcher is part of how Google ranks), or publication by editors. ' +
-        'What usually happens: pages indexed within days to weeks of launch; the studio\'s name returning its own site within weeks; new searches starting to show in one to three months; compounding visibility over three to twelve months. Search builds up over time, and the progress is measured every month.');
-    const cw = 5.8;
-    const blocks = [
-      ['Committed', ['The work in every milestone, to Google’s guidelines', 'The timeline, given decisions and inputs', 'Honest monthly measurement and reporting', 'Every account owned by the studio'], INK],
-      ['Not promised', ['Specific positions — “#1 on Google”', 'Traffic, lead or footfall numbers', 'A Maps position (distance is part of ranking)', 'Publication — editors decide'], INK3],
-    ];
-    blocks.forEach(([h, items, col], i) => {
-      const x = L + i * (cw + 0.53);
-      T(s, h, { x, y: 1.75, w: cw, h: 0.5, size: 22, serif: true, color: col });
-      items.forEach((t, j) => {
-        const y = 2.4 + j * 0.5;
-        hair(s, x, y, cw, j === 0 ? col : RULE);
-        T(s, t, { x, y: y + 0.11, w: cw, h: 0.34, size: 14, color: i === 0 ? INK2 : INK3 });
-      });
-    });
-    // what usually happens
-    label(s, 'What usually happens after launch', { x: L, y: 4.68, w: 6, h: 0.25 });
-    const steps = [['Days–weeks', 'Pages indexed'], ['Weeks', 'A search for the studio’s full name returns its site'], ['1–3 months', 'New searches begin to appear'], ['3–12 months', 'Visibility and actions compound']];
-    const sw = CW / steps.length;
-    hair(s, L, 5.2, CW, INK);
-    steps.forEach(([a, b], i) => {
-      const x = L + i * sw;
-      dot(s, x - 0.0, 5.12, 0.16, i === 0, INK);
-      T(s, a, { x, y: 5.38, w: sw - 0.2, h: 0.4, size: 17, serif: true });
-      T(s, b, { x, y: 5.8, w: sw - 0.3, h: 0.5, size: 12.5, color: INK2 });
-    });
-    T(s, 'Google states there is no way to pay for a better local ranking, and that meeting its requirements does not guarantee a page will be indexed or shown.', { x: L, y: 6.45, w: CW, h: 0.3, size: 10.5, color: INK3, italic: true });
-  }
-
-  // ------------------------------------------------------------ 19 next step
-  pres.addSection({ title: 'Next step' });
-  {
-    const s = pres.addSlide({ masterName: 'MACK_DARK', sectionTitle: 'Next step' });
-    s.addText('19 — NEXT STEP', { placeholder: 'kicker', charSpacing: 1.6 });
-    s.addText('Align, access, audit, implement', { placeholder: 'title' });
-    s.addNotes('The first step is a working session of about ninety minutes to settle the identity questions (studio name, domain, the existing Google listing), agree who owns each account and grant access. ' +
-      'Then the baseline audit is recorded, and Milestone 1 begins.');
+    const s = pres.addSlide({ masterName: 'MACK_DARK', sectionTitle: 'Close' });
+    s.addText('08 — NEXT STEPS', { placeholder: 'kicker', charSpacing: 1.6 });
+    s.addText('Next steps', { placeholder: 'title' });
+    s.addNotes('Align on the studio name, domain and services; set up accounts in MACK\'s name and grant access; implement the six milestones; measure through the dashboard and monthly report; and improve every month.');
     const steps = [
-      ['Align', ['Studio name and domain', 'Services to be found for', 'How the existing Google listing should represent MACK']],
-      ['Access', ['Domain and DNS', 'Google accounts and hosting', 'Business Profile ownership']],
-      ['Audit', ['Baseline recorded: search, profile, speed, enquiries', 'Project information form sent']],
-      ['Implement', ['Milestone 1 begins', 'First progress note at the end of week 2']],
+      ['Align', 'Studio name, domain and services'],
+      ['Access', 'Accounts in MACK’s name, access granted'],
+      ['Implement', 'Milestones one to six'],
+      ['Measure', 'Dashboard and monthly report'],
+      ['Improve', 'Refined every month'],
     ];
-    const cw = 2.84, gap = 0.257;
-    steps.forEach(([t, items], i) => {
+    const cw = 2.2, gap = (CW - 5 * cw) / 4;
+    steps.forEach(([t, d], i) => {
       const x = L + i * (cw + gap);
-      T(s, String(i + 1).padStart(2, '0'), { x, y: 2.0, w: 1, h: 0.5, size: 30, serif: true, color: SAND });
-      T(s, t, { x, y: 2.65, w: cw, h: 0.55, size: 26, serif: true, color: PAPER });
-      hair(s, x, 3.35, cw, ONNIGHT2);
-      T(s, items.map((it, j) => ({ text: it, options: { breakLine: j < items.length - 1 } })), { x, y: 3.5, w: cw - 0.1, h: 1.9, size: 13.5, color: ONNIGHT2, lsm: 1.15, psa: 8 });
-      if (i < steps.length - 1) ln(s, x + 0.85, 2.27, x + cw + gap - 0.12, 2.27, { arrow: true, color: ONNIGHT2, lw: 0.75 });
+      T(s, String(i + 1).padStart(2, '0'), { x, y: 2.75, w: 0.8, h: 0.45, size: 26, serif: true, color: SAND });
+      if (i < steps.length - 1) ln(s, x + 0.78, 3.0, x + cw + gap - 0.1, 3.0, { arrow: true, color: ONNIGHT2, lw: 0.75 });
+      T(s, t, { x, y: 3.4, w: cw, h: 0.6, size: 30, serif: true, color: PAPER });
+      hair(s, x, 4.18, cw, INK3);
+      T(s, d, { x, y: 4.32, w: cw - 0.1, h: 0.7, size: 13.5, color: ONNIGHT2, lsm: 1.15 });
     });
-    s.addImage({ path: monoLight, x: L, y: 5.85, w: 0.4, h: 0.4 * 663 / 685, altText: 'MACK monogram' });
-    T(s, 'A first working session of about ninety minutes is enough to begin.', { x: L + 0.6, y: 5.88, w: 9, h: 0.35, size: 14, color: PAPER, serif: true, italic: true });
+    s.addImage({ path: monoLight, x: L, y: 5.95, w: 0.5, h: 0.5 * 663 / 685, altText: 'MACK monogram' });
   }
 
   await pres.writeFile({ fileName: OUT });

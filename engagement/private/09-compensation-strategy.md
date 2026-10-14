@@ -85,9 +85,9 @@ After the meeting, send a one-to-two-page written summary (email or PDF) coverin
 
 ## 6. Meeting flow (presenting the deck)
 
-1. **Before:** rehearse once with the speaker notes. Keep the deck to 30–35 minutes. Have the PDF ready in case the projector misbehaves.
-2. **Slide 2 (Starting point):** state facts neutrally. On the Maps listing, *ask*, don't assume: "How would you like the studio to appear on Google Maps? Right now the map link opens a listing named Karan Desai, Architecture + Design." Then listen.
+1. **Before:** rehearse once with the speaker notes. The 9-page report takes about 15–20 minutes. Have the PDF ready in case the projector misbehaves.
+2. **Page 4 (What we are building):** when you reach the domain and Business Profile, *ask* about the Maps listing, don't assume: "How would you like the studio to appear on Google Maps? Right now the map link opens a listing named Karan Desai, Architecture + Design." Then listen.
 3. **The title "architect":** don't raise the Architects Act in the meeting unless it comes up naturally. Raise it privately later when choosing the Business Profile category: "For the Google category 'Architect', I just need to confirm the principal's Council of Architecture registration."
-4. **Slides 17–18 (expectations, next step):** slow down here. This is where trust is built.
+4. **Pages 7–9 (roadmap, deliverables, next steps):** slow down here. This is where trust is built. If asked about results, say plainly that you commit to the work and honest monthly measurement, not to rankings.
 5. **After the deck:** confirm scope first ("Does this match what you had in mind? Anything to add or remove?"), *then* move to the money conversation (script in file 10).
 6. **Within 24 hours:** send the written summary (§4).

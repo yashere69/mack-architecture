@@ -1,6 +1,7 @@
 # Client deck: "Digital Foundation"
 
-- `MACK-Digital-Foundation.pptx`: the editable deck (20 slides, 16:9). Speaker notes on every slide are written as neutral talking points, safe if the file is shared.
+- `MACK-Digital-Foundation.pptx`: the 9-page visual client report (16:9). Speaker notes on every page are neutral talking points, safe if the file is shared.
+- `archive/`: the earlier 20-slide version (reference only), built by `build/build-deck-full.cjs`.
 - `MACK-Digital-Foundation.pdf`: the same deck for sending or as a backup on the day.
 
 **Contains no pricing, fees or payment terms.** Compensation is discussed verbally (see `../private/`).

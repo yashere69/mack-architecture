@@ -11,7 +11,7 @@ Planning documents for the digital engagement: search, Google Business Profile, 
 | 3 | Architecture-specific SEO strategy | [`03-seo-strategy.md`](03-seo-strategy.md) | Internal |
 | 4 | Milestone roadmap: objectives, deliverables, dependencies, completion criteria | [`04-milestone-roadmap.md`](04-milestone-roadmap.md) | Internal (basis for the written proposal) |
 | 5 | Digital ecosystem diagram: discovery → website → conversion | [`05-digital-ecosystem.md`](05-digital-ecosystem.md) | Internal |
-| 6 | **Client deck** (20 slides, PPTX + PDF, speaker notes included, no pricing) | [`06-client-deck/`](06-client-deck/) | **Client** |
+| 6 | **Client report** (9 pages, PPTX + PDF, speaker notes included, no pricing; 20-slide version archived) | [`06-client-deck/`](06-client-deck/) | **Client** |
 | 7 | Execution manual: "How I Actually Execute This" | [`07-execution-guide.md`](07-execution-guide.md) | Internal |
 | 8 | Reporting framework: metrics, sources, one-page monthly template | [`08-reporting-framework.md`](08-reporting-framework.md) | Internal |
 | 9 | Compensation strategy (**private**) | [`private/09-compensation-strategy.md`](private/09-compensation-strategy.md) | You only |
