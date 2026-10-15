@@ -60,7 +60,7 @@ Deliberately **not** offered: "AI-powered" content generation, chatbots, automat
 
 | Phase | Nature of work | Rough effort |
 |---|---|---|
-| Months 1–3 (implementation) | Setup-heavy: accounts, launch, Business Profile, analytics, storage, first project rewrites | Front-loaded. Roughly 40–60 hours across the three months, depending on how quickly inputs arrive. |
+| Month 1 (implementation) | Setup-heavy: accounts, launch, Business Profile, analytics, storage, first project rewrites | Front-loaded. Roughly 40–60 hours, concentrated in the first month (spills over only if inputs are late) — across the three months, depending on how quickly inputs arrive. |
 | Month 4 onward (operations) | Monitoring, reporting, publishing, profile upkeep, authority work | Roughly 6–10 hours/month, more in months with new projects or a new studio. |
 
 These are planning estimates for a solo implementer, not quotes. Adjust after the first month using a time log.

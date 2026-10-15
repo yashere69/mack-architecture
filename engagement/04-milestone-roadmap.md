@@ -3,15 +3,17 @@
 Six milestones, each with a tangible output and a checkable completion state. Timings assume decisions and inputs arrive on time. **The usual cause of delay is waiting for inputs** (access, verification, project facts), so each milestone lists its dependencies explicitly.
 
 ```
-Week      0    1    2    3    4    5    6    7    8    9   10   11   12  → ongoing
+Week      0    1    2    3    4    → ongoing
 Align     ■
-M1 Foundation   ■■■■■■■■■■
-M2 Launch & Search        ■■■■■■■■■■■
-M3 Local Presence              ■■■■■■■■■■■■■■■■  (verification time varies)
-M4 Portfolio                        ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ (as project info arrives)
-M5 Authority                                               ■■■■■■■■■■ → ongoing
-M6 Measurement                                 ■ dashboard  ■ report 1 ... monthly → ongoing
+M1 Foundation   ■■■■■
+M2 Launch & Search ■■■■■■
+M3 Local Presence       ■■■■■■■■■■■  (verification time varies)
+M4 Portfolio               ■■■■■■■■  (as project information arrives)
+M5 Authority                      ■■■■ → ongoing
+M6 Measurement                    ■ dashboard + report 1 → monthly
 ```
+
+**Compressed plan (agreed in the client report): about one month.** It holds when access, the listing decision and project facts arrive in week 1; Google verification and studio inputs are the two things that can stretch it.
 
 ---
 
@@ -25,7 +27,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M1 — Digital Foundation (weeks 1–2)
+## M1 — Digital Foundation (week 1)
 
 | | |
 |---|---|
@@ -40,7 +42,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M2 — Launch & Search Foundation (weeks 2–4)
+## M2 — Launch & Search Foundation (weeks 1–2)
 
 | | |
 |---|---|
@@ -55,7 +57,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M3 — Local Presence (weeks 3–6; verification time varies)
+## M3 — Local Presence (weeks 2–4; verification time varies)
 
 | | |
 |---|---|
@@ -70,7 +72,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M4 — Portfolio Discoverability (weeks 4–10, paced by project information)
+## M4 — Portfolio Discoverability (weeks 2–4, paced by project information)
 
 | | |
 |---|---|
@@ -85,7 +87,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M5 — Authority & Growth (from month 3, ongoing)
+## M5 — Authority & Growth (from week 4, ongoing)
 
 | | |
 |---|---|
@@ -100,7 +102,7 @@ M6 Measurement                                 ■ dashboard  ■ report 1 ... m
 
 ---
 
-## M6 — Measurement & Continuous Improvement (dashboard by week 6; monthly thereafter)
+## M6 — Measurement & Continuous Improvement (dashboard in week 4; monthly thereafter)
 
 | | |
 |---|---|

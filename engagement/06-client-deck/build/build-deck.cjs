@@ -391,42 +391,43 @@ async function build() {
   // ------------------------------------------------------------ 7 roadmap
   pres.addSection({ title: 'Roadmap' });
   {
-    const s = content('Roadmap', '06 — Implementation roadmap', 'Six milestones, about three months, then monthly',
-      'Foundation in the first two weeks; the site launched and connected to Google by week four; local presence from week three, depending on Google\'s verification; portfolio pages from week four, paced by project information from the studio; ' +
-        'authority and digital growth from month three; measurement from week six, with a report every month after that.');
-    const lx = L, lw = 3.0, gx = 3.75, cols = 13, u = (R - gx) / cols, hy = 1.85;
-    [['Month 1', 0, 4], ['Month 2', 4, 8], ['Month 3', 8, 12], ['Ongoing', 12, 13]].forEach(([t, a, b]) => {
-      T(s, t, { x: gx + a * u, y: hy, w: (b - a) * u, h: 0.26, size: 10.5, color: INK3, align: 'center' });
-      ln(s, gx + a * u, hy + 0.36, gx + a * u, 6.3, { color: RULE, lw: 0.5 });
+    const s = content('Roadmap', '06 — Implementation roadmap', 'Six milestones in one month, then monthly care',
+      'Week one: domain, email, workspace and backup. The site launches and connects to Google in the first two weeks. ' +
+        'Google Business Profile and portfolio pages run through weeks two to four; their exact timing follows Google\'s verification and the project information from the studio. ' +
+        'Authority work and monthly measurement begin in week four and continue every month.');
+    // half-week units: 4 weeks = 8 units, then 2 units for "Ongoing"
+    const lx = L, lw = 3.0, gx = 3.75, units = 10, u = (R - gx) / units, hy = 1.85;
+    [['Week 1', 0, 2], ['Week 2', 2, 4], ['Week 3', 4, 6], ['Week 4', 6, 8], ['Ongoing', 8, 10]].forEach(([t, a0, b0]) => {
+      T(s, t, { x: gx + a0 * u, y: hy, w: (b0 - a0) * u, h: 0.26, size: 10.5, color: t === 'Ongoing' ? SAND : INK3, align: 'center' });
+      ln(s, gx + a0 * u, hy + 0.36, gx + a0 * u, 6.3, { color: RULE, lw: 0.5 });
     });
     ln(s, R, hy + 0.36, R, 6.3, { color: RULE, lw: 0.5 });
     hair(s, L, hy + 0.36, CW, INK);
+    // [name, outcome, start unit, end unit, ongoing-until unit]
     const ms = [
-      ['Foundation', 1, 2, null, 'Domain · email · workspace · backup', 'after'],
-      ['Launch', 2, 4, null, 'Site live and connected to Google', 'after'],
-      ['Local presence', 3, 6, null, 'Verified Google Maps presence', 'after'],
-      ['Portfolio', 4, 10, null, 'Projects and services discoverable', 'after'],
-      ['Authority & digital growth', 9, 12, 13, 'Platforms · publications · reviews', 'before'],
-      ['Measure & improve', 6, 6, 13, 'Dashboard · monthly report', 'before'],
+      ['Foundation', 'Domain · email · workspace · backup', 0, 2, null],
+      ['Launch', 'Site live and connected to Google', 1, 4, null],
+      ['Local presence', 'Verified Google Maps presence', 2, 8, null],
+      ['Portfolio', 'Projects and services discoverable', 3, 8, null],
+      ['Authority & growth', 'Platforms · publications · reviews', 6, 8, 10],
+      ['Measure & improve', 'Dashboard · monthly report', 6, 8, 10],
     ];
-    const ry0 = hy + 0.55, rh = 0.62;
-    ms.forEach(([name, a, b, ext, out, side], i) => {
+    const ry0 = hy + 0.5, rh = 0.66;
+    ms.forEach(([name, out, a0, b0, ext], i) => {
       const y = ry0 + i * rh;
-      T(s, String(i + 1).padStart(2, '0'), { x: lx, y: y + 0.08, w: 0.45, h: 0.32, size: 12, color: SAND, serif: true });
-      T(s, name, { x: lx + 0.45, y: y + 0.06, w: lw - 0.45, h: 0.36, size: 15, serif: true });
-      const bx = gx + (a - 1) * u, bend = gx + b * u;
-      box(s, bx, y + 0.14, bend - bx, 0.24, { fill: NIGHT, line: false });
-      if (ext) box(s, bend, y + 0.14, gx + ext * u - bend, 0.24, { line: INK, lw: 0.75 });
-      const end = gx + (ext || b) * u;
-      if (side === 'after') T(s, out, { x: end + 0.14, y: y + 0.06, w: R - end - 0.14, h: 0.4, size: 11.5, color: INK2, valign: 'middle' });
-      else T(s, out, { x: gx, y: y + 0.06, w: bx - gx - 0.14, h: 0.4, size: 11.5, color: INK2, align: 'right', valign: 'middle' });
+      T(s, String(i + 1).padStart(2, '0'), { x: lx, y: y + 0.04, w: 0.45, h: 0.3, size: 12, color: SAND, serif: true });
+      T(s, name, { x: lx + 0.45, y: y + 0.0, w: lw - 0.45, h: 0.32, size: 15, serif: true });
+      T(s, out, { x: lx + 0.45, y: y + 0.32, w: lw - 0.5, h: 0.26, size: 10.5, color: INK3 });
+      const bx = gx + a0 * u + 0.04, bend = gx + b0 * u - 0.04;
+      box(s, bx, y + 0.12, bend - bx, 0.3, { fill: NIGHT, line: false });
+      if (ext) box(s, gx + b0 * u + 0.04, y + 0.12, ext * u - b0 * u - 0.08, 0.3, { line: INK, lw: 0.75 });
     });
     hair(s, L, 6.3, CW, RULE);
     T(s, [
       { text: 'Solid', options: { bold: true, color: INK } },
       { text: ' — implementation    ', options: { color: INK3 } },
       { text: 'Outlined', options: { bold: true, color: INK } },
-      { text: ' — ongoing, every month    ·    Begins after alignment and access', options: { color: INK3 } },
+      { text: ' — every month    ·    Begins after alignment and access', options: { color: INK3 } },
     ], { x: L, y: 6.42, w: CW, h: 0.3, size: 11 });
   }
 

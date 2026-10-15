@@ -11,7 +11,7 @@
 | M2 Launch & search | Fix list, launch, redirects, analytics events, privacy update, sitemap, intent map | 10–15 h | One-time |
 | M3 Local | Resolve listing, verification follow-ups, profile build, NAP audit, Bing, review kit | 6–10 h (spread over weeks of waiting) | One-time + per new studio |
 | M4 Portfolio | Project form, 10 project rewrites, service pages, image names/credits, pipeline tweak | 12–20 h (depends on studio input) | One-time, then per project |
-| **Setup total** | | **≈ 40–60 h over ~3 months** | |
+| **Setup total** | | **≈ 40–60 h, compressed into ~1 month** | |
 | Ongoing (M5 + M6 + maintenance) | Monthly report, health checks, profile upkeep, publishing new projects, authority outreach, updates | **≈ 6–10 h / month** | Recurring |
 | Extras | A new studio location (profile + page), large migrations, photography coordination | 4–8 h each | Ad hoc |
 

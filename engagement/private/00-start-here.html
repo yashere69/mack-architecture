@@ -137,7 +137,7 @@ td:first-child { font-weight: 600; }
 
 /* timeline */
 .timeline { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
-.tl { display: grid; grid-template-columns: 170px repeat(14, minmax(34px, 1fr)); min-width: 720px; font-size: 13px; }
+.tl { display: grid; grid-template-columns: 170px repeat(6, minmax(60px, 1fr)); min-width: 560px; font-size: 13px; }
 .tl > div { border-bottom: 1px solid var(--line); padding: 8px 0; }
 .tl .wk { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; background: var(--bg); }
 .tl .name { padding-left: 12px; font-weight: 600; background: var(--surface); }
@@ -189,13 +189,13 @@ a { color: var(--accent); }
 
 <div class="oneline">
   <span class="label">The whole engagement in one sentence</span>
-  <p>You set up MACK's digital foundation (website live on Google, a Google Maps profile, studio email, cloud storage with backup, analytics) in <b>6 milestones over about 3 months</b>. After that you run a <b>small monthly routine</b> that ends in a one-page report.</p>
+  <p>You set up MACK's digital foundation (website live on Google, a Google Maps profile, studio email, cloud storage with backup, analytics) in <b>6 milestones in about one month</b>. After that you run a <b>small monthly routine</b> that ends in a one-page report.</p>
 </div>
 
 <nav class="strip" aria-label="The five parts">
   <a href="#s01"><span class="n">1</span><span class="t">Today</span><span class="d">What's missing now</span></a>
   <a href="#s02"><span class="n">2</span><span class="t">Decide first</span><span class="d">3 blockers to settle</span></a>
-  <a href="#s05"><span class="n">3</span><span class="t">Build</span><span class="d">6 milestones, ~3 months</span></a>
+  <a href="#s05"><span class="n">3</span><span class="t">Build</span><span class="d">6 milestones, ~1 month</span></a>
   <a href="#s06"><span class="n">4</span><span class="t">Run monthly</span><span class="d">Checks + one report</span></a>
   <a href="#s10" class="priv"><span class="n">5</span><span class="t">Get paid</span><span class="d">Private: fee structure</span></a>
 </nav>
@@ -317,33 +317,56 @@ a { color: var(--accent); }
 
 <!-- S-05 -->
 <section class="sheet" id="s05">
-  <div class="sheet-head"><span class="sheet-code">S-05</span><h2>The 6 milestones</h2><p>Each one ends with something you can show. Delays usually come from waiting for access or information.</p></div>
+  <div class="sheet-head"><span class="sheet-code">S-05</span><h2>The 6 milestones</h2><p>About one month. Each milestone ends with something you can show. The pace depends on access, the listing decision and project facts arriving in week 1.</p></div>
 
-  <div class="timeline" role="img" aria-label="Timeline: Week 0 align; M1 weeks 1–2; M2 weeks 2–4; M3 weeks 3–6; M4 weeks 4–10; M5 from week 9 ongoing; M6 from week 6 ongoing">
+  <div class="timeline" role="img" aria-label="Timeline: Week 0 align; M1 week 1; M2 weeks 1–2; M3 and M4 weeks 2–4; M5 and M6 from week 4, then monthly">
     <div class="tl">
       <div class="wk" style="text-align:left;padding-left:12px">Week</div>
-      <div class="wk">0</div><div class="wk">1</div><div class="wk">2</div><div class="wk">3</div><div class="wk">4</div><div class="wk">5</div><div class="wk">6</div><div class="wk">7</div><div class="wk">8</div><div class="wk">9</div><div class="wk">10</div><div class="wk">11</div><div class="wk">12</div><div class="wk">→</div>
-
+      <div class="wk">0</div><div class="wk">1</div><div class="wk">2</div><div class="wk">3</div><div class="wk">4</div><div class="wk">Monthly →</div>
       <div class="name"><span>W0</span>Align &amp; access</div>
-      <div class="gap" style="grid-column: 2 / 3; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 3 / 16"></div>
-
+      <div class="gap" style="display:grid"><div class="bar"></div></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
       <div class="name"><span>M1</span>Foundation</div>
-      <div class="gap" style="grid-column: 2 / 3"></div><div class="gap" style="grid-column: 3 / 5; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 5 / 16"></div>
-
+      <div class="gap"></div>
+      <div class="gap" style="display:grid"><div class="bar"></div></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
       <div class="name"><span>M2</span>Launch &amp; search</div>
-      <div class="gap" style="grid-column: 2 / 4"></div><div class="gap" style="grid-column: 4 / 7; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 7 / 16"></div>
-
+      <div class="gap"></div>
+      <div class="gap" style="display:grid; grid-column: span 2"><div class="bar"></div></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
       <div class="name"><span>M3</span>Local presence</div>
-      <div class="gap" style="grid-column: 2 / 5"></div><div class="gap" style="grid-column: 5 / 9; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 9 / 16"></div>
-
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap" style="display:grid; grid-column: span 3"><div class="bar"></div></div>
+      <div class="gap"></div>
       <div class="name"><span>M4</span>Portfolio</div>
-      <div class="gap" style="grid-column: 2 / 6"></div><div class="gap" style="grid-column: 6 / 13; display:grid"><div class="bar"></div></div><div class="gap" style="grid-column: 13 / 16"></div>
-
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap" style="display:grid; grid-column: span 3"><div class="bar"></div></div>
+      <div class="gap"></div>
       <div class="name"><span>M5</span>Authority</div>
-      <div class="gap" style="grid-column: 2 / 11"></div><div class="gap" style="grid-column: 11 / 16; display:grid"><div class="bar open"></div></div>
-
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap" style="display:grid"><div class="bar"></div></div>
+      <div class="gap" style="display:grid"><div class="bar open"></div></div>
       <div class="name"><span>M6</span>Measurement</div>
-      <div class="gap" style="grid-column: 2 / 8"></div><div class="gap" style="grid-column: 8 / 16; display:grid"><div class="bar open"></div></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap"></div>
+      <div class="gap" style="display:grid"><div class="bar"></div></div>
+      <div class="gap" style="display:grid"><div class="bar open"></div></div>
     </div>
   </div>
   <p class="muted" style="font-size:13.5px">Solid bar = set-up work. Dashed bar = ongoing.</p>
@@ -351,12 +374,12 @@ a { color: var(--accent); }
   <div class="tbl"><table>
     <thead><tr><th>Milestone</th><th>You deliver</th><th>You need from MACK</th><th>Done when</th></tr></thead>
     <tbody>
-      <tr><td>M1 Foundation<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 1–2</span></td><td>Domain, studio email, shared drives, analytics, Search Console, access map</td><td>Domain decision, mailbox list, where files are</td><td>Test email passes SPF/DKIM/DMARC; every account owned by MACK</td></tr>
-      <tr><td>M2 Launch &amp; search<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 2–4</span></td><td>Site live and indexable, fixes, enquiry tracking, sitemap, keyword map</td><td>Launch approval, contact details, privacy wording</td><td>Pages submitted; a test enquiry shows in analytics; no critical errors</td></tr>
-      <tr><td>M3 Local presence<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 3–6</span></td><td>Verified Maps profile, consistent details, review kit, new-studio playbook</td><td>Listing decision, someone to verify, studio photos</td><td>Profile verified and complete; profile visits measured</td></tr>
-      <tr><td>M4 Portfolio<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 4–10</span></td><td>Project pages to one standard, service pages, image names and credits</td><td>~10 min per project (form), photo credits, permissions</td><td>Every supplied project meets the standard</td></tr>
-      <tr><td>M5 Authority<br><span class="muted mono" style="font-weight:400;font-size:12px">from month 3</span></td><td>Archello/Architizer profiles, publication shortlist, one submission kit</td><td>Approvals, client permissions, ideally pro photography</td><td>Profiles live; first submission sent (publication is the editor's call)</td></tr>
-      <tr><td>M6 Measurement<br><span class="muted mono" style="font-weight:400;font-size:12px">monthly from week 6</span></td><td>Dashboard, monthly report, health checks, quarterly review</td><td>20 minutes a month; enquiry log kept up</td><td>Reports on schedule, decisions recorded</td></tr>
+      <tr><td>M1 Foundation<br><span class="muted mono" style="font-weight:400;font-size:12px">week 1</span></td><td>Domain, studio email, shared drives, analytics, Search Console, access map</td><td>Domain decision, mailbox list, where files are</td><td>Test email passes SPF/DKIM/DMARC; every account owned by MACK</td></tr>
+      <tr><td>M2 Launch &amp; search<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 1–2</span></td><td>Site live and indexable, fixes, enquiry tracking, sitemap, keyword map</td><td>Launch approval, contact details, privacy wording</td><td>Pages submitted; a test enquiry shows in analytics; no critical errors</td></tr>
+      <tr><td>M3 Local presence<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 2–4</span></td><td>Verified Maps profile, consistent details, review kit, new-studio playbook</td><td>Listing decision, someone to verify, studio photos</td><td>Profile verified and complete; profile visits measured</td></tr>
+      <tr><td>M4 Portfolio<br><span class="muted mono" style="font-weight:400;font-size:12px">weeks 2–4</span></td><td>Project pages to one standard, service pages, image names and credits</td><td>~10 min per project (form), photo credits, permissions</td><td>Every supplied project meets the standard</td></tr>
+      <tr><td>M5 Authority<br><span class="muted mono" style="font-weight:400;font-size:12px">from week 4</span></td><td>Archello/Architizer profiles, publication shortlist, one submission kit</td><td>Approvals, client permissions, ideally pro photography</td><td>Profiles live; first submission sent (publication is the editor's call)</td></tr>
+      <tr><td>M6 Measurement<br><span class="muted mono" style="font-weight:400;font-size:12px">monthly from week 4</span></td><td>Dashboard, monthly report, health checks, quarterly review</td><td>20 minutes a month; enquiry log kept up</td><td>Reports on schedule, decisions recorded</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -396,7 +419,7 @@ a { color: var(--accent); }
     <div><span class="mono">4</span><b>What we are building</b><span>Domain, email, website, cloud, backup, Search Console, analytics, Business Profile, all owned by MACK</span></div>
     <div><span class="mono">5</span><b>Search + portfolio</b><span>Technical → services → projects → local → authority → discovery</span></div>
     <div><span class="mono">6</span><b>Visibility to business</b><span>The measured journey + the monthly report</span></div>
-    <div><span class="mono">7</span><b>Roadmap</b><span>Six milestones over about three months, then monthly</span></div>
+    <div><span class="mono">7</span><b>Roadmap</b><span>Six milestones in one month, then monthly care</span></div>
     <div><span class="mono">8–9</span><b>Receives + next steps</b><span>Deliverables in four groups; Align → Access → Implement → Measure → Improve</span></div>
   </div>
 </section>
