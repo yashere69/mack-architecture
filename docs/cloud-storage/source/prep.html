@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<title>MACK Call Prep</title>
+<!-- Internal prep pack for the MACK call. Prices = audited figures, mack-pricing-audit.md (18 Oct 2026). -->
+<style>
+@font-face { font-family: Jost; font-weight: 300 700; src: url(fonts/jost-latin-wght-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+2190-2199, U+2212; }
+@font-face { font-family: Jost; font-weight: 300 700; src: url(fonts/jost-latin-ext-wght-normal.woff2) format('woff2'); unicode-range: U+0100-02AF, U+20A0-20C4; }
+@font-face { font-family: Newsreader; font-weight: 200 800; src: url(fonts/newsreader-latin-standard-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: Newsreader; font-weight: 200 800; src: url(fonts/newsreader-latin-ext-standard-normal.woff2) format('woff2'); unicode-range: U+0100-02AF; }
+
+:root {
+  --paper: #f3f1ec; --stone: #e6e2d9; --ink: #1a1916; --ink-2: #4a463f; --ink-3: #79736a;
+  --rule: #cdc7bb; --accent: #8a5434; --tint: #ece2d8;
+  --serif: Newsreader, Georgia, serif; --sans: Jost, Arial, sans-serif;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-size: 10pt; line-height: 1.45; }
+.page { width: 210mm; height: 297mm; padding: 13mm 16mm 12mm; display: flex; flex-direction: column; overflow: hidden; page-break-after: always; background: var(--paper); }
+.page:last-child { page-break-after: auto; }
+.run { display: flex; justify-content: space-between; border-bottom: 0.6pt solid var(--ink); padding-bottom: 2.2mm; }
+.run span, .label { font: 500 6.8pt/1.2 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; }
+.run span + span { color: var(--ink-3); }
+.foot { margin-top: auto; display: flex; justify-content: space-between; border-top: 0.4pt solid var(--rule); padding-top: 2.2mm; }
+.foot span { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+.label.mute { color: var(--ink-3); }
+h1 { font: 300 32pt/1.02 var(--serif); letter-spacing: -0.02em; margin-top: 9mm; text-wrap: balance; }
+h1 .two { color: var(--ink-3); }
+.lede { font: 300 12.5pt/1.4 var(--serif); color: var(--ink-2); margin-top: 4mm; max-width: 150mm; }
+h3 { font: 400 13pt/1.2 var(--serif); }
+p { color: var(--ink-2); }
+b, strong { color: var(--ink); font-weight: 500; }
+svg { display: block; font-family: var(--sans); }
+svg .l { fill: none; stroke: var(--ink); stroke-width: 0.9; stroke-linecap: round; stroke-linejoin: round; }
+svg .la { fill: none; stroke: var(--accent); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
+/* page 1 */
+.three { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 5mm; margin-top: 9mm; }
+.box { border-top: 0.6pt solid var(--ink); padding-top: 3mm; }
+.box .n { font: 300 24pt/1 var(--serif); color: var(--ink-3); }
+.box svg { height: 26mm; width: 100%; margin: 3mm 0 4mm; }
+.box h3 { font: 500 9.5pt/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 2mm; }
+.box .like { font: 300 11pt/1.35 var(--serif); color: var(--ink); margin-bottom: 2mm; }
+.box p { font-size: 8.8pt; }
+.warn { margin-top: 9mm; background: var(--ink); color: var(--paper); padding: 6mm 7mm; display: grid; grid-template-columns: 34mm 1fr; column-gap: 6mm; }
+.warn .label { color: #d9b79f; }
+.warn h3 { color: var(--paper); font-size: 15pt; margin-bottom: 2mm; }
+.warn p { color: #c9c3b8; font-size: 9pt; }
+.gloss { margin-top: 8mm; }
+.gloss table { width: 100%; border-collapse: collapse; margin-top: 2.5mm; }
+.gloss td { padding: 2.1mm 3mm 2.1mm 0; border-top: 0.4pt solid var(--rule); font-size: 9pt; vertical-align: top; color: var(--ink-2); }
+.gloss tr:first-child td { border-top: 0.6pt solid var(--ink); }
+.gloss td:first-child { width: 34mm; font-weight: 500; color: var(--ink); }
+
+/* page 2 */
+.day { margin-top: 8mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.ev { border-top: 0.6pt solid var(--ink); padding: 3.4mm 0 4.6mm; display: grid; grid-template-columns: 14mm 1fr; column-gap: 3mm; }
+.ev svg { width: 13mm; height: 13mm; }
+.ev h3 { font-size: 12pt; margin-bottom: 1.2mm; }
+.ev p { font-size: 8.9pt; }
+.ev .ans { color: var(--accent); font-weight: 500; }
+
+/* page 3 */
+table.q { width: 100%; border-collapse: collapse; margin-top: 7mm; }
+.q th { font: 500 6.6pt/1.2 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 0 3mm 2mm 0; }
+.q td { border-top: 0.4pt solid var(--rule); padding: 2.6mm 3mm 2.6mm 0; vertical-align: top; font-size: 8.9pt; color: var(--ink-2); }
+.q tr:nth-child(2) td { border-top: 0.6pt solid var(--ink); }
+.q td.k { font: 300 11.5pt/1.25 var(--serif); color: var(--ink); width: 62mm; }
+.q td.k i { font-style: normal; font: 500 7pt var(--sans); color: var(--ink-3); margin-right: 2mm; }
+.q td.go { width: 52mm; }
+.q td.go b { color: var(--accent); }
+
+/* page 4 */
+.step { margin-top: 5.5mm; }
+.step .head { display: flex; align-items: baseline; gap: 4mm; border-bottom: 0.6pt solid var(--ink); padding-bottom: 1.8mm; }
+.step .head h3 { font-size: 14pt; }
+.step table { width: 100%; border-collapse: collapse; }
+.step td { padding: 2.2mm 3mm 2.2mm 0; border-bottom: 0.4pt solid var(--rule); font-size: 8.9pt; vertical-align: top; color: var(--ink-2); }
+.step td.o { width: 48mm; font-weight: 500; color: var(--ink); }
+.step td.c { width: 34mm; text-align: right; white-space: nowrap; color: var(--ink); font-weight: 500; }
+.step td.v { width: 26mm; text-align: right; }
+.pick { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; padding: 1.2mm 1.8mm; border-radius: 0.6mm; white-space: nowrap; }
+.pick.y { background: var(--accent); color: var(--paper); }
+.pick.m { border: 0.5pt solid var(--ink-3); color: var(--ink-3); }
+.pick.n { color: var(--ink-3); }
+tr.rec td { background: var(--tint); }
+tr.rec td:first-child { padding-left: 2mm; }
+
+/* page 5 */
+.pk { display: grid; grid-template-columns: 1fr 1.08fr 1fr; column-gap: 4mm; margin-top: 12mm; }
+.card { border-top: 0.6pt solid var(--ink); padding-top: 4mm; display: flex; flex-direction: column; }
+.card.rec { background: var(--ink); color: var(--paper); border: 0; padding: 9mm 5mm 5mm; margin-top: -5mm; }
+.card.rec p, .card.rec li { color: #c9c3b8; }
+.card .tag { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; background: var(--accent); color: var(--paper); padding: 1.3mm 2mm; align-self: flex-start; margin-bottom: 3mm; }
+.card .letter { font: 300 28pt/1 var(--serif); }
+.card h3 { font: 500 9.5pt/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; margin: 2.5mm 0 3mm; }
+.card.rec h3 { color: var(--paper); }
+.card .for { font: 300 11pt/1.35 var(--serif); height: 22mm; }
+.card.rec .for { color: var(--paper); }
+.card ul { list-style: none; margin-top: 2mm; height: 30mm; }
+.card li { font-size: 8.7pt; padding: 1.2mm 0; border-top: 0.4pt solid var(--rule); color: var(--ink-2); }
+.card.rec li { border-top-color: #4a463f; }
+.money { margin-top: 4mm; }
+.money div { display: flex; justify-content: space-between; align-items: baseline; padding: 1.8mm 0; border-top: 0.4pt solid var(--rule); font-size: 8.4pt; color: var(--ink-3); }
+.card.rec .money div { border-top-color: #4a463f; color: #a8a297; }
+.money b { font: 300 15pt/1 var(--serif); color: var(--ink); }
+.card.rec .money b { color: var(--paper); }
+.note { margin-top: 10mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.note div { border-top: 0.6pt solid var(--ink); padding-top: 3mm; font-size: 9pt; color: var(--ink-2); }
+
+/* page 6 */
+.faq { margin-top: 7mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+.f { border-top: 0.6pt solid var(--ink); padding: 3mm 0 4mm; }
+.f h3 { font-size: 11.5pt; margin-bottom: 1.4mm; }
+.f p { font-size: 8.9pt; }
+.pitch { margin-top: auto; margin-bottom: 7mm; background: var(--ink); color: var(--paper); padding: 7mm 8mm; }
+.pitch .label { color: #d9b79f; }
+.pitch p { color: var(--paper); font: 300 15pt/1.35 var(--serif); margin-top: 3mm; }
+.check { margin-top: 6mm; display: grid; grid-template-columns: 30mm 1fr; column-gap: 6mm; }
+.check ul { list-style: none; columns: 2; column-gap: 8mm; }
+.check li { font-size: 8.9pt; padding: 1.3mm 0 1.3mm 5mm; position: relative; break-inside: avoid; color: var(--ink-2); }
+.check li::before { content: ''; position: absolute; left: 0; top: 2.6mm; width: 2.4mm; height: 2.4mm; border: 0.6pt solid var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ======================================================= 1 -->
+<section class="page">
+  <div class="run"><span>Call prep · for you, not for MACK</span><span>1 / 6 · Cloud in one page</span></div>
+  <h1>How the cloud works.<span class="two"> Three ideas, nothing more.</span></h1>
+  <p class="lede">Almost every question MACK asks will come back to one of these three ideas. If you understand them, you can explain any option.</p>
+
+  <div class="three">
+    <div class="box">
+      <div class="n">1</div>
+      <svg viewBox="0 0 120 70"><rect class="l" x="30" y="6" width="60" height="56"/><line class="l" x1="30" y1="24.6" x2="90" y2="24.6"/><line class="l" x1="30" y1="43.3" x2="90" y2="43.3"/><line class="l" x1="54" y1="15" x2="66" y2="15"/><line class="l" x1="54" y1="34" x2="66" y2="34"/><line class="l" x1="54" y1="53" x2="66" y2="53"/></svg>
+      <h3>Storage</h3>
+      <p class="like">A company cupboard that lives on the internet.</p>
+      <p>All project files sit in one place owned by MACK (Google, Microsoft or Dropbox). Nobody keeps "their" copy. If a laptop dies, nothing is lost.</p>
+    </div>
+    <div class="box">
+      <div class="n">2</div>
+      <svg viewBox="0 0 120 70"><path class="l" d="M10 16h40v26H10z"/><path class="l" d="M4 46h52l-4 4H8z"/><path class="l" d="M70 16h40v26H70z"/><path class="l" d="M64 46h52l-4 4H68z"/><path class="la" d="M60 6v58" stroke-dasharray="2 2"/><path class="la" d="M30 29h60M84 25l6 4-6 4"/></svg>
+      <h3>Sync</h3>
+      <p class="like">The cupboard shows up as a drive on every laptop.</p>
+      <p>People open and save files as usual, from a drive letter such as G:. Changes travel to everyone automatically, including deletions and mistakes.</p>
+    </div>
+    <div class="box">
+      <div class="n">3</div>
+      <svg viewBox="0 0 120 70"><rect class="l" x="8" y="12" width="40" height="48"/><rect class="la" x="72" y="12" width="40" height="48"/><path class="l" d="M15 26h26M15 34h26M79 26h26M79 34h26"/><path class="l" d="M52 36h16M64 32l4 4-4 4"/></svg>
+      <h3>Backup</h3>
+      <p class="like">A photocopy kept in another building, by another company.</p>
+      <p>A separate service quietly copies the cupboard several times a day and keeps older copies. It is only used when something goes wrong.</p>
+    </div>
+  </div>
+
+  <div class="warn">
+    <span class="label">The one thing to remember</span>
+    <div>
+      <h3>Cloud storage is not a backup.</h3>
+      <p>Because sync copies everything to everyone, a deleted folder, a drawing saved over, or a virus also spreads everywhere instantly. Google keeps old versions for only 30 days. A backup is a separate copy with a separate password, so it still has yesterday's healthy files.</p>
+    </div>
+  </div>
+
+  <div class="gloss">
+    <span class="label mute">Words you may hear, in plain English</span>
+    <table>
+      <tr><td>Version history</td><td>Google remembers earlier saves of a file for 30 days, so you can go back to an older version.</td></tr>
+      <tr><td>Bin / Trash</td><td>Deleted files wait here for 30 days before they are gone for good.</td></tr>
+      <tr><td>Archive</td><td>Finished projects moved to a read-only folder so nobody changes them by accident.</td></tr>
+      <tr><td>NAS / server</td><td>A box of hard disks inside the studio. Fast on the office network, but MACK has to buy and look after it.</td></tr>
+      <tr><td>Offline drive</td><td>A portable hard disk kept unplugged in a safe. No internet or password breach can reach it.</td></tr>
+      <tr><td>TB (terabyte)</td><td>1 TB is about 1,000 GB, roughly 200,000 phone photos. MACK expects 2–3 TB to start.</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+
+<!-- ======================================================= 2 -->
+<section class="page">
+  <div class="run"><span>Call prep</span><span>2 / 6 · A normal day</span></div>
+  <h1>What it looks like day to day.<span class="two"> What happens when things go wrong.</span></h1>
+  <p class="lede">Use these as examples on the call. Clients understand stories better than technology.</p>
+
+  <div class="day">
+    <div class="ev"><svg viewBox="0 0 48 48"><path class="l" d="M8 12h32v20H8z"/><path class="l" d="M3 36h42l-3 4H6z"/><path class="la" d="M16 22h16"/></svg><div><h3>Morning: open a drawing</h3><p>The designer opens <b>G:\MACK Projects\Garden House\03 CAD</b> and works in AutoCAD as usual. On save, it uploads by itself.</p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><rect class="l" x="10" y="8" width="28" height="32"/><path class="la" d="M16 18h16M16 24h16M16 30h10"/></svg><div><h3>Sharing with a client</h3><p>Instead of email attachments or WhatsApp, send a link to the <b>Final Deliverables</b> folder, for that person only, expiring in 30 days.</p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><rect class="l" x="12" y="10" width="24" height="30"/><path class="l" d="M8 10h32M20 6h8"/><path class="la" d="M18 20v12M24 20v12M30 20v12"/></svg><div><h3>"I deleted a folder"</h3><p>Restore it from the Bin in a minute. <span class="ans">Under 30 days: Bin. After that: the backup.</span></p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><rect class="l" x="14" y="12" width="22" height="28"/><rect class="la" x="9" y="7" width="22" height="28" style="fill:#f3f1ec"/></svg><div><h3>"I saved over the final plan"</h3><p>Right-click → version history → pick yesterday's version. <span class="ans">Under 30 days: Google. Older: the backup.</span></p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><path class="l" d="M10 12h28v20H10z"/><path class="l" d="M5 36h38l-3 4H8z"/><path class="la" d="M17 18l14 10M31 18L17 28"/></svg><div><h3>Laptop stolen or dead</h3><p>Nothing was only on it. Lock its access from the admin page and sign in on a new laptop. <span class="ans">Back to work in about an hour.</span></p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><path class="l" d="M8 30a16 16 0 0 1 32 0"/><path class="l" d="M15 30a9 9 0 0 1 18 0"/><path class="la" d="M8 8l32 32"/></svg><div><h3>Internet goes down</h3><p>Folders marked <b>"available offline"</b> keep working. Changes upload when the internet returns. A phone hotspot works for urgent sends.</p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><rect class="l" x="8" y="10" width="32" height="28"/><path class="la" d="M14 16l6 6-6 6M24 28h10"/></svg><div><h3>Virus / ransomware</h3><p>Google's sync app notices and pauses. Roll files back to the clean version, or restore from the backup taken before the attack.</p></div></div>
+    <div class="ev"><svg viewBox="0 0 48 48"><path class="l" d="M6 40h36M10 40V18l14-10 14 10v22"/><path class="la" d="M18 40V28h12v12"/></svg><div><h3>Studio fire or break-in</h3><p>Main copy and backup are both online. Finished projects are also on a drive kept off-site. <span class="ans">Nothing important lives only in the studio.</span></p></div></div>
+  </div>
+
+  <div style="margin-top:auto;margin-bottom:8mm">
+    <span class="label mute">Where every copy lives</span>
+    <svg viewBox="0 0 520 92" width="100%" style="margin-top:3mm">
+      <g font-size="7" letter-spacing="1.2" fill="#79736a">
+        <rect class="l" x="1" y="14" width="112" height="52"/><text x="12" y="30">ON EACH LAPTOP</text>
+        <rect class="l" x="136" y="14" width="112" height="52"/><text x="147" y="30">MAIN COPY</text>
+        <rect class="la" x="271" y="14" width="112" height="52"/><text x="282" y="30" fill="#8a5434">BACKUP</text>
+        <rect class="l" x="406" y="14" width="112" height="52" style="stroke-dasharray:3 2"/><text x="417" y="30">FINISHED PROJECTS</text>
+      </g>
+      <g font-size="10.5" font-family="Newsreader, serif" fill="#1a1916">
+        <text x="12" y="50">G: drive</text><text x="147" y="50">Google Workspace</text><text x="282" y="50">IDrive</text><text x="417" y="50">2 encrypted drives</text>
+      </g>
+      <g font-size="7.4" fill="#4a463f">
+        <text x="12" y="82">shows &amp; caches files</text><text x="147" y="82">everyone works here</text><text x="282" y="82">separate company, 3× a day</text><text x="417" y="82">studio safe + off-site</text>
+      </g>
+      <path class="l" d="M114 36h20M130 32l4 4-4 4M134 44h-20M118 40l-4 4 4 4"/>
+      <path class="la" d="M249 40h20M265 36l4 4-4 4"/>
+      <path class="l" d="M384 40h20M400 36l4 4-4 4"/>
+    </svg>
+  </div>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+
+<!-- ======================================================= 3 -->
+<section class="page">
+  <div class="run"><span>Call prep</span><span>3 / 6 · Find out what they want</span></div>
+  <h1>Ask these 8 questions first.<span class="two"> Their answers choose the option.</span></h1>
+  <p class="lede">You don't need to know what they want before the call. Ask these questions, note the answers, and the right option follows.</p>
+
+  <table class="q">
+    <tr><th>Ask</th><th>Why it matters</th><th>If they say… → then</th></tr>
+    <tr><td class="k"><i>1</i>How many people need access, now and in a year?</td><td>Cloud is priced per person. It also decides storage: Google gives 2 TB per person.</td><td class="go">Under 10 → <b>Package A or B</b>. 10+ soon → keep <b>C</b> in mind.</td></tr>
+    <tr><td class="k"><i>2</i>Where are the files today, and roughly how big?</td><td>Tells you how much to move and how long it takes. About 3 TB is a week of uploading.</td><td class="go">Over 10 TB → more people or <b>C</b>.</td></tr>
+    <tr><td class="k"><i>3</i>Which email do you use? Gmail or Outlook? Do you have a domain (@mack…)?</td><td>The cloud plan usually <b>includes</b> company email. Their habit points to Google or Microsoft.</td><td class="go">No strong habit → <b>Google</b>. Deep in Outlook/Excel → discuss <b>Microsoft</b> (storage is the catch).</td></tr>
+    <tr><td class="k"><i>4</i>Windows or Mac? Windows Home or Pro?</td><td>Both work. Windows Home can't encrypt USB drives itself.</td><td class="go">Home → buy drives with built-in encryption (priced in).</td></tr>
+    <tr><td class="k"><i>5</i>Do several people work on the <b>same</b> Revit model at the same time?</td><td>This is the one thing cloud folders do badly.</td><td class="go">Yes, daily → <b>C</b> (studio server). No → <b>A/B</b>.</td></tr>
+    <tr><td class="k"><i>6</i>How is the studio internet? Speed, and how often does it drop?</td><td>Cloud-first depends on it. 100 Mbps fibre is comfortable.</td><td class="go">Drops weekly → add a second connection before anything else.</td></tr>
+    <tr><td class="k"><i>7</i>How do you send files to clients and consultants now?</td><td>Shows if sharing (links, expiry, permissions) is a selling point for them.</td><td class="go">WhatsApp/WeTransfer → stress <b>shared folder links</b>.</td></tr>
+    <tr><td class="k"><i>8</i>What budget feels comfortable: per month, and one-time?</td><td>A and B cost the same monthly. B adds a one-time ₹40,720.</td><td class="go">Tight one-time → <b>A</b> now, drives later. Otherwise → <b>B</b>.</td></tr>
+  </table>
+
+  <p style="margin-top:6mm;font-size:9pt">Also ask: <b>who in the studio will be the "admin"</b> (resets passwords, adds new staff), and whether they've <b>ever lost files</b>. A real past loss is the best reason for backup.</p>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+
+<!-- ======================================================= 4 -->
+<section class="page">
+  <div class="run"><span>Call prep</span><span>4 / 6 · The menu</span></div>
+  <h1>Let them choose, one row at a time.<span class="two"> Prices for 5 people, per year.</span></h1>
+  <p class="lede">The highlighted line is our suggestion in each step. All prices include 18% GST.</p>
+
+  <div class="step">
+    <div class="head"><span class="label mute">Step 1</span><h3>Where do the files live?</h3></div>
+    <table>
+      <tr class="rec"><td class="o">Google Workspace</td><td>10 TB shared by everyone. Company email included. Simple sharing links.</td><td class="c num">₹76,464 / yr</td><td class="v"><span class="pick y">Suggested</span></td></tr>
+      <tr><td class="o">Microsoft 365</td><td>Cheaper per person and good if they live in Outlook/Excel. But only about 1 TB of <em>shared</em> space; 3 TB would add roughly ₹5.5 lakh a year.</td><td class="c num">₹60,888 / yr</td><td class="v"><span class="pick m">Only if data is small</span></td></tr>
+      <tr><td class="o">Dropbox (+ separate email)</td><td>Best at syncing very large files fast. 15 TB or more. Costs about 2.4× Google.</td><td class="c num">≈ ₹1,83,940 / yr</td><td class="v"><span class="pick m">If big files lag</span></td></tr>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="head"><span class="label mute">Step 2</span><h3>Independent backup?</h3></div>
+    <table>
+      <tr class="rec"><td class="o">Yes: IDrive backup</td><td>Separate company, separate password, copies 3× a day, 10 TB per person. Hands-off.</td><td class="c num">₹11,446 / yr</td><td class="v"><span class="pick y">Suggested</span></td></tr>
+      <tr><td class="o">No backup</td><td>Relies on Google's 30-day Bin and version history only. Not responsible for client work.</td><td class="c num">₹0</td><td class="v"><span class="pick n">Not advised</span></td></tr>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="head"><span class="label mute">Step 3</span><h3>A copy MACK physically holds?</h3></div>
+    <table>
+      <tr class="rec"><td class="o">Yes: 2 encrypted drives</td><td>WD My Passport 5 TB, password-locked. Finished projects copied on; one in the studio safe, one at a partner's home.</td><td class="c num">₹40,720 once</td><td class="v"><span class="pick y">Suggested</span></td></tr>
+      <tr><td class="o">Not now</td><td>Can be added any time later.</td><td class="c num">₹0</td><td class="v"><span class="pick m">If budget is tight</span></td></tr>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="head"><span class="label mute">Step 4</span><h3>A storage server in the studio?</h3></div>
+    <table>
+      <tr class="rec"><td class="o">Not now</td><td>At 2–3 TB and ~5 people the cloud does the job. Hard disk prices are high in 2026.</td><td class="c num">₹0</td><td class="v"><span class="pick y">Suggested</span></td></tr>
+      <tr><td class="o">Yes: Synology NAS</td><td>Fast shared work on big Revit models, plus a local copy. Needs a UPS and care.</td><td class="c num">₹2,58,650 once</td><td class="v"><span class="pick m">10+ people / Revit</span></td></tr>
+    </table>
+  </div>
+
+  <p style="margin-top:5mm;font-size:8.4pt;color:var(--ink-3)">IDrive and Dropbox bill in US dollars; converted at $1 = ₹97. Google may offer new customers ₹864 instead of ₹1,080 per person for the first 12 months (saves ₹15,293 in Year 1). NAS = DS925+ ₹77,150 + 4 × 8 TB drives ₹1,75,100 + UPS ₹6,400.</p>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+
+<!-- ======================================================= 5 -->
+<section class="page">
+  <div class="run"><span>Call prep</span><span>5 / 6 · Or pick a package</span></div>
+  <h1>Three ready-made packages.<span class="two"> If they'd rather not choose line by line.</span></h1>
+
+  <div class="pk">
+    <div class="card">
+      <span class="tag" style="visibility:hidden">x</span>
+      <div class="letter">A</div><h3>Essential</h3>
+      <p class="for">Cloud + online backup. The minimum we'd call safe.</p>
+      <ul><li>Google Workspace, 5 people</li><li>IDrive backup, 3× a day</li><li>No drives, no server</li></ul>
+      <div class="money">
+        <div>One-time <b class="num">₹0</b></div>
+        <div>Per year <b class="num">₹87,910</b></div>
+        <div>≈ per month <b class="num">₹7,326</b></div>
+        <div>Year 1 total <b class="num">₹87,910</b></div>
+      </div>
+    </div>
+    <div class="card rec">
+      <span class="tag">Suggested</span>
+      <div class="letter">B</div><h3>Recommended</h3>
+      <p class="for">Essential + two encrypted drives holding every finished project.</p>
+      <ul><li>Google Workspace, 5 people</li><li>IDrive backup, 3× a day</li><li>2 × 5 TB encrypted drives</li></ul>
+      <div class="money">
+        <div>One-time <b class="num">₹40,720</b></div>
+        <div>Per year <b class="num">₹87,910</b></div>
+        <div>≈ per month <b class="num">₹7,326</b></div>
+        <div>Year 1 total <b class="num">₹1,28,630</b></div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag" style="visibility:hidden">x</span>
+      <div class="letter">C</div><h3>Growth</h3>
+      <p class="for">For ~10 people working together on big models.</p>
+      <ul><li>Google Workspace, 10 people</li><li>IDrive + studio server + its backup</li><li>2 × 5 TB encrypted drives</li></ul>
+      <div class="money">
+        <div>One-time <b class="num">₹2,99,370</b></div>
+        <div>Per year <b class="num">₹2,23,550</b></div>
+        <div>≈ per month <b class="num">₹18,629</b></div>
+        <div>Year 1 total <b class="num">₹5,22,920</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div><b>How to say the difference:</b> A and B cost exactly the same every month. B adds ₹40,720 once, for a copy of finished projects that no internet problem, password leak or unpaid subscription can touch.</div>
+    <div><b>Each extra person</b> adds about <b>₹17,582 a year</b> (Google ₹15,293 + backup ₹2,289), and 2 TB more shared storage. Start with A or B; move to C only if the "Revit together" or "10+ people" answers say so.</div>
+  </div>
+
+  <p style="margin-top:auto;margin-bottom:6mm;font-size:8.4pt;color:var(--ink-3)">All prices include 18% GST and use Google's normal price (₹1,080 per person per month, yearly plan). Year 2 onwards = the "per year" line. Not included: internet, laptops, your setup fee.</p>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+
+<!-- ======================================================= 6 -->
+<section class="page">
+  <div class="run"><span>Call prep</span><span>6 / 6 · Their likely questions</span></div>
+  <h1>Questions they may ask.<span class="two"> Short, honest answers.</span></h1>
+
+  <div class="faq">
+    <div class="f"><h3>"Is our data safe with Google?"</h3><p>It's encrypted and protected by two-step sign-in for every person. The bigger risk is our own mistakes, which is what the backup is for.</p></div>
+    <div class="f"><h3>"Why pay for backup if Google already stores it?"</h3><p>Google copies mistakes too, and keeps old versions only 30 days. The backup is a separate copy at a separate company.</p></div>
+    <div class="f"><h3>"Why not just use external hard disks?"</h3><p>People forget to copy, and disks fail or get stolen. We use disks only as an extra copy of finished projects.</p></div>
+    <div class="f"><h3>"Why not buy a server like other studios?"</h3><p>At our size it costs about ₹2.6 lakh up front plus upkeep, for no gain. We'll add one if the team grows or Revit needs it.</p></div>
+    <div class="f"><h3>"What if the internet goes down?"</h3><p>Active projects are kept offline on laptops, so work continues and uploads later. A phone hotspot covers urgent sends.</p></div>
+    <div class="f"><h3>"What if someone leaves?"</h3><p>Files belong to MACK, not the person. We switch off their access the same day; nothing walks out.</p></div>
+    <div class="f"><h3>"Can we stop or switch later?"</h3><p>Yes. The files are normal DWG, RVT and PDF files and can be downloaded any time. The backup and drives hold copies too.</p></div>
+    <div class="f"><h3>"Who owns the accounts?"</h3><p>MACK does. The accounts are registered and paid by MACK; we only have admin access, which they can remove.</p></div>
+  </div>
+
+  <div class="check">
+    <span class="label mute">Before the call</span>
+    <ul>
+      <li>Have this pack open on page 3</li>
+      <li>Note their answers to the 8 questions</li>
+      <li>Don't promise a price in dollars; say "about"</li>
+      <li>Confirm Google's price on screen from India</li>
+      <li>Ask who will be MACK's admin contact</li>
+      <li>End with a choice: A, B or C</li>
+    </ul>
+  </div>
+
+  <div class="pitch">
+    <span class="label">If you only say one thing</span>
+    <p>"All your projects in one company account everyone can work from, a separate backup copying it three times a day, and finished work also kept on drives you hold, for about ₹7,300 a month."</p>
+  </div>
+  <div class="foot"><span>MACK · cloud storage &amp; backup</span><span>Prices audited 18 Oct 2026</span></div>
+</section>
+</body>
+</html>
