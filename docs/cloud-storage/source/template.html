@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<title>MACK Project Storage</title>
+<style>
+@font-face { font-family: Jost; font-weight: 300 700; src: url(fonts/jost-latin-wght-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+2190-2199, U+2212; }
+@font-face { font-family: Jost; font-weight: 300 700; src: url(fonts/jost-latin-ext-wght-normal.woff2) format('woff2'); unicode-range: U+0100-02AF, U+20A0-20C4; }
+@font-face { font-family: Newsreader; font-weight: 200 800; src: url(fonts/newsreader-latin-standard-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: Newsreader; font-weight: 200 800; src: url(fonts/newsreader-latin-ext-standard-normal.woff2) format('woff2'); unicode-range: U+0100-02AF; }
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 200 800; src: url(fonts/newsreader-latin-standard-italic.woff2) format('woff2'); unicode-range: U+0000-00FF, U+2000-206F; }
+
+:root {
+  --paper: #f3f1ec; --stone: #e6e2d9; --ink: #1a1916; --ink-2: #4a463f; --ink-3: #79736a;
+  --rule: #cdc7bb; --accent: #8a5434; --accent-tint: #efe3d9;
+  --serif: Newsreader, Georgia, serif; --sans: Jost, 'Helvetica Neue', Arial, sans-serif;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-size: 9.5pt; line-height: 1.45; font-weight: 400; }
+
+.page { width: 210mm; height: 297mm; padding: 13mm 16mm 12mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; background: var(--paper); }
+.page:last-child { page-break-after: auto; }
+
+/* running header / footer */
+.run { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.6pt solid var(--ink); padding-bottom: 2.2mm; }
+.run span, .label { font: 500 6.6pt/1.2 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
+.run span + span { color: var(--ink-3); }
+.foot { margin-top: auto; display: flex; justify-content: space-between; border-top: 0.4pt solid var(--rule); padding-top: 2.2mm; }
+.foot span { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+.label.mute { color: var(--ink-3); }
+
+h1 { font: 300 37pt/1.0 var(--serif); letter-spacing: -0.02em; text-wrap: balance; }
+h1 .two { color: var(--ink-3); display: block; }
+h2 { font: 300 28pt/1.04 var(--serif); letter-spacing: -0.018em; text-wrap: balance; }
+h2 .two { color: var(--ink-3); }
+h3 { font: 400 13pt/1.15 var(--serif); letter-spacing: -0.005em; }
+.lede { font: 300 12.5pt/1.38 var(--serif); color: var(--ink-2); }
+p.small, .small { font-size: 8.2pt; line-height: 1.45; color: var(--ink-2); }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
+.kicker { display: flex; gap: 6mm; align-items: baseline; margin: 9mm 0 4mm; }
+.kicker .label { min-width: 22mm; }
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 5mm; }
+.rule { border-top: 0.6pt solid var(--ink); }
+.hair { border-top: 0.4pt solid var(--rule); }
+
+svg { display: block; }
+svg .l { fill: none; stroke: var(--ink); stroke-width: 0.9; stroke-linecap: round; stroke-linejoin: round; }
+svg .lt { fill: none; stroke: var(--ink-3); stroke-width: 0.6; stroke-dasharray: 2 2; }
+svg .la { fill: none; stroke: var(--accent); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; }
+svg .fa { fill: var(--accent); }
+svg .fs { fill: var(--stone); }
+svg .fp { fill: var(--paper); }
+svg { font-family: var(--sans); }
+
+/* ---------- page 1 ---------- */
+.p1-head { margin-top: 20mm; }
+.p1-head .lede { margin-top: 7mm; max-width: 128mm; }
+.outcomes { margin-top: 15mm; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 0.6pt solid var(--ink); }
+.outcome { padding: 4mm 4mm 0 0; position: relative; }
+.outcome + .outcome { padding-left: 4mm; border-left: 0.4pt solid var(--rule); }
+.outcome .n { font: 300 9pt/1 var(--serif); color: var(--ink-3); }
+.outcome svg { margin: 6mm 0 6mm; height: 30mm; width: 100%; }
+.outcome h3 { font: 500 9.4pt/1 var(--sans); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2.2mm; }
+.outcome p { font-size: 8.6pt; line-height: 1.42; color: var(--ink-2); }
+.outcome .arrow { position: absolute; right: -2.2mm; top: 22mm; font: 300 12pt/1 var(--sans); color: var(--ink-3); background: var(--paper); z-index: 2; }
+.decision { margin-top: 16mm; background: var(--ink); color: var(--paper); padding: 7mm 8mm 7mm; display: grid; grid-template-columns: 1.15fr 1fr 1fr 1fr; column-gap: 6mm; }
+.decision .label { color: #a8a297; }
+.decision .big { font: 300 22pt/1 var(--serif); margin: 3mm 0 1.8mm; letter-spacing: -0.01em; }
+.decision .what { font-size: 7.8pt; color: #c9c3b8; line-height: 1.4; }
+.decision .lead { font: 300 12pt/1.3 var(--serif); color: var(--paper); }
+.decision .cell + .cell { border-left: 0.4pt solid #4a463f; padding-left: 6mm; }
+
+/* ---------- page 2 ---------- */
+.p2 .flow { grid-column: 1 / span 7; }
+.p2 .tree { grid-column: 8 / span 5; }
+.tree .proj { border-top: 0.6pt solid var(--ink); padding-top: 3mm; }
+.tree ul { list-style: none; margin-top: 3mm; }
+.tree li { display: flex; gap: 3mm; align-items: baseline; padding: 1.75mm 0; border-bottom: 0.4pt solid var(--rule); font-size: 8.8pt; }
+.tree li b { font: 500 7pt/1 var(--sans); color: var(--ink-3); letter-spacing: 0.08em; width: 6mm; }
+.tree li i { margin-left: auto; font-style: normal; font-size: 7pt; color: var(--ink-3); letter-spacing: 0.04em; }
+.tree li.out { color: var(--accent); }
+.tree li.out i { color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 4mm; }
+.chip { font: 500 6.8pt/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; border: 0.5pt solid var(--ink-3); padding: 1.5mm 2.2mm; border-radius: 0.6mm; }
+table { border-collapse: collapse; width: 100%; }
+.access { margin-top: 3mm; }
+.access th { font: 500 6.6pt/1.2 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; text-align: left; padding: 0 2mm 2mm 0; color: var(--ink-3); vertical-align: bottom; }
+.access td { padding: 2.2mm 2mm 2.2mm 0; border-top: 0.4pt solid var(--rule); font-size: 8.6pt; vertical-align: top; }
+.access td:first-child { font-weight: 500; width: 40mm; }
+.access tr:first-child td { border-top: 0.6pt solid var(--ink); }
+.dot { display: inline-block; width: 2.4mm; height: 2.4mm; border-radius: 50%; background: var(--ink); vertical-align: -0.2mm; margin-right: 1.5mm; }
+.dot.o { background: none; border: 0.6pt solid var(--ink); }
+.dot.n { background: none; width: 3mm; height: 0; border-radius: 0; border-top: 0.6pt solid var(--rule); vertical-align: 0.6mm; }
+.dot.a { background: var(--accent); }
+
+/* ---------- page 3 ---------- */
+.versus { margin-top: 10mm; margin-bottom: 8mm; }
+.scen { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; row-gap: 0; margin-top: 3mm; }
+.sc { border-top: 0.6pt solid var(--ink); padding: 5mm 0 8mm; display: grid; grid-template-columns: 17mm 1fr; column-gap: 4mm; }
+.sc svg { width: 17mm; height: 17mm; }
+.sc h3 { font-size: 12.5pt; margin-bottom: 1.6mm; }
+.sc .what { font-size: 8.4pt; color: var(--ink-2); }
+.sc .how { margin-top: 2.4mm; font-size: 8.4pt; }
+.sc .how b { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1mm; }
+.sc .t { margin-top: 2mm; font: 500 6.4pt/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+
+/* ---------- page 4 ---------- */
+.opts { display: grid; grid-template-columns: 1fr 1.08fr 1fr; column-gap: 4mm; margin-top: 9mm; align-items: stretch; }
+.opt { border-top: 0.6pt solid var(--ink); padding: 5mm 0 0; display: flex; flex-direction: column; }
+.opt.rec { background: var(--ink); color: var(--paper); border-top: none; padding: 11mm 5mm 5mm; margin-top: -6mm; }
+.opt.rec .tag { margin-top: -6mm; height: 11mm; }
+.opt .tag { height: 5mm; }
+.opt.rec .tag span { font: 500 6.6pt/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; background: var(--accent); color: var(--paper); padding: 1.4mm 2.2mm; }
+.opt .letter { font: 300 30pt/1 var(--serif); margin-top: 3mm; }
+.opt h3 { font: 500 9.6pt/1 var(--sans); letter-spacing: 0.2em; text-transform: uppercase; margin: 3mm 0 3.5mm; }
+.opt .gets { font: 300 11.5pt/1.34 var(--serif); height: 29mm; }
+.opt dd.two { min-height: 8.6mm; }
+.opt.rec .gets { color: var(--paper); }
+.opt dl { margin-top: 4mm; }
+.opt dt { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-top: 4mm; padding-top: 2.8mm; border-top: 0.4pt solid var(--rule); }
+.opt.rec dt { color: #a8a297; border-top-color: #4a463f; }
+.opt dd { font-size: 9pt; margin-top: 1.4mm; }
+.opt .money { font: 300 22pt/1 var(--serif); letter-spacing: -0.01em; }
+.opt .per { font-size: 7.8pt; color: var(--ink-3); margin-top: 1.2mm; }
+.opt.rec .per { color: #a8a297; }
+.opt .note { margin-top: auto; padding-top: 4mm; font-size: 7.8pt; color: var(--ink-3); font-style: normal; }
+.opt.rec .note { color: #c9c3b8; }
+.why { margin-top: 11mm; display: grid; grid-template-columns: 30mm 1fr; column-gap: 6mm; border-top: 0.6pt solid var(--ink); padding-top: 4mm; }
+.why p { font: 300 13pt/1.36 var(--serif); }
+
+/* ---------- page 5 ---------- */
+.stack { margin-top: 7mm; }
+.stack table td, .stack table th { vertical-align: top; text-align: left; }
+.stack th { font: 500 6.4pt/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); padding: 0 3mm 2mm 0; }
+.stack td { padding: 4mm 3mm 4mm 0; border-top: 0.4pt solid var(--rule); font-size: 8.6pt; }
+.stack td.layer { width: 70mm; padding-right: 6mm; }
+.stack td.layer svg { width: 64mm; height: 15mm; }
+.stack td.cost { text-align: right; padding-right: 0; white-space: nowrap; font-weight: 500; }
+.stack td b { display: block; font: 400 11pt/1.15 var(--serif); margin-bottom: 0.8mm; }
+.ledger { margin-top: 11mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; }
+.ledger h4 { font: 500 6.8pt/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; border-bottom: 0.6pt solid var(--ink); padding-bottom: 2mm; }
+.ln { display: flex; align-items: baseline; gap: 2mm; font-size: 8.8pt; padding: 2.4mm 0; }
+.ln .d { flex: 1; border-bottom: 0.6pt dotted var(--ink-3); transform: translateY(-1mm); }
+.ln .sub { color: var(--ink-3); font-size: 7.6pt; }
+.ln.tot { border-top: 0.6pt solid var(--ink); margin-top: 1mm; font-weight: 500; padding-top: 2.4mm; }
+.ln.tot .d { border: 0; }
+.totals { margin-top: 9mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 4mm; }
+.totals > div { background: var(--ink); color: var(--paper); padding: 7mm 6mm; display: flex; justify-content: space-between; align-items: baseline; }
+.totals > div.y2 { background: var(--stone); color: var(--ink); }
+.totals .label { color: inherit; }
+.totals .big { font: 300 23pt/1 var(--serif); letter-spacing: -0.01em; }
+.totals .big small { font: 400 9pt var(--sans); }
+.notyet { margin-top: auto; margin-bottom: 8mm; display: grid; grid-template-columns: 30mm 1fr; column-gap: 6mm; }
+
+/* ---------- page 6 ---------- */
+.steps { margin-top: 10mm; display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 4mm; row-gap: 8mm; }
+.step { border-top: 0.6pt solid var(--ink); padding-top: 3mm; }
+.step .n { font: 300 22pt/1 var(--serif); color: var(--ink-3); }
+.step h3 { font: 500 8.6pt/1.2 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; margin: 3mm 0 1.8mm; }
+.step p { font-size: 8.2pt; color: var(--ink-2); line-height: 1.42; }
+.step.last { border-top-color: var(--accent); }
+.step.last .n { color: var(--accent); }
+.weeks { margin-top: 6mm; }
+.after { margin-top: 10mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9mm; }
+.after ul { list-style: none; margin-top: 3mm; }
+.after li { padding: 2.1mm 0; border-top: 0.4pt solid var(--rule); font-size: 8.8pt; }
+.after li:first-child { border-top: 0.6pt solid var(--ink); }
+.owns { margin-top: auto; margin-bottom: 7mm; background: var(--ink); color: var(--paper); padding: 9mm 8mm 8mm; }
+.owns h2 { color: var(--paper); font-size: 25pt; }
+.owns p { color: #c9c3b8; font-size: 8.4pt; margin-top: 4mm; max-width: 140mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ PAGE 1 -->
+<section class="page">
+  <div class="run"><span>MACK Studio · Project storage &amp; backup</span><span>Recommendation · October 2026</span></div>
+
+  <div class="p1-head">
+    <h1>One organised place for your projects.<span class="two">Another safe copy protecting them.</span></h1>
+    <p class="lede">This is where MACK's drawings, models, renders and client files will live, how the team works on them, and how they stay safe. Everything is owned by MACK, priced in rupees, and needs no server in the studio.</p>
+  </div>
+
+  <div class="outcomes">
+    <div class="outcome">
+      <div class="n">01</div>
+      <svg viewBox="0 0 120 80">
+        <!-- one cabinet of project folders -->
+        <rect class="l" x="22" y="10" width="76" height="62"/>
+        <line class="l" x1="22" y1="30.5" x2="98" y2="30.5"/><line class="l" x1="22" y1="51" x2="98" y2="51"/>
+        <line class="l" x1="52" y1="20" x2="68" y2="20"/><line class="l" x1="52" y1="40.5" x2="68" y2="40.5"/><line class="l" x1="52" y1="61" x2="68" y2="61"/>
+        <line class="lt" x1="10" y1="72" x2="110" y2="72"/>
+      </svg>
+      <h3>Store</h3>
+      <p>Every project lives in one company account, organised the same way, owned by MACK, not by any one person.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="outcome">
+      <div class="n">02</div>
+      <svg viewBox="0 0 120 80">
+        <!-- laptop + drawing -->
+        <path class="l" d="M28 18h64v38H28z"/><path class="l" d="M18 62h84l-6 6H24z"/>
+        <path class="l" d="M38 48V28h22v10h14v10z"/><line class="lt" x1="38" y1="38" x2="60" y2="38"/>
+      </svg>
+      <h3>Work</h3>
+      <p>The team opens files from a drive on their laptop, in the studio, at home or on site, as if the files were on the computer.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="outcome">
+      <div class="n">03</div>
+      <svg viewBox="0 0 120 80">
+        <!-- second, separate copy -->
+        <rect class="l" x="14" y="20" width="38" height="44"/>
+        <line class="l" x1="21" y1="32" x2="45" y2="32"/><line class="l" x1="21" y1="40" x2="45" y2="40"/><line class="l" x1="21" y1="48" x2="38" y2="48"/>
+        <rect class="la" x="72" y="20" width="38" height="44"/>
+        <line class="la" x1="79" y1="32" x2="103" y2="32"/><line class="la" x1="79" y1="40" x2="103" y2="40"/><line class="la" x1="79" y1="48" x2="96" y2="48"/>
+        <path class="lt" d="M54 42h16"/><path class="l" d="M66 38l4 4-4 4"/>
+      </svg>
+      <h3>Back up</h3>
+      <p>A separate company copies everything three times a day, automatically. Finished projects are also kept on drives MACK holds.</p>
+      <span class="arrow">→</span>
+    </div>
+    <div class="outcome">
+      <div class="n">04</div>
+      <svg viewBox="0 0 120 80">
+        <!-- return arrow to a document -->
+        <rect class="l" x="64" y="16" width="34" height="48"/>
+        <line class="l" x1="71" y1="28" x2="91" y2="28"/><line class="l" x1="71" y1="36" x2="91" y2="36"/><line class="l" x1="71" y1="44" x2="84" y2="44"/>
+        <path class="la" d="M54 58H34a12 12 0 0 1 0-24h20"/><path class="la" d="M48 28l6 6-6 6"/>
+      </svg>
+      <h3>Recover</h3>
+      <p>A deleted, overwritten or lost file can be brought back, from minutes ago or from years ago.</p>
+    </div>
+  </div>
+
+  <div class="decision">
+    <div class="cell">
+      <div class="label">The recommendation</div>
+      <p class="lead" style="margin-top:3mm">Google Workspace for the team, an independent online backup, and two backup drives for finished work.</p>
+    </div>
+    <div class="cell">
+      <div class="label">Once</div>
+      <div class="big num">{{B.one_time_total}}</div>
+      <div class="what">Two encrypted backup drives. No server needed.</div>
+    </div>
+    <div class="cell">
+      <div class="label">Every month</div>
+      <div class="big num">{{B.month}}</div>
+      <div class="what">Cloud storage, company email and backup for {{team}} people.</div>
+    </div>
+    <div class="cell">
+      <div class="label">First year, all in</div>
+      <div class="big num">{{B.year1}}</div>
+      <div class="what">Then {{B.year2}} a year. Includes 18% GST.</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>MACK Studio</span><span>01 / 06</span></div>
+</section>
+
+<!-- ============================================================ PAGE 2 -->
+<section class="page p2">
+  <div class="run"><span>Where the files go</span><span>MACK Studio · Project storage &amp; backup</span></div>
+  <div class="kicker"><span class="label mute">02</span><h2>Where the files go<span class="two">, and who can open them.</span></h2></div>
+
+  <div class="grid" style="margin-top:4mm">
+    <div class="flow">
+      <svg viewBox="0 0 330 380" width="100%">
+        <!-- people -->
+        <g transform="translate(0,0)">
+          <g transform="translate(18,6)"><circle class="l" cx="24" cy="12" r="8"/><path class="l" d="M8 40a16 14 0 0 1 32 0"/><text x="24" y="54" font-size="7.4" text-anchor="middle" letter-spacing="1.1" fill="#1a1916">ARCHITECT</text></g>
+          <g transform="translate(118,6)"><circle class="l" cx="24" cy="12" r="8"/><path class="l" d="M8 40a16 14 0 0 1 32 0"/><text x="24" y="54" font-size="7.4" text-anchor="middle" letter-spacing="1.1" fill="#1a1916">DESIGNER</text></g>
+          <g transform="translate(218,6)"><circle class="l" cx="24" cy="12" r="8"/><path class="l" d="M8 40a16 14 0 0 1 32 0"/><text x="24" y="54" font-size="7.4" text-anchor="middle" letter-spacing="1.1" fill="#1a1916">ADMIN</text></g>
+          <path class="l" d="M42 66v10h200V66M142 66v18"/>
+        </g>
+        <!-- company storage -->
+        <g transform="translate(0,88)">
+          <rect class="l" x="1" y="0" width="282" height="56"/>
+          <text x="14" y="18" font-size="6.6" letter-spacing="1.3" fill="#79736a">MAIN COPY · GOOGLE WORKSPACE</text>
+          <text x="14" y="38" font-size="15" font-family="Newsreader, serif" fill="#1a1916">MACK Company Storage</text>
+          <text x="270" y="38" font-size="8" text-anchor="end" fill="#4a463f">10 TB · shared</text>
+          <path class="l" d="M142 56v16"/>
+        </g>
+        <!-- active projects -->
+        <g transform="translate(0,160)">
+          <rect class="fs" x="1" y="0" width="282" height="48"/>
+          <text x="14" y="18" font-size="6.6" letter-spacing="1.3" fill="#79736a">WHERE THE TEAM WORKS</text>
+          <text x="14" y="36" font-size="13" font-family="Newsreader, serif" fill="#1a1916">Active Projects</text>
+          <text x="270" y="36" font-size="8" text-anchor="end" fill="#4a463f">editable by the team</text>
+        </g>
+        <!-- backup branch -->
+        <path class="la" d="M284 112h22v128h-22" />
+        <path class="la" d="M290 236l-6 4 6 4"/>
+        <text x="314" y="180" font-size="6.6" letter-spacing="1.3" fill="#8a5434" transform="rotate(90 314 180)" text-anchor="middle">COPIED 3× A DAY</text>
+        <g transform="translate(0,224)">
+          <path class="l" d="M142 -16v16"/>
+          <rect class="la" x="1" y="0" width="282" height="48"/>
+          <text x="14" y="18" font-size="6.6" letter-spacing="1.3" fill="#8a5434">SECOND COPY · SEPARATE COMPANY</text>
+          <text x="14" y="36" font-size="13" font-family="Newsreader, serif" fill="#1a1916">Automatic Backup</text>
+          <text x="270" y="36" font-size="8" text-anchor="end" fill="#4a463f">IDrive · hands-off</text>
+          <path class="l" d="M142 48v16"/>
+        </g>
+        <!-- archive -->
+        <g transform="translate(0,288)">
+          <rect class="l" x="1" y="0" width="282" height="48"/>
+          <text x="14" y="18" font-size="6.6" letter-spacing="1.3" fill="#79736a">WHEN A PROJECT IS HANDED OVER</text>
+          <text x="14" y="36" font-size="13" font-family="Newsreader, serif" fill="#1a1916">Completed Project Archive</text>
+          <text x="270" y="36" font-size="8" text-anchor="end" fill="#4a463f">read-only · kept for good</text>
+          <!-- vault drives -->
+          <path class="lt" d="M60 48v20"/>
+          <rect class="l" x="20" y="68" width="34" height="20" rx="2"/><rect class="l" x="66" y="68" width="34" height="20" rx="2"/><text x="37" y="81" font-size="7" text-anchor="middle" letter-spacing="1" fill="#4a463f">A</text><text x="83" y="81" font-size="7" text-anchor="middle" letter-spacing="1" fill="#4a463f">B</text>
+          <text x="112" y="82" font-size="7.6" fill="#4a463f">+ copied to 2 encrypted drives: one in the studio, one off-site</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="tree">
+      <div class="label mute">Every project, the same folders</div>
+      <div class="proj" style="margin-top:3mm">
+        <div style="font:400 7pt/1.2 var(--sans);letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase">MACK Projects / Residential</div>
+        <h3 style="margin-top:1.6mm">2026-014 Garden House</h3>
+      </div>
+      <ul>
+        <li><b>01</b>Client Documents<i>brief, contract</i></li>
+        <li><b>02</b>Site<i>survey, photos, video</i></li>
+        <li><b>03</b>CAD<i>DWG drawings</i></li>
+        <li><b>04</b>3D<i>Revit, SketchUp</i></li>
+        <li><b>05</b>Renders<i>final images</i></li>
+        <li><b>06</b>Presentations<i>client decks</i></li>
+        <li class="out"><b>07</b>Final Deliverables<i>shared with client</i></li>
+      </ul>
+      <div class="chips">
+        <span class="chip">DWG</span><span class="chip">Revit</span><span class="chip">SketchUp</span><span class="chip">Renders</span><span class="chip">Photos</span><span class="chip">PDFs</span><span class="chip">Client files</span>
+      </div>
+      <p class="small" style="margin-top:4mm">Files are never kept only on a laptop or desktop. Laptops show and cache them; the company account holds them.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;margin-bottom:9mm">
+    <div class="label mute">Who can open what</div>
+    <table class="access">
+      <tr><th></th><th>Active projects</th><th>Library<br>(blocks, templates)</th><th>Archive</th><th>Office<br>(contracts, finance)</th></tr>
+      <tr><td>Principals</td><td><span class="dot"></span>Edit</td><td><span class="dot"></span>Edit</td><td><span class="dot"></span>Edit</td><td><span class="dot"></span>Edit</td></tr>
+      <tr><td>Architects &amp; designers</td><td><span class="dot"></span>Edit</td><td><span class="dot"></span>Edit</td><td><span class="dot o"></span>View</td><td><span class="dot n"></span></td></tr>
+      <tr><td>Office admin</td><td><span class="dot"></span>Edit</td><td><span class="dot"></span>Edit</td><td><span class="dot o"></span>View</td><td><span class="dot"></span>Edit</td></tr>
+      <tr><td>Clients &amp; consultants</td><td colspan="4"><span class="dot a"></span>Only the folder we share with them, by name, for a set time. Usually <em>07 Final Deliverables</em>.</td></tr>
+    </table>
+  </div>
+
+  <div class="foot"><span>MACK Studio</span><span>02 / 06</span></div>
+</section>
+
+<!-- ============================================================ PAGE 3 -->
+<section class="page">
+  <div class="run"><span>Why a backup exists</span><span>MACK Studio · Project storage &amp; backup</span></div>
+  <div class="kicker"><span class="label mute">03</span><h2>Cloud storage keeps files available.<span class="two"> A backup keeps them recoverable.</span></h2></div>
+
+  <div class="versus">
+    <svg viewBox="0 0 520 170" width="100%">
+      <!-- main working files -->
+      <text x="0" y="10" font-size="6.8" letter-spacing="1.4" fill="#1a1916">MAIN WORKING FILES</text>
+      <text x="0" y="22" font-size="7.6" fill="#79736a">Google Workspace · what the team uses every day</text>
+      <rect class="l" x="0" y="34" width="190" height="108"/>
+      <g transform="translate(18,50)">
+        <rect class="l" x="0" y="0" width="40" height="52"/><rect class="l" x="56" y="0" width="40" height="52"/><rect class="l" x="112" y="0" width="40" height="52"/>
+        <line class="l" x1="7" y1="12" x2="33" y2="12"/><line class="l" x1="7" y1="20" x2="33" y2="20"/>
+        <line class="l" x1="63" y1="12" x2="89" y2="12"/><line class="l" x1="63" y1="20" x2="89" y2="20"/>
+        <line class="l" x1="119" y1="12" x2="145" y2="12"/><line class="l" x1="119" y1="20" x2="145" y2="20"/>
+        <text x="0" y="74" font-size="7.6" fill="#4a463f">A change here reaches every laptop at once,</text>
+        <text x="0" y="85" font-size="7.6" fill="#4a463f">including a mistake or a virus.</text>
+      </g>
+      <!-- arrow -->
+      <path class="l" d="M200 88h104"/><path class="l" d="M298 83l6 5-6 5"/>
+      <text x="252" y="78" font-size="6.6" letter-spacing="1.3" text-anchor="middle" fill="#1a1916">COPIED 3× A DAY</text>
+      <text x="252" y="104" font-size="7.4" text-anchor="middle" fill="#79736a">one way only</text>
+      <!-- independent backup: stacked snapshots -->
+      <text x="320" y="10" font-size="6.8" letter-spacing="1.4" fill="#8a5434">INDEPENDENT BACKUP</text>
+      <text x="320" y="22" font-size="7.6" fill="#79736a">IDrive · a separate company, separate password</text>
+      <g transform="translate(320,34)">
+        <rect class="la fp" x="24" y="0" width="176" height="22"/><rect class="la fp" x="16" y="9" width="176" height="22" style="fill:#f3f1ec"/>
+        <rect class="la" x="8" y="18" width="176" height="22" style="fill:#f3f1ec"/><rect class="la" x="0" y="27" width="176" height="22" style="fill:#f3f1ec"/>
+        <rect class="la" x="0" y="27" width="176" height="81" style="fill:none;stroke-dasharray:0"/>
+        <text x="10" y="42" font-size="7.4" fill="#1a1916">Today, 2 pm</text><text x="166" y="42" font-size="7.4" text-anchor="end" fill="#79736a">healthy</text>
+        <line class="lt" x1="10" y1="54" x2="166" y2="54"/>
+        <text x="10" y="66" font-size="7.4" fill="#1a1916">Yesterday</text><text x="166" y="66" font-size="7.4" text-anchor="end" fill="#79736a">healthy</text>
+        <line class="lt" x1="10" y1="76" x2="166" y2="76"/>
+        <text x="10" y="88" font-size="7.4" fill="#1a1916">Last month</text><text x="166" y="88" font-size="7.4" text-anchor="end" fill="#79736a">healthy</text>
+        <text x="10" y="102" font-size="7.4" fill="#4a463f">Earlier copies are kept, so we can go back.</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="scen">
+    <div class="sc">
+      <svg viewBox="0 0 48 48"><rect class="l" x="12" y="10" width="24" height="30"/><path class="l" d="M8 10h32M20 6h8"/><path class="la" d="M18 20v13M24 20v13M30 20v13"/></svg>
+      <div>
+        <h3>Accidental deletion</h3>
+        <p class="what">A project folder is deleted by mistake.</p>
+        <p class="how"><b>How we recover</b>Restore it from the Bin within 30 days, or from the backup after that.</p>
+        <p class="t">Minutes</p>
+      </div>
+    </div>
+    <div class="sc">
+      <svg viewBox="0 0 48 48"><path class="l" d="M10 12h28v20H10z"/><path class="l" d="M5 36h38l-3 4H8z"/><path class="la" d="M17 18l14 10M31 18L17 28"/></svg>
+      <div>
+        <h3>Laptop lost or stolen</h3>
+        <p class="what">Nothing was stored only on that laptop.</p>
+        <p class="how"><b>How we recover</b>We switch off its access remotely. The person signs in on another laptop and carries on.</p>
+        <p class="t">About an hour</p>
+      </div>
+    </div>
+    <div class="sc">
+      <svg viewBox="0 0 48 48"><rect class="l" x="14" y="12" width="22" height="28"/><rect class="la" x="9" y="7" width="22" height="28" style="fill:#f3f1ec"/><path class="la" d="M14 15h12M14 21h12M14 27h7"/></svg>
+      <div>
+        <h3>File overwritten</h3>
+        <p class="what">Someone saves over the latest drawing.</p>
+        <p class="how"><b>How we recover</b>Open an earlier version from the last 30 days, or an older one from the backup.</p>
+        <p class="t">Minutes</p>
+      </div>
+    </div>
+    <div class="sc">
+      <svg viewBox="0 0 48 48"><rect class="l" x="8" y="10" width="32" height="28"/><path class="la" d="M14 16l6 6-6 6M24 28h10"/></svg>
+      <div>
+        <h3>Hardware or ransomware</h3>
+        <p class="what">A virus scrambles files, a computer fails, or an account is misused.</p>
+        <p class="how"><b>How we recover</b>Syncing pauses automatically. We roll files back to a clean copy from before the problem.</p>
+        <p class="t">Hours</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="small" style="margin-top:auto;margin-bottom:8mm;border-top:0.6pt solid var(--ink);padding-top:3mm">The studio itself can be lost too, through theft or fire. Nothing important is kept only there: the main copy and the backup are online, and one of the two drives with finished projects is kept off-site.</p>
+
+  <div class="foot"><span>MACK Studio</span><span>03 / 06</span></div>
+</section>
+
+<!-- ============================================================ PAGE 4 -->
+<section class="page">
+  <div class="run"><span>Three options</span><span>MACK Studio · Project storage &amp; backup</span></div>
+  <div class="kicker"><span class="label mute">04</span><h2>Three ways to do it.<span class="two"> One we recommend.</span></h2></div>
+
+  <div class="opts" style="margin-top:13mm">
+    <div class="opt">
+      <div class="tag"></div>
+      <div class="letter">A</div>
+      <h3>Essential</h3>
+      <p class="gets">Company cloud storage and email, plus an automatic online backup at a separate company.</p>
+      <dl>
+        <dt>Storage</dt><dd class="two">10 TB online, shared by the team</dd>
+        <dt>Backup</dt><dd class="two">Online, 3 times a day</dd>
+        <dt>Upfront</dt><dd><div class="money num">{{A.one_time_total}}</div></dd>
+        <dt>Recurring</dt><dd><div class="money num">{{A.month}}</div><div class="per">a month · {{A.year}} a year</div></dd>
+      </dl>
+      <p class="note">MACK holds no copy of its own. Priced for {{A.users}} people.</p>
+    </div>
+    <div class="opt rec">
+      <div class="tag"><span>Our recommendation</span></div>
+      <div class="letter">B</div>
+      <h3>Recommended</h3>
+      <p class="gets">Everything in Essential, plus two encrypted drives holding every finished project. One stays in the studio, one off-site.</p>
+      <dl>
+        <dt>Storage</dt><dd class="two">10 TB online + 5 TB on the drives</dd>
+        <dt>Backup</dt><dd class="two">Online 3 times a day, plus offline drives</dd>
+        <dt>Upfront</dt><dd><div class="money num">{{B.one_time_total}}</div></dd>
+        <dt>Recurring</dt><dd><div class="money num">{{B.month}}</div><div class="per">a month · {{B.year}} a year</div></dd>
+      </dl>
+      <p class="note">The best protection for each rupee spent. Priced for {{B.users}} people.</p>
+    </div>
+    <div class="opt">
+      <div class="tag"></div>
+      <div class="letter">C</div>
+      <h3>Growth</h3>
+      <p class="gets">For a larger studio: adds a storage server in the studio for fast shared work on big models, with its own backup.</p>
+      <dl>
+        <dt>Storage</dt><dd class="two">20 TB online + {{nas.usable}} TB in the studio</dd>
+        <dt>Backup</dt><dd class="two">Online, plus a studio copy, plus offline drives</dd>
+        <dt>Upfront</dt><dd><div class="money num">{{C.one_time_total}}</div></dd>
+        <dt>Recurring</dt><dd><div class="money num">{{C.month}}</div><div class="per">a month · {{C.year}} a year</div></dd>
+      </dl>
+      <p class="note">For when MACK grows past about 10 people. Priced for {{C.users}} people.</p>
+    </div>
+  </div>
+
+  <div class="why">
+    <span class="label">Why B</span>
+    <p>For {{B.one_time_total}} once, MACK keeps a copy of every finished project that does not depend on any subscription, password or internet connection. The monthly cost is the same as Essential.</p>
+  </div>
+
+  <p class="small" style="margin-top:4mm;margin-bottom:6mm">All prices include 18% GST. Researched {{researched}}.</p>
+
+  <div class="foot"><span>MACK Studio</span><span>04 / 06</span></div>
+</section>
+
+<!-- ============================================================ PAGE 5 -->
+<section class="page">
+  <div class="run"><span>The recommended system</span><span>MACK Studio · Project storage &amp; backup</span></div>
+  <div class="kicker"><span class="label mute">05</span><h2>The MACK system<span class="two">, and exactly what it costs.</span></h2></div>
+
+  <div class="stack">
+    <table>
+      <tr><th>Layer</th><th>What it does</th><th>Capacity</th><th style="text-align:right">Cost</th></tr>
+      <tr>
+        <td class="layer"><svg viewBox="0 0 240 56"><g><circle class="l" cx="18" cy="18" r="6"/><path class="l" d="M6 40a12 11 0 0 1 24 0"/><circle class="l" cx="48" cy="18" r="6"/><path class="l" d="M36 40a12 11 0 0 1 24 0"/><circle class="l" cx="78" cy="18" r="6"/><path class="l" d="M66 40a12 11 0 0 1 24 0"/></g><text x="104" y="26" font-size="12" font-family="Newsreader, serif" fill="#1a1916">MACK team</text><text x="104" y="40" font-size="8" fill="#79736a">{{team}} people, their laptops</text></svg></td>
+        <td>Work from the MACK drive on their laptops, in the studio or on site.</td><td>—</td><td class="cost">existing laptops</td>
+      </tr>
+      <tr>
+        <td class="layer"><svg viewBox="0 0 240 56"><rect class="l" x="2" y="6" width="236" height="44"/><text x="14" y="24" font-size="6.4" letter-spacing="1.2" fill="#79736a">MAIN CLOUD</text><text x="14" y="40" font-size="12" font-family="Newsreader, serif" fill="#1a1916">Google Workspace</text></svg></td>
+        <td><b>Where every project lives</b>Also MACK's company email, calendar and video calls. Business Standard plan.</td><td>10 TB, shared</td><td class="cost num">{{B.rec0}} / year</td>
+      </tr>
+      <tr>
+        <td class="layer"><svg viewBox="0 0 240 56"><rect class="la" x="2" y="6" width="236" height="44"/><text x="14" y="24" font-size="6.4" letter-spacing="1.2" fill="#8a5434">INDEPENDENT BACKUP</text><text x="14" y="40" font-size="12" font-family="Newsreader, serif" fill="#1a1916">IDrive Backup</text></svg></td>
+        <td><b>An independent safety copy</b>Copies everything 3× a day to a separate company, with earlier versions kept.</td><td>10 TB per person</td><td class="cost num">{{B.rec1}} / year</td>
+      </tr>
+      <tr>
+        <td class="layer"><svg viewBox="0 0 240 56"><rect class="l" x="2" y="6" width="236" height="44" style="stroke-dasharray:3 2"/><rect class="l" x="190" y="18" width="18" height="12" rx="1.5"/><rect class="l" x="212" y="18" width="18" height="12" rx="1.5"/><text x="14" y="24" font-size="6.4" letter-spacing="1.2" fill="#79736a">ARCHIVE</text><text x="14" y="40" font-size="12" font-family="Newsreader, serif" fill="#1a1916">Archive + Vault drives</text></svg></td>
+        <td><b>Finished projects, kept for good</b>Read-only online, plus copied to two encrypted drives MACK holds.</td><td>2 × 5 TB drives</td><td class="cost num">{{B.one_time_total}} once</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="ledger">
+    <div>
+      <h4>One-time</h4>
+      <div class="ln"><span>Hardware (server / NAS)</span><span class="d"></span><span class="num">₹0</span></div>
+      <div class="ln"><span>Drives <span class="sub">2 × 5 TB at {{vault.each}}</span></span><span class="d"></span><span class="num">{{B.ot0}}</span></div>
+      <div class="ln"><span>Other</span><span class="d"></span><span class="num">₹0</span></div>
+      <div class="ln tot"><span>Initial investment</span><span class="d"></span><span class="num">{{B.one_time_total}}</span></div>
+    </div>
+    <div>
+      <h4>Recurring</h4>
+      <div class="ln"><span>Cloud <span class="sub">Google Workspace, {{team}} people</span></span><span class="d"></span><span class="num">{{B.rec0}} / yr</span></div>
+      <div class="ln"><span>Backup <span class="sub">IDrive, {{team}} people</span></span><span class="d"></span><span class="num">{{B.rec1}} / yr</span></div>
+      <div class="ln"><span>Other</span><span class="d"></span><span class="num">₹0</span></div>
+      <div class="ln tot"><span>Running cost <span class="sub">= {{B.month}} a month</span></span><span class="d"></span><span class="num">{{B.year}} / yr</span></div>
+    </div>
+  </div>
+
+  <div class="totals">
+    <div><span class="label">Year 1</span><span class="big num">{{B.year1}}</span></div>
+    <div class="y2"><span class="label">Year 2 onwards</span><span class="big num">{{B.year2}}<small> / year</small></span></div>
+  </div>
+
+  <div class="notyet">
+    <span class="label mute">Not buying yet</span>
+    <p class="small">A storage server (NAS), Microsoft 365, Dropbox, or separate archive storage. None of these is needed at MACK's current size. We will revisit them at the points listed on the next page.<br>
+    Prices include 18% GST, researched {{researched}}; dollar services at $1 = ₹{{fx}}. If MACK is GST-registered, much of the GST can be claimed back. Not included: internet connection, laptops, set-up time.</p>
+  </div>
+
+  <div class="foot"><span>MACK Studio</span><span>05 / 06</span></div>
+</section>
+
+<!-- ============================================================ PAGE 6 -->
+<section class="page">
+  <div class="run"><span>What happens next</span><span>MACK Studio · Project storage &amp; backup</span></div>
+  <div class="kicker"><span class="label mute">06</span><h2>What happens next.<span class="two"> About three weeks.</span></h2></div>
+
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>Set up accounts</h3><p>Company Google Workspace and an email address for each person.</p></div>
+    <div class="step"><div class="n">2</div><h3>Organise projects</h3><p>One folder structure for every project, the same for everyone.</p></div>
+    <div class="step"><div class="n">3</div><h3>Move files</h3><p>Existing projects copied in and checked. Old copies kept for 60 days.</p></div>
+    <div class="step"><div class="n">4</div><h3>Set permissions</h3><p>Team, principals, office, clients: each sees only what they need.</p></div>
+    <div class="step"><div class="n">5</div><h3>Switch on backup</h3><p>The independent backup starts. The two drives are filled with finished work.</p></div>
+    <div class="step"><div class="n">6</div><h3>Secure</h3><p>Two-step sign-in for everyone. A lost laptop can be locked out remotely.</p></div>
+    <div class="step"><div class="n">7</div><h3>Test recovery</h3><p>We delete, overwrite and "lose" files on purpose, then bring them back.</p></div>
+    <div class="step last"><div class="n">8</div><h3>Go live</h3><p>A 30-minute walkthrough for the team, then everyone works from the MACK drive.</p></div>
+  </div>
+
+  <div class="after">
+    <div>
+      <div class="label mute">What changes for the team</div>
+      <ul>
+        <li>Save to the MACK drive, never only to the desktop.</li>
+        <li>Send clients a shared folder, not attachments or WhatsApp.</li>
+        <li>One person edits a drawing at a time.</li>
+        <li>Mistakes can be undone, so ask for help rather than redo work.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="label mute">We revisit the plan when</div>
+      <ul>
+        <li>MACK grows past about 10 people.</li>
+        <li>Online storage is three-quarters full.</li>
+        <li>Several people need to work on the same model at once.</li>
+        <li>The studio internet becomes unreliable.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="owns">
+    <h2>MACK owns the accounts, data and infrastructure.</h2>
+    <p>Every account is registered to MACK and paid by MACK. Our implementation partner has administrator access only to set up and look after the system, and that access can be removed at any time.</p>
+  </div>
+
+  <div class="foot"><span>MACK Studio</span><span>06 / 06</span></div>
+</section>
+
+</body>
+</html>

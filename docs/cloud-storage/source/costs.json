@@ -1,0 +1,120 @@
+{
+  "researched": "18 October 2026",
+  "fx": 97.0,
+  "fx_mid": 95.08,
+  "gst": 0.18,
+  "team": 5,
+  "google": {
+    "users": 5,
+    "tb": 10,
+    "month_ex": 5400,
+    "year_ex": 64800,
+    "year": 76464,
+    "month": 6372
+  },
+  "idrive": {
+    "usd_year": 100,
+    "year_ex": 9700,
+    "year": 11446,
+    "month": 954
+  },
+  "vault_drive": [
+    "WD Elements Portable 5 TB (WDBHDW0050BBK)",
+    19205
+  ],
+  "options": {
+    "A": {
+      "name": "Essential",
+      "users": 5,
+      "one_time": [],
+      "one_time_total": 0,
+      "recurring": [
+        [
+          "Google Workspace Business Standard",
+          76464
+        ],
+        [
+          "IDrive Google Workspace Backup",
+          11446
+        ]
+      ],
+      "year": 87910,
+      "month": 7326,
+      "year1": 87910,
+      "year2": 87910
+    },
+    "B": {
+      "name": "Recommended",
+      "users": 5,
+      "one_time": [
+        [
+          "2 × WD Elements Portable 5 TB (WDBHDW0050BBK)",
+          38410
+        ]
+      ],
+      "one_time_total": 38410,
+      "recurring": [
+        [
+          "Google Workspace Business Standard",
+          76464
+        ],
+        [
+          "IDrive Google Workspace Backup",
+          11446
+        ]
+      ],
+      "year": 87910,
+      "month": 7326,
+      "year1": 126320,
+      "year2": 87910
+    },
+    "C": {
+      "name": "Growth",
+      "users": 10,
+      "one_time": [
+        [
+          "Synology DS925+ (4-bay)",
+          77150
+        ],
+        [
+          "4 × WD Red Pro 8 TB (WD8005FFBX)",
+          175100
+        ],
+        [
+          "APC Back-UPS BX1100C-IN (1100 VA)",
+          6990
+        ],
+        [
+          "2 × WD Elements Portable 5 TB (WDBHDW0050BBK)",
+          38410
+        ]
+      ],
+      "one_time_total": 297650,
+      "recurring": [
+        [
+          "Google Workspace Business Standard",
+          152928
+        ],
+        [
+          "IDrive Google Workspace Backup",
+          22892
+        ],
+        [
+          "Backblaze B2, 5 TB of studio data",
+          47730
+        ]
+      ],
+      "year": 223550,
+      "month": 18629,
+      "year1": 521200,
+      "year2": 223550
+    }
+  },
+  "nas": {
+    "raw_tb": 32,
+    "usable_tb": 24,
+    "usable_tib": 21.8
+  },
+  "migration_hours_3tb_100mbps": 83,
+  "restore_hours_50gb_100mbps": 1.4
+}
